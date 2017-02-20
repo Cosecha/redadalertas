@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 import { components as AppComponents } from './containers/app';
 import { components as LandingComponents } from './containers/landing';
+import { components as SignupComponents } from './containers/signup';
 
 class Routes extends Component {
   render() {
@@ -9,7 +10,7 @@ class Routes extends Component {
       <Router history={browserHistory}>
         <Route path='/' component={LandingComponents.Landing} />
         <Route component={AppComponents.App}>
-
+          <Route path='/signup' component={SignupComponents.Signup} />
         </Route>
       </Router>
     );
