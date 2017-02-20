@@ -11,6 +11,7 @@ class Routes extends Component {
         <Route path='/' component={LandingComponents.Landing} />
         <Route component={AppComponents.App}>
           <Route path='/signup' component={SignupComponents.Signup} />
+          <Route path='/confirm' component={SignupComponents.Confirm} />
         </Route>
       </Router>
     );
