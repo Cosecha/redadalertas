@@ -23,7 +23,8 @@ We will also enforce our [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 ## Not a Developer, How Can I Contribute?
 
 There are plenty of ways:
-- Join the [Cosecha Social Media Support Circle](https://www.facebook.com/groups/217068172002687) and be ready to share this with you friends once it's ready
+- [Read the wiki](https://github.com/Cosecha/redadalertas/wiki) to learn more about how the project is organized.
+- Join the [gitter chat room](https://gitter.im/redadalertas/Lobby).
 - Share this repo with your developer friends that might want to contribute.
 
 ![RedadAlertas](https://raw.githubusercontent.com/wiki/Cosecha/redadalertas/home.jpg)
