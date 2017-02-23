@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
-import { Menu, Image } from 'semantic-ui-react';
 import logo from './logo.svg';
 
 class Header extends Component {

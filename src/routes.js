@@ -13,6 +13,7 @@ class Routes extends Component {
           <Route path='/signup' component={SignupComponents.Signup} />
           <Route path='/signup/confirm' component={SignupComponents.Confirm} />
           <Route path='/signup/success' component={SignupComponents.Success} />
+          <Route path='/signup/verifier' component={SignupComponents.Verifier} />
         </Route>
       </Router>
     );
