@@ -2,6 +2,8 @@
 # Redadalertas
 A tool that will provide *real-time*, *verified* alerts to people about immigration raids.
 
+# [Check out the Wiki](https://github.com/Cosecha/redadalertas/wiki)
+
 This repo will serve as the front end, in the form of a web application. It can be considered a proof-of-concept for a mobile app. We will be using [React.js](https://facebook.github.io/react/) and the [React Toolbox](http://react-toolbox.com/#/) Library.
 
 Right now, the plan is to use this to create a packaged-up HTML app wrapper in mobile apps for iOS and Android.
