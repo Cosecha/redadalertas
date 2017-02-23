@@ -4,6 +4,7 @@ import { components as AppComponents } from './containers/app';
 import { components as LandingComponents } from './containers/landing';
 import { components as SignupComponents } from './containers/signup';
 import { components as DashboardComponents } from './containers/dashboard';
+import { components as ReportComponents } from './containers/report';
 
 class Routes extends Component {
   render() {
@@ -20,6 +21,7 @@ class Routes extends Component {
           <Route path='/signup/verifier/final' component={SignupComponents.VerifierFinal} />
 
           <Route path='/dashboard' component={DashboardComponents.Dashboard} />
+          <Route path='/report' component={ReportComponents.Report} />
         </Route>
       </Router>
     );
