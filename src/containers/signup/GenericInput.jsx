@@ -4,19 +4,21 @@ const GenericInput = (props) => {
 	const {
 		type,
 		label,
+		name,
 		errorMessage,
 		isValid,
 		isDirty,
-		value
-	} = this.props;
+		value = '',
+		handleChange
+	} = props;
 	return(
 		<div>
 			<label>{label}</label>
-			<input 
-				name={label}
+			<input
+				name={name}
 				type={type}
 				value={value}
-				onChange={this.handleChange} />
+				onChange={handleChange} />
 			{
 				!isValid && isDirty && <p>{errorMessage}</p>
 			}
@@ -28,7 +30,7 @@ const GenericInput = (props) => {
 GenericInput.propTypes = {
 	type: PropTypes.string,
 	label: PropTypes.string,
-	errorMessage:: PropTypes.string,
+	errorMessage: PropTypes.string,
 	validator: PropTypes.func
 }
 

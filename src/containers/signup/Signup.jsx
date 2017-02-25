@@ -1,86 +1,99 @@
 import React, { Component } from 'react';
 import update from 'react-addons-update';
+import GenericInput from './GenericInput';
 
-const validator = {
-	phoneNumber: number => number.length === 10,
-	zipcode: number => number.length === 10 
-};
+const FIELDS = {
+  phoneNumber: {
+    type: 'text',
+    label: 'phone number',
+    errorMessage: 'Not a valid phone number!',
+    validator: number => number.length === 10
+  },
+  zipcode: {
+    type: 'text',
+    label: 'zipcode',
+    errorMessage: 'Not a valid zipcode!',
+    validator: number => number.length === 5
+  }
+}
 
 class Signup extends Component {
   constructor(props){
   	super(props);
-  	this.state = {
-  		phoneNumber: {
-  			name: '',
-	  		isDirty: false,
-	  		isValid: false
-	  	},
-  		zicode: {
-  			name:'',
-	  		isDirty: false,
-	  		isValid: false
-	  	}
-  	};
 
-  	this.handleChange = this.handleChange.bind(this);
+    const fieldnames = Object.keys(FIELDS);
+    const initialstate = {isValid: false};
+    fieldnames.forEach(field => {
+      initialstate[field] = {
+        name: '',
+        isDirty: false,
+        isValid: false
+      }
+    });
+
+  	this.state = initialstate;
+
+    this.handleChange = this.handleChange.bind(this);
+  	this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(e){
-  	const value = e.target.value;
-  	const isValid = this.props.validator(value);
-  	this.setState({
-  		value,
-  		isValid,
-  		isPristine: false
-  	});
+    const {
+      value,
+      name
+    } = e.target;
+
+  	const isValid = FIELDS[name].validator(value);
+    const newState = update(this.state, {
+      [name]: {
+        value: {$set: value},
+        isValid: {$set: isValid},
+        isDirty: {$set: true}
+      }
+    });
+
+  	this.setState(newState);
   }
 
-
-  validateField(fieldName, fieldValue){
-
+  handleSubmit() {
+    console.log('submitting', this.state);
   }
-
-  subscriberFormIsValid(){}
 
   render() {
-
-  	const handleSubmit = ()=>{};
-  	const { 
-  		phoneNumber, 
-  		zipcode, 
-  		subscriberFormValid, 
+  	const {
+  		phoneNumber,
+  		zipcode,
+  		subscriberFormValid,
   		reporterFormValid,
   		isValid
   	} = this.state;
 
+    const fieldnames = Object.keys(FIELDS);
+
+    const inputs = fieldnames.map((field, i) => (
+      <GenericInput
+        key={i}
+        name={field}
+        type={FIELDS[field].type}
+        label={FIELDS[field].label}
+        errorMessage={FIELDS[field].errorMessage}
+        isValid={this.state[field].isValid}
+        isDirty={this.state[field].isDirty}
+        value={this.state[field].value}
+        handleChange={this.handleChange}
+      />
+    ));
+
     return (
       <div>
-      	<form onSubmit={handleSubmit}>
-
-			<GenericInput
-				type="string",
-				label="phone number",
-				errorMessage="Not a valid phone number!",
-				isValid={phoneNumber.isValid},
-				isDirty={phoneNumber.isDirty},
-				value={phoneNumber.value}
-				/>
-			<GenericInput
-				type="string",
-				label="zipcode",
-				errorMessage="Not a valid zipcode!",
-				isValid={zipcode.isValid},
-				isDirty={zipcode.isDirty},
-				value={zipcode.value}
-				/>
+      	<form onSubmit={this.handleSubmit}>
+          {inputs}
 	        <button
 	        	type="submit"
 	        	disabled={!isValid}>
 	        	Receive alerts
 	        </button>
-
-	    </form>
-
+	      </form>
       </div>
     )
   }
