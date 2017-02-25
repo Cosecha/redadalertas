@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import update from 'react-addons-update';
 
 const validator = {
 	phoneNumber: number => number.length === 10,
@@ -9,12 +10,16 @@ class Signup extends Component {
   constructor(props){
   	super(props);
   	this.state = {
-  		pn: '',
-  		pnDirty: false,
-  		pnIsValid: false,
-  		zip: '',
-  		zipDirty: false,
-  		zipIsValid: false
+  		phoneNumber: {
+  			name: '',
+	  		isDirty: false,
+	  		isValid: false
+	  	},
+  		zicode: {
+  			name:'',
+	  		isDirty: false,
+	  		isValid: false
+	  	}
   	};
 
   	this.handleChange = this.handleChange.bind(this);
@@ -52,19 +57,22 @@ class Signup extends Component {
       <div>
       	<form onSubmit={handleSubmit}>
 
-	        <label>Phone Number</label>
-	        <input 
-	        	name="phoneNumber"
-	        	type="text"
-	        	value={phoneNumber}
-	        	onChange={this.handleChange} />
-	        <label>Zipcode</label>
-	        <input 
-	        	name="zipcode"
-	        	type="text"
-	        	value={zipcode}
-	        	onChange={this.handleChange} />
-
+			<GenericInput
+				type="string",
+				label="phone number",
+				errorMessage="Not a valid phone number!",
+				isValid={phoneNumber.isValid},
+				isDirty={phoneNumber.isDirty},
+				value={phoneNumber.value}
+				/>
+			<GenericInput
+				type="string",
+				label="zipcode",
+				errorMessage="Not a valid zipcode!",
+				isValid={zipcode.isValid},
+				isDirty={zipcode.isDirty},
+				value={zipcode.value}
+				/>
 	        <button
 	        	type="submit"
 	        	disabled={!isValid}>
@@ -73,11 +81,6 @@ class Signup extends Component {
 
 	    </form>
 
-	    <form onSubmit={handleSubmit}>
-
-        <h1>Register to report alerts</h1>
-
-        </form>
       </div>
     )
   }
