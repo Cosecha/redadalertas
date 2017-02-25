@@ -3,3 +3,29 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.raidInfo {
+	display: flex;
+	width: 100%;
+	padding-bottom: 20px;
+}
+
+.raidInfo .raidStat {
+	margin-bottom: 10px;
+}
+
+.verifyButton {
+	background-color: white;
+	border: solid 2px blue;
+	height: 70px;
+	border-radius: 50%;
+	color: green;
+}
+
+.verifyButton:focus {
+	outline: none;
+}
+
+.verifyButton:hover {
+	border-width: 3px;
+}

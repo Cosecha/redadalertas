@@ -2,17 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { verifyRaid, loadRaids } from '../../reducers';
 
-const TEST_RAIDS = [
-  {
-    id: '1',
-    time: 'today',
-    location: 'NY NY',
-    type: 'blockade',
-    description: 'hello world',
-    media: 'www.google.com',
-    verified: false
-  }
-];
+
 
 const RaidInfo = ({raid, verifyRaid}) => {
   const {
@@ -25,31 +15,28 @@ const RaidInfo = ({raid, verifyRaid}) => {
   } = raid;
 
   return (
-    <div>
-      <div> Time </div>
-      <div> {time} </div>
-      <div> location </div>
-      <div> {location} </div>
-      <div> type </div>
-      <div> {type} </div>
-      <div> description </div>
-      <div> {description} </div>
-      <div> media </div>
-      <div> {media} </div>
-      <div> verified </div>
-      <div> {verified} </div>
-      <button onClick={verifyRaid}> Mark as verified </button>
+    <div className="raidInfo">
+
+      <div className="raidStat col-xs-2"> <h1>Time</h1> <h2>{time}</h2> </div >
+      <div className="raidStat col-xs-2"> <h1>Location</h1> <h2>{location}</h2> </div >
+      <div className="raidStat col-xs-2"> <h1>Type</h1> <h2>{type}</h2> </div >
+      <div className="raidStat col-xs-2"> <h1>Description</h1> <h2>{description}</h2> </div >
+      <div className="raidStat col-xs-2"> <h1>Verified</h1> <h2>{verified?'true':'false'}</h2> </div >
+      <button onClick={verifyRaid} className="verifyButton"> <h2>Verify</h2> </button>
     </div>
   );
 };
 
 class Dashboard extends Component {
-  render() {
-    // const {
-    //   raids
-    // } = this.props;
+  constructor(props){
+    super(props);
+    this.props.loadRaids();
+  }
 
-    const raids = TEST_RAIDS;
+  render() {
+    const {
+      raids
+    } = this.props;
 
     return (
       <div>
@@ -67,7 +54,8 @@ class Dashboard extends Component {
   }
 }
 const mapDispatchToProps = (dispatch, getState) => ({
-  markAsVerified: id => dispatch(verifyRaid(id))
+  markAsVerified: id => dispatch(verifyRaid(id)),
+  loadRaids: () => dispatch(loadRaids())
 });
 
 const mapStateToProps = state => ({
