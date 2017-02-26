@@ -54,7 +54,12 @@ class GenericForm extends Component {
       isValid
     } = this.state;
 
-    const FIELDS = this.props.fieldSchema || {};
+    const {
+      fieldSchema,
+      buttonName = 'Submit'
+    } = this.props;
+
+    const FIELDS = fieldSchema || {};
     const fieldnames = Object.keys(FIELDS);
 
     const inputs = fieldnames.map((field, i) => (
@@ -62,6 +67,7 @@ class GenericForm extends Component {
         key={i}
         name={field}
         type={FIELDS[field].type}
+        options={FIELDS[field].options}
         label={FIELDS[field].label}
         errorMessage={FIELDS[field].errorMessage}
         isValid={this.state[field].isValid}
@@ -78,7 +84,7 @@ class GenericForm extends Component {
           <button
             type="submit"
             disabled={!isValid}>
-            Receive alerts
+            { buttonName }
           </button>
         </form>
       </div>

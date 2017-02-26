@@ -7,17 +7,30 @@ body {
 .raidInfo {
 	display: flex;
 	width: 100%;
-	padding-bottom: 20px;
+	padding: 20px 0;
+  margin: 10px 0;
+  border-top: solid 1px gray;
+  border-bottom: solid 1px gray;
 }
 
 .raidInfo .raidStat {
 	margin-bottom: 10px;
 }
 
+.raidInfo .raidStat h1 {
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.raidInfo .raidStat p {
+  font-size: 15px;
+}
+
 .verifyButton {
 	background-color: white;
 	border: solid 2px blue;
-	height: 70px;
+  height: 70px;
+	width: 70px;
 	border-radius: 50%;
 	color: green;
 }

@@ -3,7 +3,6 @@ import axios from 'axios';
 const RECEIVE_RAIDS = 'RECEIVE_RAIDS';
 const UPDATE_RAID = 'UPDATE_RAID';
 
-
 const INITIAL_STATE = { raids: [], zipcode: '', isUserVerified: false };
 
 const TEST_RAIDS = [
@@ -45,6 +44,9 @@ const updateRaid = raid => ({
   type: UPDATE_RAID,
   raid: raid
 })
+
+// TODO: verifyRaid and loadRaids is using test data
+// use commented out code once api endpoints are hooked up
 
 const verifyRaid = raidId => dispatch => {
   // axios.put(`/api/raid/verify/${raidId}`)

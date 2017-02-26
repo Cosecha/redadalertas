@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+// TODO: add logic to handle non-text inputs, like dropdowns
+
 const GenericInput = (props) => {
 	const {
 		type,
@@ -7,10 +9,12 @@ const GenericInput = (props) => {
 		name,
 		errorMessage,
 		isValid,
+		options,
 		isDirty,
 		value = '',
 		handleChange
 	} = props;
+
 	return(
 		<div>
 			<label>{label}</label>
@@ -24,14 +28,6 @@ const GenericInput = (props) => {
 			}
 		</div>
 		)
-}
-
-
-GenericInput.propTypes = {
-	type: PropTypes.string,
-	label: PropTypes.string,
-	errorMessage: PropTypes.string,
-	validator: PropTypes.func
 }
 
 export default GenericInput;

@@ -1,5 +1,5 @@
 import React from 'react';
-import GenericForm from './GenericForm';
+import GenericForm from '../generic/GenericForm';
 
 const FIELDS = {
   phoneNumber: {
@@ -16,10 +16,14 @@ const FIELDS = {
   }
 };
 
+// TODO: add handleSubmit to GenericForm to make api call to database
 const Verifier = () => (
   <div>
     <h1> Sign up here to be a verifier </h1>
-    <GenericForm fieldSchema={FIELDS} />
+    <GenericForm
+      fieldSchema={FIELDS}
+      buttonName="Apply"
+    />
   </div>
 );
 

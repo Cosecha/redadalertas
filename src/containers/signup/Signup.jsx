@@ -1,6 +1,7 @@
 import React from 'react';
-import GenericForm from './GenericForm';
+import GenericForm from '../generic/GenericForm';
 
+// TODO: edit validators to validate appropriately
 const FIELDS = {
   phoneNumber: {
     type: 'text',
@@ -16,10 +17,14 @@ const FIELDS = {
   }
 };
 
+// TODO: add handleSubmit to GenericForm to make api call to database
 const Signup = () => (
   <div>
     <h1> Subscribe here for alerts </h1>
-    <GenericForm fieldSchema={FIELDS} />
+    <GenericForm
+      fieldSchema={FIELDS}
+      buttonName="Subscribe"
+    />
   </div>
 );
 

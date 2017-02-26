@@ -16,13 +16,12 @@ const RaidInfo = ({raid, verifyRaid}) => {
 
   return (
     <div className="raidInfo">
-
-      <div className="raidStat col-xs-2"> <h1>Time</h1> <h2>{time}</h2> </div >
-      <div className="raidStat col-xs-2"> <h1>Location</h1> <h2>{location}</h2> </div >
-      <div className="raidStat col-xs-2"> <h1>Type</h1> <h2>{type}</h2> </div >
-      <div className="raidStat col-xs-2"> <h1>Description</h1> <h2>{description}</h2> </div >
-      <div className="raidStat col-xs-2"> <h1>Verified</h1> <h2>{verified?'true':'false'}</h2> </div >
-      <button onClick={verifyRaid} className="verifyButton"> <h2>Verify</h2> </button>
+      <div className="raidStat col-xs-2"> <h1>Time</h1> <p>{time}</p> </div >
+      <div className="raidStat col-xs-2"> <h1>Location</h1> <p>{location}</p> </div >
+      <div className="raidStat col-xs-2"> <h1>Type</h1> <p>{type}</p> </div >
+      <div className="raidStat col-xs-2"> <h1>Description</h1> <p>{description}</p> </div >
+      <div className="raidStat col-xs-2"> <h1>Verified</h1> <p>{verified?'true':'false'}</p> </div >
+      <button onClick={verifyRaid} className="verifyButton"> <p>Verify</p> </button>
     </div>
   );
 };
