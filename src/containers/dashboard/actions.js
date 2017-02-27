@@ -1,13 +1,3 @@
-export const VERIFY_RAID = 'VERIFY_RAID';
-export const verifyRaid = raidId => {
-  // axios.put(`/api/raid/verify/${raidId}`)
-  //   .then(resp => dispatch(updateRaid(resp.data)));
-  return {
-    type: VERIFY_RAID,
-    payload: raidId,
-  };
-};
-
 export const LOAD_RAIDS = 'LOAD_RAIDS';
 export const loadRaids = () => {
   // axios.get(`/api/raids`)

@@ -1,34 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { verifyRaid, loadRaids } from './actions';
-
-const RaidInfo = ({raid, verifyRaid}) => {
-  const {
-    type,
-    time,
-    location,
-    description,
-    media,
-    verified
-  } = raid;
-
-  return (
-    <div className="raidInfo">
-      <div className="raidStat col-xs-2"> <h1>Time</h1> <p>{time}</p> </div >
-      <div className="raidStat col-xs-2"> <h1>Location</h1> <p>{location}</p> </div >
-      <div className="raidStat col-xs-2"> <h1>Type</h1> <p>{type}</p> </div >
-      <div className="raidStat col-xs-2"> <h1>Description</h1> <p>{description}</p> </div >
-      <div className="raidStat col-xs-2"> <h1>Verified</h1> <p>{verified?'true':'false'}</p> </div >
-      <button onClick={verifyRaid} className="verifyButton"> <p>Verify</p> </button>
-    </div>
-  );
-};
+import { loadRaids } from './actions';
+import RaidInfo from '../../components/RaidInfo';
 
 class Dashboard extends Component {
   constructor(props){
     super(props);
-    this.props.loadRaids();
+    // this.props.loadRaids();
   }
 
   render() {
@@ -51,15 +30,18 @@ class Dashboard extends Component {
     )
   }
 }
-const mapDispatchToProps = (dispatch) => {
+
+function mapStateToProps(state) {
+  return {
+    raids: state.dashboard.raids,
+  };
+};
+
+function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    verifyRaid,
     loadRaids,
   });
 };
 
-const mapStateToProps = state => ({
-  raids: state.raids
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

@@ -4,6 +4,7 @@ import createLogger from 'redux-logger';
 import { routerMiddleware, routerReducer } from 'react-router-redux';
 
 import { reducer as appReducer } from './containers/app';
+import { reducer as DashboardReducer } from './containers/dashboard';
 
 import rootSaga from './rootSaga';
 
@@ -11,6 +12,7 @@ const reducer = combineReducers(
   {
     routing: routerReducer,
     app: appReducer,
+    dashboard: DashboardReducer,
   }
 );
 
