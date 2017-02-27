@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
+import { syncHistoryWithStore } from 'react-router-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { rootReducer } from './reducers';
+
+import configureStore from './store';
 
 import { components as AppComponents } from './containers/app';
 import { components as LandingComponents } from './containers/landing';
@@ -11,13 +14,14 @@ import { components as SignupComponents } from './containers/signup';
 import { components as DashboardComponents } from './containers/dashboard';
 import { components as ReportComponents } from './containers/report';
 
-const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+const store = configureStore(browserHistory);
+const history = syncHistoryWithStore(browserHistory, store);
 
 class Routes extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Router history={browserHistory}>
+        <Router history={history}>
           <Route path='/' component={LandingComponents.Landing} />
           <Route component={AppComponents.App}>
             <Route path='/signup' component={SignupComponents.Signup} />
