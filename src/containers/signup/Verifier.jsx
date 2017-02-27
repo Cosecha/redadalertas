@@ -1,5 +1,5 @@
 import React from 'react';
-import GenericForm from '../generic/GenericForm';
+import GenericForm from '../../components/GenericForm';
 
 const FIELDS = {
   phoneNumber: {
