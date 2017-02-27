@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 
 // TODO: add logic to handle non-text inputs, like dropdowns
 
@@ -9,7 +9,6 @@ const GenericInput = (props) => {
 		name,
 		errorMessage,
 		isValid,
-		options,
 		isDirty,
 		value = '',
 		handleChange

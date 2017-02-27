@@ -1,13 +1,3 @@
-export const LOAD_RAIDS = 'LOAD_RAIDS';
-export const loadRaids = () => {
-  // axios.get(`/api/raids`)
-  //   .then(resp => dispatch(receiveRaids(resp.data)));
-  return {
-    type: LOAD_RAIDS,
-    payload: TEST_RAIDS,
-  };
-};
-
 const TEST_RAIDS = [
   {
     id: '1',
@@ -37,3 +27,14 @@ const TEST_RAIDS = [
     verified: true
   }
 ];
+
+
+export const LOAD_RAIDS = 'LOAD_RAIDS';
+export const loadRaids = () => {
+  // axios.get(`/api/raids`)
+  //   .then(resp => dispatch(receiveRaids(resp.data)));
+  return {
+    type: LOAD_RAIDS,
+    payload: TEST_RAIDS,
+  };
+};
