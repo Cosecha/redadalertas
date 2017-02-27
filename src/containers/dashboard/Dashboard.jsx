@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { verifyRaid, loadRaids } from '../../reducers';
-
-
+import { bindActionCreators } from 'redux';
+import { verifyRaid, loadRaids } from './actions';
 
 const RaidInfo = ({raid, verifyRaid}) => {
   const {
@@ -44,7 +43,7 @@ class Dashboard extends Component {
             <RaidInfo
               key={raid.id}
               raid={raid}
-              verifyRaid={this.props.markAsVerified}
+              verifyRaid={this.props.verifyRaid}
             />
           ))
         }
@@ -52,10 +51,12 @@ class Dashboard extends Component {
     )
   }
 }
-const mapDispatchToProps = (dispatch, getState) => ({
-  markAsVerified: id => dispatch(verifyRaid(id)),
-  loadRaids: () => dispatch(loadRaids())
-});
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    verifyRaid,
+    loadRaids,
+  });
+};
 
 const mapStateToProps = state => ({
   raids: state.raids

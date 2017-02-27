@@ -48,25 +48,7 @@ const updateRaid = raid => ({
 // TODO: verifyRaid and loadRaids is using test data
 // use commented out code once api endpoints are hooked up
 
-const verifyRaid = raidId => dispatch => {
-  // axios.put(`/api/raid/verify/${raidId}`)
-  //   .then(resp => dispatch(updateRaid(resp.data)));
-  return dispatch(updateRaid(    {
-    id: '2',
-    time: '5:13PM 2/21/2017',
-    location: '10003',
-    type: 'work',
-    description: '*description here*',
-    media: 'www.facebook.com',
-    verified: true
-  }))
-};
 
-const loadRaids = () => dispatch => {
-  // axios.get(`/api/raids`)
-  //   .then(resp => dispatch(receiveRaids(resp.data)));
-  return dispatch(receiveRaids(TEST_RAIDS));
-};
 
 const swap = (raids, updatedRaid) =>
   raids.map(raid => raid.id === updatedRaid.id ? updatedRaid : raid);
