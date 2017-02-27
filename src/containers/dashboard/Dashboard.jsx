@@ -5,10 +5,6 @@ import { loadRaids } from './actions';
 import RaidInfo from '../../components/RaidInfo';
 
 class Dashboard extends Component {
-  constructor(props){
-    super(props);
-    // this.props.loadRaids();
-  }
 
   render() {
     const {

@@ -6,7 +6,6 @@ const RaidInfo = ({raid, verifyRaid}) => {
     time,
     location,
     description,
-    media,
     verified
   } = raid;
 

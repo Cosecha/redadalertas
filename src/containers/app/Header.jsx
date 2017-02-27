@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Link } from 'react-router';
+import { Menu } from 'semantic-ui-react';
+import logo from './site-logo.svg';
+import './Header.css';
 
 class Header extends Component {
   render()  {
     return (
       <nav>
-        <img src={logo} alt="logo" width="50" height="50" />
+        <Menu className="app-menu" pointing secondary>
+          <Link className="nav-logo" to={'/'}>
+            <img src={logo} alt="RedadAlertas" />
+          </Link>
+          </Menu>
       </nav>
     )
   }
