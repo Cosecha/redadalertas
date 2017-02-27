@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { createStore, applyMiddleware } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import { rootReducer } from './reducers';
 
 import configureStore from './store';
 
