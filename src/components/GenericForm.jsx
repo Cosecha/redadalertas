@@ -47,10 +47,10 @@ class GenericForm extends Component {
 
   render() {
     const {
-      phoneNumber,
-      zipcode,
-      subscriberFormValid,
-      reporterFormValid,
+      // phoneNumber,
+      // zipcode,
+      // subscriberFormValid,
+      // reporterFormValid,
       isValid
     } = this.state;
 
@@ -93,4 +93,3 @@ class GenericForm extends Component {
 }
 
 export default GenericForm;
-
