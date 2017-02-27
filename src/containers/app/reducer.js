@@ -7,7 +7,6 @@ import {
 export const initialState = {
 	drawerActive: false,
 	sidebarPinned: false,
-	questionNavVisible: false,
 	scrollable: false,
 	dialogActive: false,
 	snackbarActive: false,
