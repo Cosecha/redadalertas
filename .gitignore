@@ -8,6 +8,7 @@
 
 # production
 /build
+/src/build
 
 # misc
 .DS_Store
@@ -53,3 +54,6 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# Jest files
+jest

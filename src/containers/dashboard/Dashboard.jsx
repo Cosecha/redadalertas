@@ -12,7 +12,7 @@ class Dashboard extends Component {
     } = this.props;
 
     return (
-      <div>
+      <div className="dashboard">
         {
           raids.map(raid => (
             <RaidInfo
@@ -38,6 +38,5 @@ function mapDispatchToProps(dispatch) {
     loadRaids,
   });
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
