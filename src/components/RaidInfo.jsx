@@ -1,13 +1,13 @@
 import React from 'react';
 
-const RaidInfo = ({raid, verifyRaid}) => {
+const RaidInfo = (props) => {
   const {
     type,
     time,
     location,
     description,
     verified
-  } = raid;
+  } = props.raid;
 
   return (
     <div className="raidInfo">
