@@ -19,8 +19,8 @@ class Routes extends Component {
     return (
       <Provider store={store}>
         <Router history={history}>
-          <Route path='/' component={LandingComponents.Landing} />
           <Route component={AppComponents.App}>
+            <Route path='/' component={LandingComponents.Landing} />
             <Route path='/signup' component={SignupComponents.Signup} />
             <Route path='/signup/confirm' component={SignupComponents.Confirm} />
             <Route path='/signup/success' component={SignupComponents.Success} />
