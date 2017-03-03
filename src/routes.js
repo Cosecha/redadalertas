@@ -11,7 +11,8 @@ import { components as SignupComponents } from './containers/signup';
 import { components as DashboardComponents } from './containers/dashboard';
 import { components as ReportComponents } from './containers/report';
 
-const store = configureStore(browserHistory);
+const initialState = window.INITIAL_STATE;
+const store = configureStore(browserHistory, initialState);
 const history = syncHistoryWithStore(browserHistory, store);
 
 class Routes extends Component {
