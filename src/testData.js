@@ -1,4 +1,4 @@
-export const TEST_RAIDS = [
+const TEST_RAIDS = [
   {
     id: '1',
     time: '10:13AM 2/23/2017',
@@ -27,3 +27,11 @@ export const TEST_RAIDS = [
     verified: true
   }
 ];
+
+const testState = {
+  dashboard: {
+    raids: TEST_RAIDS
+  }
+}
+
+export default testState;
