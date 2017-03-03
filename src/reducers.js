@@ -1,14 +1,14 @@
 import { combineReducers }  from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import app from './containers/app/reducer';
-import dashboard from './containers/dashboard/reducer';
+import { reducer as appReducer } from './containers/app';
+import { reducer as dashboardReducer } from './containers/dashboard';
 
 const rootReducer = combineReducers(
   {
     routing: routerReducer,
-    app: app,
-    dashboard: dashboard
+    app: appReducer,
+    dashboard: dashboardReducer
   }
 );
 

@@ -16,7 +16,7 @@ export const initialState = {
 	dialogTitle: ''
 };
 
-export default function app(state = initialState, action) {
+export default function reducer(state = initialState, action) {
 	switch (action.type) {
 		case TOGGLE_DRAWER_ACTIVE:
 			return {
