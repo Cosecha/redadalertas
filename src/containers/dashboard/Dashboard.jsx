@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { loadRaids } from './actions';
 import RaidInfo from '../../components/RaidInfo';
 
 class Dashboard extends Component {
@@ -29,14 +27,12 @@ class Dashboard extends Component {
 
 function mapStateToProps(state) {
   return {
-    raids: state.dashboard.raids,
+    raids: state.dashboard.raids
   };
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    loadRaids,
-  });
+  return { dispatch };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
