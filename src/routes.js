@@ -3,7 +3,7 @@ import { Router, Route, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 
-import testState from './testData';
+// import testState from './testData';
 import configureStore from './store';
 
 import { components as AppComponents } from './containers/app';
@@ -15,8 +15,8 @@ import { components as ReportComponents } from './containers/report';
 // const initialState = window.INITIAL_STATE;
 // TODO: replace testState with this once Redux store is being rendered server-side
 
-const initialState = testState;
-const store = configureStore(browserHistory, initialState);
+// const initialState = testState;
+const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 
 class Routes extends Component {

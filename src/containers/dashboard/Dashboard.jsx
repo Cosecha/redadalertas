@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import RaidInfo from '../../components/RaidInfo';
+import { fetchRaidData } from './actions';
 
 class Dashboard extends Component {
+
+  componentWillMount() {
+    this.props.fetchRaidData();
+  }
 
   render() {
     const {
@@ -14,7 +20,7 @@ class Dashboard extends Component {
         {
           raids.map(raid => (
             <RaidInfo
-              key={raid.id}
+              key={raid._id}
               raid={raid}
               verifyRaid={this.props.verifyRaid}
             />
@@ -32,7 +38,9 @@ function mapStateToProps(state) {
 };
 
 function mapDispatchToProps(dispatch) {
-  return { dispatch };
+  return bindActionCreators({
+    fetchRaidData,
+  }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
