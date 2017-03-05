@@ -33,7 +33,7 @@ class Dashboard extends Component {
 
 function mapStateToProps(state) {
   return {
-    raids: state.dashboard.raids
+    raids: state.raids
   };
 };
 
