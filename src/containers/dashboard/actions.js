@@ -33,9 +33,7 @@ export function updateRaid(raid) {
 
 export const FETCH_RAID_DATA = 'FETCH_RAID_DATA';
 export function fetchRaidData() {
-  return (dispatch, getState) => {
-    dispatch({
-      type: FETCH_RAID_DATA,
-    });
+  return {
+    type: FETCH_RAID_DATA,
   };
 }

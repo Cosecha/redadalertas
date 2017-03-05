@@ -7,7 +7,7 @@ import { fetchRaidData } from './actions';
 class Dashboard extends Component {
 
   componentWillMount() {
-    this.props.dispatch(fetchRaidData);
+    this.props.dispatch(fetchRaidData());
   }
 
   render() {
