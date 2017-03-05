@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+// import { bindActionCreators } from 'redux';
 import RaidInfo from '../../components/RaidInfo';
 import { fetchRaidData } from './actions';
 
 class Dashboard extends Component {
 
   componentWillMount() {
-    this.props.fetchRaidData();
+    this.props.dispatch(fetchRaidData);
   }
 
   render() {
@@ -38,9 +38,7 @@ function mapStateToProps(state) {
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    fetchRaidData,
-  }, dispatch);
+  return { dispatch };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

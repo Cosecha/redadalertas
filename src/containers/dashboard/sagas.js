@@ -13,6 +13,8 @@ export function* watchLoadRaids() {
 }
 
 export function* loadRaidSaga() {
+  // When routes are authenticated, we might have to pull an access_token
+  // from localStorage here to pass it in the header.
   const callServerForRaids = () => {
     return axios.get(`http://localhost:8000/api/raids`);
   }
