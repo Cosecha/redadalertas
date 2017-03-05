@@ -6,13 +6,9 @@ export const UPDATE_RAID = 'UPDATE_RAID';
 // use commented out code once api endpoints are hooked up
 
 export function loadRaids(raids) {
-  // axios.get(`/api/raids`)
-  //   .then(resp => dispatch(receiveRaids(resp.data)));
-  return (dispatch, getState)=> {
-    dispatch({
-      type: LOAD_RAIDS,
-      payload: raids
-    })
+  return {
+    type: LOAD_RAIDS,
+    payload: raids
   };
 };
 
@@ -32,5 +28,12 @@ export function updateRaid(raid) {
       type: UPDATE_RAID,
       payload: raid
     })
+  };
+}
+
+export const FETCH_RAID_DATA = 'FETCH_RAID_DATA';
+export function fetchRaidData() {
+  return {
+    type: FETCH_RAID_DATA,
   };
 }

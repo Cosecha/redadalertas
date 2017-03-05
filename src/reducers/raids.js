@@ -1,9 +1,10 @@
-import { LOAD_RAIDS, RECEIVE_RAIDS, UPDATE_RAID } from './actions';
+import { LOAD_RAIDS, RECEIVE_RAIDS, UPDATE_RAID } from '../containers/dashboard/actions';
 
 // const swap = (raids, updatedRaid) =>
 //   raids.map(raid => raid.id === updatedRaid.id ? updatedRaid : raid);
+const initialState = [];
 
-export default function reducer(state = [], action) {
+const raidsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_RAIDS:
       return action.payload;
@@ -16,3 +17,5 @@ export default function reducer(state = [], action) {
       return state;
   }
 };
+
+export default raidsReducer;
