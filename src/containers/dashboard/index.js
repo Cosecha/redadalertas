@@ -1,8 +1,7 @@
 import Dashboard from './Dashboard';
-import reducer from './reducer';
 
 const components = {
-  Dashboard,
+  Dashboard
 };
 
-export { components, reducer };
+export { components };

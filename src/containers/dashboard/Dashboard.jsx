@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { loadRaids } from './actions';
 import RaidInfo from '../../components/RaidInfo';
+import { fetchRaids } from '../../modules/raids/actions';
 
 class Dashboard extends Component {
 
+  componentWillMount() {
+    this.props.dispatch(fetchRaids());
+  }
+
   render() {
-    const {
-      raids
-    } = this.props;
+    const { raids } = this.props;
 
     return (
       <div className="dashboard">
         {
           raids.map(raid => (
             <RaidInfo
-              key={raid.id}
+              key={raid._id}
               raid={raid}
               verifyRaid={this.props.verifyRaid}
             />
@@ -29,14 +30,12 @@ class Dashboard extends Component {
 
 function mapStateToProps(state) {
   return {
-    raids: state.dashboard.raids,
+    raids: state.raids
   };
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    loadRaids,
-  });
+  return { dispatch };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
