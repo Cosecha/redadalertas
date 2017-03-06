@@ -1,7 +1,5 @@
-import { LOAD_RAIDS, RECEIVE_RAIDS, UPDATE_RAID } from '../containers/dashboard/actions';
+import { LOAD_RAIDS, RECEIVE_RAIDS, UPDATE_RAID } from './actions';
 
-// const swap = (raids, updatedRaid) =>
-//   raids.map(raid => raid.id === updatedRaid.id ? updatedRaid : raid);
 const initialState = [];
 
 const raidsReducer = (state = initialState, action) => {
