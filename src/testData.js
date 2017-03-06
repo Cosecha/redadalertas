@@ -1,7 +1,3 @@
-import {
-  LOAD_RAIDS,
-} from './actions';
-
 const TEST_RAIDS = [
   {
     id: '1',
@@ -32,18 +28,10 @@ const TEST_RAIDS = [
   }
 ];
 
+const testState = {
+  dashboard: {
+    raids: TEST_RAIDS
+  }
+}
 
-const initialState = { raids: TEST_RAIDS, zipcode: '', isUserVerified: false };
-
-export default function app(state = initialState, action) {
-	switch (action.type) {
-		case LOAD_RAIDS:
-			return {
-				...state,
-				raids: action.payload,
-			};
-
-		default:
-			return state;
-	}
-};
+export default testState;

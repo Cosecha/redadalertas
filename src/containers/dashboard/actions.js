@@ -1,40 +1,39 @@
-const TEST_RAIDS = [
-  {
-    id: '1',
-    time: '10:13AM 2/23/2017',
-    location: '11216',
-    type: 'blockade',
-    description: '*description here*',
-    media: 'www.google.com',
-    verified: false
-  },
-    {
-    id: '2',
-    time: '5:13PM 2/21/2017',
-    location: '10003',
-    type: 'work',
-    description: '*description here*',
-    media: 'www.facebook.com',
-    verified: false
-  },
-    {
-    id: '3',
-    time: '7:13AM 2/20/2017',
-    location: '12104',
-    type: 'home',
-    description: '*description here*',
-    media: 'www.twitter.com',
-    verified: true
-  }
-];
-
-
 export const LOAD_RAIDS = 'LOAD_RAIDS';
-export const loadRaids = () => {
-  // axios.get(`/api/raids`)
-  //   .then(resp => dispatch(receiveRaids(resp.data)));
+export const RECEIVE_RAIDS = 'RECEIVE_RAIDS';
+export const UPDATE_RAID = 'UPDATE_RAID';
+
+// TODO: verifyRaid and loadRaids is using test data
+// use commented out code once api endpoints are hooked up
+
+export function loadRaids(raids) {
   return {
     type: LOAD_RAIDS,
-    payload: TEST_RAIDS,
+    payload: raids
   };
 };
+
+export function receiveRaids(raids) {
+  return (dispatch, getState)=> {
+    dispatch({
+      type: RECEIVE_RAIDS,
+      payload: raids
+    })
+  };
+}
+
+
+export function updateRaid(raid) {
+  return (dispatch, getState)=> {
+    dispatch({
+      type: UPDATE_RAID,
+      payload: raid
+    })
+  };
+}
+
+export const FETCH_RAID_DATA = 'FETCH_RAID_DATA';
+export function fetchRaidData() {
+  return {
+    type: FETCH_RAID_DATA,
+  };
+}

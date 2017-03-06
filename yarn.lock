@@ -2577,7 +2577,7 @@ hoek@2.x.x:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
 
-hoist-non-react-statics@^1.0.3, hoist-non-react-statics@^1.2.0:
+hoist-non-react-statics@1.2.0, hoist-non-react-statics@^1.0.3, hoist-non-react-statics@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
 
@@ -2686,7 +2686,7 @@ https-browserify@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-0.0.1.tgz#3f91365cabe60b77ed0ebba24b454e3e09d95a82"
 
-i18next@^7.1.0:
+i18next@^7.1.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/i18next/-/i18next-7.1.1.tgz#42503f78461650ca4927d08f9719a1c9e42f6887"
 
@@ -4635,6 +4635,12 @@ react-dom@^15.4.2:
     fbjs "^0.8.1"
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
+
+react-i18next@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-2.2.0.tgz#a8779e55778bd2e891649d8b2e6dd38787367ee0"
+  dependencies:
+    hoist-non-react-statics "1.2.0"
 
 react-redux@^5.0.3:
   version "5.0.3"

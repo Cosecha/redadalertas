@@ -1,8 +1,8 @@
 import Dashboard from './Dashboard';
-import reducer from './reducer';
+import * as sagas from './sagas';
 
 const components = {
-  Dashboard,
+  Dashboard
 };
 
-export { components, reducer };
+export { components, sagas };
