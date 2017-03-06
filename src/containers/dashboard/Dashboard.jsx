@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
 import RaidInfo from '../../components/RaidInfo';
-import { fetchRaidData } from './actions';
+import { fetchRaids } from '../../modules/raids/actions';
 
 class Dashboard extends Component {
 
   componentWillMount() {
-    this.props.dispatch(fetchRaidData());
+    this.props.dispatch(fetchRaids());
   }
 
   render() {
-    const {
-      raids
-    } = this.props;
+    const { raids } = this.props;
 
     return (
       <div className="dashboard">

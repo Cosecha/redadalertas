@@ -1,9 +1,9 @@
 import { fork } from 'redux-saga/effects';
-import { sagas as dashboardSagas } from './containers/dashboard';
+import * as raidSagas from './modules/raids/sagas';
 
 export default function* rootSaga() {
   yield [
-    fork(dashboardSagas.watchLoadRaids),
+    fork(raidSagas.watchLoadRaids),
     // fork(authSagas.watchLoginSuccess),
     // fork(authSagas.watchLoginFailure),
     // fork(authSagas.watchLogout),
