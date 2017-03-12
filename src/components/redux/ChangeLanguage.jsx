@@ -16,7 +16,6 @@ class ChangeLanguage extends Component {
 
   render() {
     const { currentLang } = this.props;
-    console.log('currentLang', currentLang);
 
     const spanishButton = (currentLang === 'es') ? '' : (
       <button onClick={this.setSpanish.bind(this)}>Español</button>
