@@ -2,22 +2,19 @@ import React, { Component } from 'react';
 import { Link }             from 'react-router';
 import { connect }          from 'react-redux';
 
-import ChangeLanguage from '../../components/redux/ChangeLanguage';
-
 class Landing extends Component {
   render() {
     const t = this.context.t;
 
     return (
       <div>
-        <h1>Landing</h1>
+        <h1>{t('Landing')}</h1>
         <ul>
           <li><Link to="/signup">{t('Create account')}</Link></li>
           <li><Link to="/signup/verifier">{t('Sign up to be a verifier')}</Link></li>
           <li><Link to="/dashboard">{t('See list of raids')}</Link></li>
           <li><Link to="/report">{t('Report a raid')}</Link></li>
         </ul>
-        <ChangeLanguage />
       </div>
     );
   }
