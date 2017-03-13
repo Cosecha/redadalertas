@@ -8,6 +8,7 @@ class Footer extends Component {
     return (
       <div>
         <ChangeLanguage />
+        <br /><Link to={'/'} >Home</Link>
       </div>
     )
   }
