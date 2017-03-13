@@ -1,16 +1,16 @@
-const locales = ['en', 'es', 'fr'];
+const languages = ['en', 'es', 'fr'];
 
 let translations = {};
 
-function getTranslations(locale, directory, file) {
-  return require('./translations/' + locale + '/' + directory + '/' + file)[file];
+function getTranslations(language, directory, file) {
+  return require('./translations/' + language + '/' + directory + '/' + file)[file];
 }
 
-locales.forEach(locale => {
-  translations[locale] = {
-    ...getTranslations(locale, 'containers', 'app'),
-    ...getTranslations(locale, 'containers', 'dashboard'),
-    ...getTranslations(locale, 'containers', 'landing')
+languages.forEach(language => {
+  translations[language] = {
+    ...getTranslations(language, 'containers', 'app'),
+    ...getTranslations(language, 'containers', 'dashboard'),
+    ...getTranslations(language, 'containers', 'landing')
   };
 });
 
