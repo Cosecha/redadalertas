@@ -1,9 +1,17 @@
-import { translations as en } from './translations/en/index';
-import { translations as es } from './translations/es/index';
-import { translations as fr } from './translations/fr/index';
+const languages = ['en', 'es', 'fr'];
 
-export const translations = {
-  'en': en,
-  'es': es,
-  'fr': fr
+let translations = {};
+
+function getTranslations(language, directory, file) {
+  return require('./translations/' + language + '/' + directory + '/' + file)[file];
 }
+
+languages.forEach(language => {
+  translations[language] = {
+    ...getTranslations(language, 'containers', 'app'),
+    ...getTranslations(language, 'containers', 'dashboard'),
+    ...getTranslations(language, 'containers', 'landing')
+  };
+});
+
+export { translations };

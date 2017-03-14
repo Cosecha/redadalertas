@@ -1,3 +1,4 @@
 export const app = {
-  hello: 'hola'
+  hello: 'hola',
+  'Home': 'Página principal'
 };

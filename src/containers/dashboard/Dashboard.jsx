@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setLanguage } from 'redux-i18n';
 
 import RaidInfo from '../../components/RaidInfo';
 import { fetchRaids } from '../../modules/raids/actions';
@@ -9,7 +8,6 @@ class Dashboard extends Component {
 
   componentWillMount() {
     this.props.dispatch(fetchRaids());
-    this.props.dispatch(setLanguage("en"));
   }
 
   render() {
