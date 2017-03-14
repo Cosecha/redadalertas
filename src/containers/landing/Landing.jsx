@@ -1,20 +1,35 @@
 import React, { Component } from 'react';
 import { Link }             from 'react-router';
+import { connect }          from 'react-redux';
 
 class Landing extends Component {
   render() {
+    const t = this.context.t;
+
     return (
       <div>
-        <h1>Landing</h1>
+        <h1>{t('Landing')}</h1>
         <ul>
-          <li><Link to="/signup">Create account</Link></li>
-          <li><Link to="/signup/verifier">Sign up to be a verifier</Link></li>
-          <li><Link to="/dashboard">See list of raids</Link></li>
-          <li><Link to="/report">Report a raid</Link></li>
+          <li><Link to="/signup">{t('Create account')}</Link></li>
+          <li><Link to="/signup/verifier">{t('Sign up to be a verifier')}</Link></li>
+          <li><Link to="/dashboard">{t('See list of raids')}</Link></li>
+          <li><Link to="/report">{t('Report a raid')}</Link></li>
         </ul>
       </div>
     );
   }
 }
 
-export default Landing;
+Landing.contextTypes = {
+  t: React.PropTypes.func.isRequired
+}
+
+function mapStateToProps(state) {
+  return { state };
+};
+
+function mapDispatchToProps(dispatch) {
+  return { dispatch };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Landing);
