@@ -16,8 +16,7 @@ export function* loadRaidSaga() {
     console.log('Fetch successful!');
     console.log(raids.data);
     yield put(loadRaids(raids.data));
-  }
-  catch (error) {
-    console.log(error)
+  } catch (error) {
+    console.log(error);
   }
 }

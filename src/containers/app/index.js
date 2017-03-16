@@ -1,7 +1,6 @@
 import App from './App.jsx';
 import Header from './Header.jsx';
 import Footer from './Footer.jsx';
-import reducer from './reducer';
 
 const components = {
   App,
@@ -9,4 +8,4 @@ const components = {
   Footer
 };
 
-export { components, reducer };
+export { components };

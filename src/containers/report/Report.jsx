@@ -7,7 +7,7 @@ const FIELDS = {
     type: 'text',
     label: 'Date',
     errorMessage: 'Not a valid date!',
-    validator: number => number.length === 10
+    validator: date => Date.parse(date)
   },
   location: {
     type: 'text',
