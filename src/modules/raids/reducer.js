@@ -2,7 +2,7 @@ import { LOAD_RAIDS, RECEIVE_RAIDS, UPDATE_RAID } from './actions';
 
 const initialState = [];
 
-const raidsReducer = (state = initialState, action) => {
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_RAIDS:
       return action.payload;
@@ -14,6 +14,4 @@ const raidsReducer = (state = initialState, action) => {
     default:
       return state;
   }
-};
-
-export default raidsReducer;
+}
