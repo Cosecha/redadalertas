@@ -16,7 +16,7 @@ export const initialState = {
   dialogTitle: ''
 };
 
-export default function reducer(state = initialState, action) {
+export const reducer = (state = initialState, action)=> {
   switch (action.type) {
     case TOGGLE_DRAWER_ACTIVE:
       return {
@@ -35,7 +35,7 @@ export default function reducer(state = initialState, action) {
         snackbarActive: false,
         snackbarMessage: ''
       };
-  default:
-    return state;
+    default:
+      return state;
   }
 }
