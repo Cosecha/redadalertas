@@ -2,7 +2,7 @@ import { LOAD_REPORT, RECEIVE_REPORTS, UPDATE_REPORT } from './actions';
 
 const initialState = [];
 
-export default function reducer(state = initialState, action) {
+export const reducer = (state = initialState, action)=> {
   switch (action.type) {
     case LOAD_REPORT:
       return action.payload;
