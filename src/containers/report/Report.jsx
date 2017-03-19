@@ -14,26 +14,26 @@ class Report extends Component {
     const FIELDS = {
       date: {
         type: 'text',
-        label: 'Date',
-        errorMessage: 'Not a valid date!',
+        label: t('date'),
+        errorMessage: t('Not a valid date.'),
         validator: date => Date.parse(date)
       },
       location: {
         type: 'text',
-        label: 'Location',
-        errorMessage: 'Not a valid location!',
+        label: t('location'),
+        errorMessage: t('Not a valid location.'),
         validator: number => number.length === 5
       },
       type: {
         type: 'select',
-        label: 'Type',
-        errorMessage: 'Pick a type!',
+        label: t('type'),
+        errorMessage: t('Please pick a type.'),
         options: ['home', 'work', 'checkpoint'],
         validator: number => number.length === 5
       },
       description: {
         type: 'textarea',
-        label: 'Description',
+        label: t('description'),
         errorMessage: '',
         validator: () => {}
       }
@@ -44,7 +44,7 @@ class Report extends Component {
         <h1>{t('Make a report')}</h1>
         <GenericForm
           fieldSchema={FIELDS}
-          buttonName={t('Submit')} />
+          buttonName={t('submit')} />
       </div>
     );
   }
