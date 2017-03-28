@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
-import ChangeLanguage from '../../components/redux/ChangeLanguage';
+import ChangeLanguage from './ChangeLanguage';
 
 class Footer extends Component {
   render()  {

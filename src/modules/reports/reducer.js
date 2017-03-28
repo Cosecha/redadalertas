@@ -1,19 +1,17 @@
-import { LOAD_RAIDS, RECEIVE_RAIDS, UPDATE_RAID } from './actions';
+import { LOAD_REPORT, RECEIVE_REPORTS, UPDATE_REPORT } from './actions';
 
 const initialState = [];
 
-const raidsReducer = (state = initialState, action) => {
+export const reducer = (state = initialState, action)=> {
   switch (action.type) {
-    case LOAD_RAIDS:
+    case LOAD_REPORT:
       return action.payload;
-    case RECEIVE_RAIDS:
+    case RECEIVE_REPORTS:
       return action.payload;
-    case UPDATE_RAID:
+    case UPDATE_REPORT:
       state = state.map(raid => raid.id === action.payload.id ? action.payload : raid);
       return state;
     default:
       return state;
   }
-};
-
-export default raidsReducer;
+}

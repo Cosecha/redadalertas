@@ -10,7 +10,8 @@ languages.forEach(language => {
   translations[language] = {
     ...getTranslations(language, 'containers', 'app'),
     ...getTranslations(language, 'containers', 'dashboard'),
-    ...getTranslations(language, 'containers', 'landing')
+    ...getTranslations(language, 'containers', 'landing'),
+    ...getTranslations(language, 'containers', 'report')
   };
 });
 

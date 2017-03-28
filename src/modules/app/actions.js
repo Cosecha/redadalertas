@@ -8,14 +8,14 @@ export function toggleDrawerActive() {
   };
 };
 
-export const showSnackbar = (message) => {
+export function showSnackbar(message) {
   return {
     type: SHOW_SNACKBAR,
     payload: message
   };
 };
 
-export const closeSnackbar = () => {
+export function closeSnackbar() {
   return {
     type: CLOSE_SNACKBAR
   };
