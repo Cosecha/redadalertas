@@ -12,9 +12,6 @@ export const loginSuccess = (data) => {
   return {
     type: LOGIN_SUCCESS,
     sessionToken: data.sessionToken,
-    userId: data.userId,
-    accessLevel: data.accessLevel,
-    profile: data.profile,
   };
 }
 

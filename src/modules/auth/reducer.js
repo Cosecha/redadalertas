@@ -10,9 +10,6 @@ import { getStoredAuthData } from '../../helpers';
 export const initialState = {
   isLoggingIn: false,
   sessionToken: null,
-  accessLevel: null,
-  profile: null,
-  userId: null,
   error: null
 };
 
@@ -34,9 +31,6 @@ export const reducer = (state = initializeState(), action) => {
         ...state,
         isLoggingIn: false,
         sessionToken: action.sessionToken,
-        userId: action.userId,
-        accessLevel: action.accessLevel,
-        profile: action.profile,
         error: null,
       };
 

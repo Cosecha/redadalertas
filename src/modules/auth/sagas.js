@@ -27,9 +27,9 @@ export function* watchLoginRequest() {
 
 export function* watchLoginSuccess() {
   while (true) {
-    const { sessionToken, userId, profile, accessLevel } = yield take(LOGIN_SUCCESS);
-    setStoredAuthData(sessionToken, userId, profile, accessLevel );
-    yield call(loginSuccessSaga, accessLevel);
+    const { sessionToken } = yield take(LOGIN_SUCCESS);
+    setStoredAuthData(sessionToken);
+    yield call(loginSuccessSaga);
   }
 };
 
@@ -68,10 +68,10 @@ export function* loginRequestSaga(email, password) {
   }
 };
 
-export function* loginSuccessSaga(accessLevel) {
-  console.log(`accessLevel: ${accessLevel}`);
+export function* loginSuccessSaga() {
+
   const isSuperAdmin = () => new Promise((resolve, reject) => {
-    if (accessLevel === 3) {
+    if (true) {
       resolve(true);
     }
     else {
