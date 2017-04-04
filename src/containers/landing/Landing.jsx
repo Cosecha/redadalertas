@@ -9,12 +9,7 @@ class Landing extends Component {
     return (
       <div>
         <h1>{t('Landing')}</h1>
-        <ul>
-          <li><Link to="/signup">{t('Create account')}</Link></li>
-          <li><Link to="/signup/verifier">{t('Sign up to be a verifier')}</Link></li>
-          <li><Link to="/dashboard">{t('See list of raids')}</Link></li>
-          <li><Link to="/report">{t('Report a raid')}</Link></li>
-        </ul>
+        <Link to="/login">{t('Sign In')}</Link>
       </div>
     );
   }
