@@ -11,8 +11,14 @@ class SignIn extends Component {
   render() {
     return (
       <div className="sign-in" >
-        <h1>Sign In</h1>
-        <SignInForm onSubmit={this.onSubmit.bind(this)}/>
+        <div className="landing-page">
+          <div className="overlay">
+            <div className="content">
+              <h1>Sign In</h1>
+              <SignInForm onSubmit={this.onSubmit.bind(this)}/>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
