@@ -1,31 +1,51 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import GenericForm from '../../components/GenericForm';
 
-// TODO: edit validators to validate appropriately
-const FIELDS = {
-  phoneNumber: {
-    type: 'text',
-    label: 'phone number',
-    errorMessage: 'Not a valid phone number!',
-    validator: number => number.length === 10
-  },
-  zipcode: {
-    type: 'text',
-    label: 'zipcode',
-    errorMessage: 'Not a valid zipcode!',
-    validator: number => number.length === 5
+
+class Signup extends Component {
+
+  // TODO: add saga that makes new subscriber api call to database
+  handleSubmit() {
+    console.log('Signup handleSubmit');
   }
+
+  render() {
+    // TODO: edit validators to validate appropriately
+    const FIELDS = {
+      phoneNumber: {
+        type: 'text',
+        label: 'phone number',
+        errorMessage: 'Not a valid phone number!',
+        validator: number => number.length === 10
+      },
+      zipcode: {
+        type: 'text',
+        label: 'zipcode',
+        errorMessage: 'Not a valid zipcode!',
+        validator: number => number.length === 5
+      }
+    };
+
+    return (
+      <div className='signup'>
+        <h1>Subscribe here for alerts</h1>
+        <GenericForm handleSubmit={this.handleSubmit.bind(this)}
+          fieldSchema={FIELDS}
+          buttonName="Subscribe"
+        />
+      </div>
+    );
+  }
+
+}
+
+function mapStateToProps(state) {
+  return { };
 };
 
-// TODO: add handleSubmit to GenericForm to make api call to database
-const Signup = () => (
-  <div>
-    <h1> Subscribe here for alerts </h1>
-    <GenericForm
-      fieldSchema={FIELDS}
-      buttonName="Subscribe"
-    />
-  </div>
-);
+function mapDispatchToProps(dispatch) {
+  return { dispatch };
+};
 
-export default Signup;
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);
