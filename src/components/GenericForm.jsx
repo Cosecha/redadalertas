@@ -7,7 +7,7 @@ class GenericForm extends Component {
     super(props);
 
     const fieldnames = Object.keys(props.fieldSchema || {});
-    const initialstate = {isValid: false};
+    const initialstate = { isValid: false };
     fieldnames.forEach(field => {
       initialstate[field] = {
         name: '',
@@ -20,6 +20,20 @@ class GenericForm extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  checkAllValid() {
+    const fieldnames = Object.keys(this.props.fieldSchema || {});
+    const allValid = fieldnames.filter(name => { return !this.state[name].isValid });
+    if (allValid.length === 0) {
+      if (!this.state.isValid) this.setState({ isValid: true });
+    } else {
+      if (this.state.isValid) this.setState({ isValid: false });
+    }
+  }
+
+  componentDidUpdate(oldProps, oldState) {
+    if (this.state !== oldState) this.checkAllValid();
   }
 
   handleChange(e){
@@ -37,20 +51,16 @@ class GenericForm extends Component {
         isDirty: {$set: true}
       }
     });
-
     this.setState(newState);
   }
 
-  handleSubmit() {
-    console.log('submitting', this.state);
+  handleSubmit(e) {
+    e.preventDefault();
+    this.props.handleSubmit(this.state);
   }
 
   render() {
     const {
-      // phoneNumber,
-      // zipcode,
-      // subscriberFormValid,
-      // reporterFormValid,
       isValid
     } = this.state;
 
@@ -79,7 +89,7 @@ class GenericForm extends Component {
 
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form className="genericForm" onSubmit={this.handleSubmit.bind(this)}>
           {inputs}
           <button
             type="submit"
