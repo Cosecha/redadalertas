@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import GenericForm from '../../components/GenericForm';
-
+import { createSubscriber } from '../../modules/subscribers/actions';
 
 class Signup extends Component {
 
   // TODO: add saga that makes new subscriber api call to database
-  handleSubmit() {
-    console.log('Signup handleSubmit');
+  handleSubmit(formState) {
+    if (formState.isValid) {
+      const phone = formState.phoneNumber.value;
+      const zip = formState.zipCode.value;
+      this.props.dispatch(createSubscriber(phone, zip));
+    }
   }
 
   render() {
@@ -19,7 +23,7 @@ class Signup extends Component {
         errorMessage: 'Not a valid phone number!',
         validator: number => number.length === 10
       },
-      zipcode: {
+      zipCode: {
         type: 'text',
         label: 'zipcode',
         errorMessage: 'Not a valid zipcode!',

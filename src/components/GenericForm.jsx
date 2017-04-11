@@ -56,7 +56,7 @@ class GenericForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.handleSubmit();
+    this.props.handleSubmit(this.state);
   }
 
   render() {
