@@ -6,10 +6,6 @@ A tool that will provide *real-time*, *verified* alerts to people about immigrat
 
 This repo will serve as the front end, in the form of a web application. It can be considered a proof-of-concept for a mobile app. We will be using [React.js](https://facebook.github.io/react/) and the [React Toolbox](http://react-toolbox.com/#/) Library.
 
-Right now, the plan is to use this to create a packaged-up HTML app wrapper in mobile apps for iOS and Android.
-
-If you are mobile developer, or (even better) a React Native developer, we could use your help.
-
 If you are interested in helping build out the API, go to [https://github.com/Cosecha/redadalertas-api](https://github.com/Cosecha/redadalertas-api).
 
 ## How to join the project
