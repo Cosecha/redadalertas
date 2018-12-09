@@ -1,12 +1,7 @@
 // Vendor
 import React, { Component } from "react";
-import Icon from "react-native-vector-icons/Ionicons";
-import { Text, StyleSheet, View } from "react-native";
-import {
-  createBottomTabNavigator,
-  createStackNavigator,
-  createAppContainer
-} from "react-navigation";
+import { AsyncStorage, Text, StyleSheet, View } from "react-native";
+import { createBottomTabNavigator, createAppContainer } from "react-navigation";
 
 // Redadalertas
 import Events from "navigation/tabs/Events";
@@ -16,21 +11,10 @@ import { colors } from "styles";
 import { TabIcon } from "navigation/utils";
 import TabBarIcon from "ui/TabBarIcon";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  }
-});
 const persistenceKey = __DEV__ ? "NavigationState" : null;
-
-export default class App extends Component {
-  state = { isReporter: true };
-
+export default class TabsNavigator extends Component {
   render() {
-    const { isReporter } = this.state;
+    const { isReporter } = this.props;
     const tabs = isReporter
       ? {
           Events,
@@ -51,6 +35,6 @@ export default class App extends Component {
     });
     const AppContainer = createAppContainer(AppNavigator);
 
-    return <AppContainer persistenceKey={null} />;
+    return <AppContainer persistenceKey={persistenceKey} />;
   }
 }
