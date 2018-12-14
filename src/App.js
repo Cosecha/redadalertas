@@ -51,6 +51,6 @@ export default class App extends Component {
     });
     const AppContainer = createAppContainer(AppNavigator);
 
-    return <AppContainer persistenceKey={null} />;
+    return <AppContainer persistenceKey={persistenceKey} />;
   }
 }
