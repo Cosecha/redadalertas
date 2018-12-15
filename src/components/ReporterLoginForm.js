@@ -3,12 +3,7 @@ import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 
 // Vendor
-import {
-  Button,
-  FormLabel,
-  FormInput,
-  FormValidationMessage
-} from "react-native-elements";
+import { Button, Text } from "native-base";
 
 const styles = StyleSheet.create({
   container: {
@@ -25,14 +20,9 @@ export default class ReporterLoginForm extends Component {
 
     return (
       <View style={styles.container}>
-        <FormLabel>EMAIL</FormLabel>
-        <FormInput onChangeText={() => {}} />
-        <FormLabel>PASSWORD</FormLabel>
-        <FormInput onChangeText={() => {}} />
-        <Button
-          onPress={() => navigation.navigate("ReportForm")}
-          title="Sign In"
-        />
+        <Button onPress={() => navigation.navigate("ReportForm")}>
+          <Text>Sign In</Text>
+        </Button>
       </View>
     );
   }
