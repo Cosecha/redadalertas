@@ -85,14 +85,14 @@ export default class ReportForm extends Component {
                   />
                 </Item>
                 <Item fixedLabel style={{ marginTop: 15 }}>
-                  <Label>Delete on Expire?</Label>
+                  <Label style={{ marginBottom: 15 }}>Delete on Expire?</Label>
                   <CheckBox
                     checked={props.values.expire.deleteOnExpire}
                     onPress={props.setFieldValue(
                       "expire.deleteOnExpire",
                       !props.values.expire.deleteOnExpire
                     )}
-                    style={{ marginRight: 25, marginBottom: 2 }}
+                    style={{ marginRight: 25, marginBottom: 15 }}
                   />
                 </Item>
               </Form>
