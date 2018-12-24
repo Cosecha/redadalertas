@@ -12,5 +12,15 @@
   ],
   "rules": {
     "react-native/no-raw-text": 0
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {
+        "alias": {
+          "ui": "./src/components/ui"
+        },
+        "root": ["./src"]
+      }
+    }
   }
 }
