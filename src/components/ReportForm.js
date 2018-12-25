@@ -5,6 +5,7 @@ import { StyleSheet, View } from "react-native";
 // Vendor
 import {
   Body,
+  Button,
   CheckBox,
   Container,
   Content,
@@ -14,33 +15,36 @@ import {
   Item,
   Input,
   Label,
-  Left,
   Picker,
-  Right,
-  Textarea,
+  Text,
   Title
 } from "native-base";
 import { Formik } from "formik";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#F5FCFF"
-  }
-});
-
-const types = [{ label: "Sweep", value: "sweep" }];
+const types = [
+  { label: "Checkpoint", value: "checkpoint" },
+  { label: "Sweep", value: "sweep" }
+];
 
 export default class ReportForm extends Component {
+  onSubmit = values => {
+    console.log(values);
+  };
+
   render() {
     const { navigation } = this.props;
     const initialValues = {
       expire: {
         deleteOnExpire: true
       },
-      description: "test",
+      description: "",
+      location: {
+        address: "",
+        geo: {
+          latitude: "",
+          longitude: ""
+        }
+      },
       type: types[0].value
     };
 
@@ -49,16 +53,14 @@ export default class ReportForm extends Component {
         {props => (
           <Container>
             <Header>
-              <Left />
               <Body>
                 <Title>Report Event</Title>
               </Body>
-              <Right />
             </Header>
 
             <Content>
               <Form>
-                <Item style={{ marginLeft: 15 }} fixedLabel picker>
+                <Item style={{ marginLeft: 15 }} fixedLabel>
                   <Label>Type</Label>
                   <Picker
                     mode="dropdown"
@@ -84,6 +86,40 @@ export default class ReportForm extends Component {
                     value={props.values.description}
                   />
                 </Item>
+                <Item>
+                  <Label>Location</Label>
+                  <Input
+                    multiline
+                    editable={false}
+                    value={props.values.location.address}
+                  />
+                  <Button
+                    bordered
+                    onPress={() =>
+                      navigation.navigate("EditLocation", {
+                        setLocation: location => {
+                          const { address, latitude, longitude } = location;
+
+                          props.setFieldValue("location.address", address);
+                          props.setFieldValue(
+                            "location.geo.latitude",
+                            latitude
+                          );
+                          props.setFieldValue(
+                            "location.geo.longitude",
+                            longitude
+                          );
+                        }
+                      })
+                    }
+                    small
+                    style={{ marginTop: 10, marginBottom: 10, marginRight: 10 }}
+                  >
+                    <Text>
+                      {props.values.location.address ? "Edit" : "Add"}
+                    </Text>
+                  </Button>
+                </Item>
                 <Item fixedLabel style={{ marginTop: 15 }}>
                   <Label style={{ marginBottom: 15 }}>Delete on Expire?</Label>
                   <CheckBox
@@ -97,6 +133,10 @@ export default class ReportForm extends Component {
                     style={{ marginRight: 25, marginBottom: 15 }}
                   />
                 </Item>
+
+                <Button onPress={props.handleSubmit}>
+                  <Text>Submit</Text>
+                </Button>
               </Form>
             </Content>
           </Container>

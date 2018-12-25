@@ -11,6 +11,7 @@
     "react-native"
   ],
   "rules": {
+    "react/jsx-filename-extension": 0,
     "react-native/no-raw-text": 0
   },
   "settings": {
