@@ -9,6 +9,7 @@ import {
   CheckBox,
   Container,
   Content,
+  DatePicker,
   Fab,
   Form,
   Header,
@@ -26,8 +27,13 @@ import { Formik } from "formik";
 import { colors } from "styles";
 
 const types = [
+  { label: "Action", value: "action" },
   { label: "Checkpoint", value: "checkpoint" },
-  { label: "Sweep", value: "sweep" }
+  { label: "I9", value: "i9" },
+  { label: "Other", value: "other" },
+  { label: "Sweep", value: "sweep" },
+  { label: "Targeted", value: "targeted" },
+  { label: "Traffic", value: "traffic" }
 ];
 
 export default class ReportForm extends Component {
@@ -39,6 +45,7 @@ export default class ReportForm extends Component {
     const { navigation } = this.props;
     const initialValues = {
       expire: {
+        at: null,
         deleteOnExpire: true
       },
       description: "",
@@ -49,6 +56,7 @@ export default class ReportForm extends Component {
           longitude: ""
         }
       },
+      present: "",
       type: types[0].value
     };
 
@@ -81,6 +89,14 @@ export default class ReportForm extends Component {
                       />
                     ))}
                   </Picker>
+                </Item>
+                <Item>
+                  <Label>Present Agency</Label>
+                  <Input
+                    onChangeText={props.handleChange("present")}
+                    style={{ paddingTop: 15, paddingBottom: 15 }}
+                    value={props.values.present}
+                  />
                 </Item>
                 <Item>
                   <Label>Description</Label>
@@ -126,6 +142,30 @@ export default class ReportForm extends Component {
                         {props.values.location.address ? "Edit" : "Add"}
                       </Text>
                     </Button>
+                  </View>
+                </Item>
+                <Item>
+                  <View>
+                    <View
+                      style={{
+                        alignItems: "center",
+                        flexDirection: "row"
+                      }}
+                    >
+                      <Label style={{ paddingTop: 15, paddingBottom: 15 }}>
+                        Expires On
+                      </Label>
+                      <DatePicker
+                        animationType="fade"
+                        formatChosenDate={date => date.toString().substr(4, 12)}
+                        onDateChange={date =>
+                          props.setFieldValue("expire.at", date)
+                        }
+                      />
+                    </View>
+                    <Text style={{ color: colors.lightGray }}>
+                      Expires at the end of selected day.
+                    </Text>
                   </View>
                 </Item>
                 <Item fixedLabel style={{ marginTop: 15 }}>
