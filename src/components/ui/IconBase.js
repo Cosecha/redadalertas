@@ -1,5 +1,5 @@
 // Setup
-import React, { Component } from "react";
+import React from "react";
 import { Platform } from "react-native";
 import PropTypes from "prop-types";
 
@@ -17,9 +17,13 @@ const IconBase = ({ color, name, size }) => {
 };
 
 IconBase.propTypes = {
-  color: PropTypes.string,
+  color: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  size: PropTypes.number.isRequired
+  size: PropTypes.number
+};
+
+IconBase.defaultProps = {
+  size: 27
 };
 
 export default IconBase;

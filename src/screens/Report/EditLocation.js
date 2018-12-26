@@ -4,28 +4,20 @@ import { StyleSheet, View } from "react-native";
 
 // Vendor
 import {
-  Body,
   Button,
-  CheckBox,
   Container,
-  Content,
-  Form,
   Header,
   Icon,
   Item,
   Input,
-  Label,
-  Left,
-  Picker,
-  Right,
-  Text,
-  Title
+  Text
 } from "native-base";
 import Geocoder from "react-native-geocoder";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Callout, Marker } from "react-native-maps";
 
 // Redadalertas
 import IconBase from "ui/IconBase";
+import { colors } from "styles";
 
 const styles = StyleSheet.create({
   container: {
@@ -36,6 +28,13 @@ const styles = StyleSheet.create({
   }
 });
 
+const AddLocationCallout = () => (
+  <Button iconRight full transparent>
+    <Text>Add Location</Text>
+    <Icon name="add-circle" />
+  </Button>
+);
+
 class EditLocation extends Component {
   state = { inputValue: "", results: [] };
 
@@ -44,7 +43,7 @@ class EditLocation extends Component {
       const results = await Geocoder.geocodeAddress(address);
       this.setState(
         {
-          results: results.map((result, index) => {
+          results: results.map(result => {
             const { lat, lng } = result.position;
             return {
               address: result.formattedAddress,
@@ -72,7 +71,7 @@ class EditLocation extends Component {
       <Container>
         <Header searchBar rounded>
           <Item>
-            <IconBase name="search" size={20} />
+            <IconBase color="black" name="search" size={20} />
             <Input
               returnKeyType="search"
               onChangeText={address => this.setState({ inputValue: address })}
@@ -89,7 +88,9 @@ class EditLocation extends Component {
         <View style={styles.container}>
           <MapView
             style={styles.map}
-            ref={ref => (this.map = ref)}
+            ref={ref => {
+              this.map = ref;
+            }}
             region={{
               latitude: 37.78825,
               longitude: -122.4324,
@@ -102,8 +103,20 @@ class EditLocation extends Component {
                 coordinate={result.coordinate}
                 identifier={result.identifier}
                 key={result.identifier}
-                title={result.address}
-              />
+              >
+                <Callout
+                  onPress={() => {
+                    setLocation({
+                      address: result.address,
+                      latitude: result.coordinate.latitude,
+                      longitude: result.coordinate.longitude
+                    });
+                    navigation.goBack();
+                  }}
+                >
+                  <AddLocationCallout />
+                </Callout>
+              </Marker>
             ))}
           </MapView>
         </View>

@@ -9,6 +9,7 @@ import {
   CheckBox,
   Container,
   Content,
+  Fab,
   Form,
   Header,
   Icon,
@@ -20,6 +21,9 @@ import {
   Title
 } from "native-base";
 import { Formik } from "formik";
+
+// Redadalertas
+import { colors } from "styles";
 
 const types = [
   { label: "Checkpoint", value: "checkpoint" },
@@ -78,11 +82,12 @@ export default class ReportForm extends Component {
                     ))}
                   </Picker>
                 </Item>
-                <Item floatingLabel>
+                <Item>
                   <Label>Description</Label>
                   <Input
                     multiline
                     onChangeText={props.handleChange("description")}
+                    style={{ paddingTop: 15, paddingBottom: 15 }}
                     value={props.values.description}
                   />
                 </Item>
@@ -91,34 +96,37 @@ export default class ReportForm extends Component {
                   <Input
                     multiline
                     editable={false}
+                    style={{ paddingTop: 15, paddingBottom: 15 }}
                     value={props.values.location.address}
                   />
-                  <Button
-                    bordered
-                    onPress={() =>
-                      navigation.navigate("EditLocation", {
-                        setLocation: location => {
-                          const { address, latitude, longitude } = location;
+                  <View style={{ alignItems: "center" }}>
+                    <Button
+                      bordered
+                      onPress={() =>
+                        navigation.navigate("EditLocation", {
+                          setLocation: location => {
+                            const { address, latitude, longitude } = location;
 
-                          props.setFieldValue("location.address", address);
-                          props.setFieldValue(
-                            "location.geo.latitude",
-                            latitude
-                          );
-                          props.setFieldValue(
-                            "location.geo.longitude",
-                            longitude
-                          );
-                        }
-                      })
-                    }
-                    small
-                    style={{ marginTop: 10, marginBottom: 10, marginRight: 10 }}
-                  >
-                    <Text>
-                      {props.values.location.address ? "Edit" : "Add"}
-                    </Text>
-                  </Button>
+                            props.setFieldValue("location.address", address);
+                            props.setFieldValue(
+                              "location.geo.latitude",
+                              latitude
+                            );
+                            props.setFieldValue(
+                              "location.geo.longitude",
+                              longitude
+                            );
+                          }
+                        })
+                      }
+                      small
+                      style={{ marginRight: 10 }}
+                    >
+                      <Text>
+                        {props.values.location.address ? "Edit" : "Add"}
+                      </Text>
+                    </Button>
+                  </View>
                 </Item>
                 <Item fixedLabel style={{ marginTop: 15 }}>
                   <Label style={{ marginBottom: 15 }}>Delete on Expire?</Label>
@@ -133,12 +141,14 @@ export default class ReportForm extends Component {
                     style={{ marginRight: 25, marginBottom: 15 }}
                   />
                 </Item>
-
-                <Button onPress={props.handleSubmit}>
-                  <Text>Submit</Text>
-                </Button>
               </Form>
             </Content>
+            <Fab
+              style={{ backgroundColor: colors.primary }}
+              onPress={props.handleSubmit}
+            >
+              <Icon name="add" />
+            </Fab>
           </Container>
         )}
       </Formik>
