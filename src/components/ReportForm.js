@@ -51,7 +51,10 @@ export default class ReportForm extends Component {
         at: null,
         deleteOnExpire: true
       },
-      description: "",
+      description: {
+        en: "",
+        es: ""
+      },
       location: {
         address: "",
         geo: {
@@ -108,12 +111,21 @@ export default class ReportForm extends Component {
                   />
                 </Item>
                 <Item>
-                  <Label>Description</Label>
+                  <Label>Description (EN)</Label>
                   <Input
                     multiline
-                    onChangeText={props.handleChange("description")}
+                    onChangeText={props.handleChange("description.en")}
                     style={{ paddingTop: 15, paddingBottom: 15 }}
-                    value={props.values.description}
+                    value={props.values.description.en}
+                  />
+                </Item>
+                <Item>
+                  <Label>Description (ES)</Label>
+                  <Input
+                    multiline
+                    onChangeText={props.handleChange("description.es")}
+                    style={{ paddingTop: 15, paddingBottom: 15 }}
+                    value={props.values.description.es}
                   />
                 </Item>
                 <Item>
