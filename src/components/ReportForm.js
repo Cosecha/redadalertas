@@ -37,12 +37,15 @@ const types = [
 ];
 
 export default class ReportForm extends Component {
+  state = { agencyInputValue: "" };
+
   onSubmit = values => {
     console.log(values);
   };
 
   render() {
     const { navigation } = this.props;
+    const { agencyInputValue } = this.state;
     const initialValues = {
       expire: {
         at: null,
@@ -56,7 +59,7 @@ export default class ReportForm extends Component {
           longitude: ""
         }
       },
-      present: "",
+      present: [],
       type: types[0].value
     };
 
@@ -91,11 +94,17 @@ export default class ReportForm extends Component {
                   </Picker>
                 </Item>
                 <Item>
-                  <Label>Present Agency</Label>
+                  <Label>Present Agencies</Label>
                   <Input
-                    onChangeText={props.handleChange("present")}
+                    onChangeText={value => {
+                      const agencies = value
+                        .split(",")
+                        .map(agency => ({ agency: agency.trim() }));
+                      props.setFieldValue("present", agencies);
+                      this.setState({ agencyInputValue: value });
+                    }}
                     style={{ paddingTop: 15, paddingBottom: 15 }}
-                    value={props.values.present}
+                    value={agencyInputValue}
                   />
                 </Item>
                 <Item>
