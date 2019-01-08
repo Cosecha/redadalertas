@@ -25,6 +25,7 @@ import { Formik } from "formik";
 
 // Redadalertas
 import { colors } from "styles";
+import orgApi from "utils/orgApi";
 
 const types = [
   { label: "Action", value: "action" },
@@ -39,8 +40,23 @@ const types = [
 export default class ReportForm extends Component {
   state = { agencyInputValue: "" };
 
-  onSubmit = values => {
-    console.log(values);
+  onSubmit = async values => {
+    try {
+      console.log(values);
+      const response = await orgApi.post("/event", {
+        description: values.description,
+        type: values.type,
+        present: values.present,
+        location: {
+          latitude: values.location.latitude,
+          longitude: values.location.longitude
+        },
+        expire: values.expire
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   render() {
