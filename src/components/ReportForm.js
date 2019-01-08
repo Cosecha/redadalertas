@@ -57,10 +57,8 @@ export default class ReportForm extends Component {
       },
       location: {
         address: "",
-        geo: {
-          latitude: "",
-          longitude: ""
-        }
+        latitude: "",
+        longitude: ""
       },
       present: [],
       type: types[0].value
@@ -145,12 +143,9 @@ export default class ReportForm extends Component {
                             const { address, latitude, longitude } = location;
 
                             props.setFieldValue("location.address", address);
+                            props.setFieldValue("location.latitude", latitude);
                             props.setFieldValue(
-                              "location.geo.latitude",
-                              latitude
-                            );
-                            props.setFieldValue(
-                              "location.geo.longitude",
+                              "location.longitude",
                               longitude
                             );
                           }
