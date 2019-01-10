@@ -5,6 +5,7 @@ import { createBottomTabNavigator, createAppContainer } from "react-navigation";
 // Redadalertas
 import Events from "navigation/tabs/Events";
 import Report from "navigation/tabs/Report";
+import { Root } from "native-base";
 import Settings from "navigation/tabs/Settings";
 import { colors } from "styles";
 import { TabIcon } from "navigation/utils";
@@ -37,6 +38,10 @@ export default class App extends Component {
     });
     const AppContainer = createAppContainer(AppNavigator);
 
-    return <AppContainer persistenceKey={persistenceKey} />;
+    return (
+      <Root>
+        <AppContainer persistenceKey={persistenceKey} />
+      </Root>
+    );
   }
 }

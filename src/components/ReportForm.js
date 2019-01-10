@@ -19,7 +19,8 @@ import {
   Label,
   Picker,
   Text,
-  Title
+  Title,
+  Toast
 } from "native-base";
 import { Formik } from "formik";
 
@@ -36,36 +37,49 @@ const types = [
   { label: "Targeted", value: "targeted" },
   { label: "Traffic", value: "traffic" }
 ];
+const initialValues = {
+  expire: {
+    at: null,
+    deleteOnExpire: true
+  },
+  description: {
+    en: "",
+    es: ""
+  },
+  location: {},
+  present: [],
+  type: types[0].value
+};
 
 export default class ReportForm extends Component {
   state = { agencyInputValue: "" };
 
-  onSubmit = async values => {
+  onSubmit = async (values, { resetForm }) => {
     try {
-      console.log(values);
-      const response = await orgApi.post("/event", values);
-      console.log(response);
+      await orgApi.post("/event", values);
+      this.clearForm(resetForm);
+      Toast.show({
+        buttonText: "OK",
+        text: "Event submitted!",
+        type: "success"
+      });
     } catch (error) {
-      console.log(error);
+      Toast.show({
+        buttonText: "OK",
+        text: "An error occurred.",
+        type: "danger"
+      });
     }
+  };
+
+  clearForm = resetForm => {
+    resetForm(initialValues);
+    this.setState({ agencyInputValue: "" });
   };
 
   render() {
     const { navigation } = this.props;
     const { agencyInputValue } = this.state;
-    const initialValues = {
-      expire: {
-        at: null,
-        deleteOnExpire: true
-      },
-      description: {
-        en: "",
-        es: ""
-      },
-      location: {},
-      present: [],
-      type: types[0].value
-    };
 
     return (
       <Formik initialValues={initialValues} onSubmit={this.onSubmit}>
