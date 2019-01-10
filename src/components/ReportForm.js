@@ -47,10 +47,7 @@ export default class ReportForm extends Component {
         description: values.description,
         type: values.type,
         present: values.present,
-        location: {
-          latitude: values.location.latitude,
-          longitude: values.location.longitude
-        },
+        location: values.location,
         expire: values.expire
       });
       console.log(response);
@@ -71,11 +68,7 @@ export default class ReportForm extends Component {
         en: "",
         es: ""
       },
-      location: {
-        address: "",
-        latitude: "",
-        longitude: ""
-      },
+      location: {},
       present: [],
       type: types[0].value
     };
@@ -148,23 +141,15 @@ export default class ReportForm extends Component {
                     multiline
                     editable={false}
                     style={{ paddingTop: 15, paddingBottom: 15 }}
-                    value={props.values.location.address}
+                    value={props.values.location.address_1}
                   />
                   <View style={{ alignItems: "center" }}>
                     <Button
                       bordered
                       onPress={() =>
                         navigation.navigate("EditLocation", {
-                          setLocation: location => {
-                            const { address, latitude, longitude } = location;
-
-                            props.setFieldValue("location.address", address);
-                            props.setFieldValue("location.latitude", latitude);
-                            props.setFieldValue(
-                              "location.longitude",
-                              longitude
-                            );
-                          }
+                          setLocation: location =>
+                            props.setFieldValue("location", location)
                         })
                       }
                       small

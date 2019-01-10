@@ -47,9 +47,12 @@ class EditLocation extends Component {
           results: results.map(result => {
             const { lat, lng } = result.position;
             return {
-              address: result.formattedAddress,
+              address_1: result.feature,
+              city: result.locality,
               coordinate: { latitude: lat, longitude: lng },
-              identifier: `{lat}{lng}`
+              identifier: `{lat}{lng}`,
+              state: result.adminArea,
+              zipcode: result.postCode
             };
           })
         },
@@ -107,10 +110,22 @@ class EditLocation extends Component {
               >
                 <Callout
                   onPress={() => {
+                    const {
+                      address_1,
+                      city,
+                      coordinate,
+                      state,
+                      zipcode
+                    } = result;
+                    const { latitude, longitude } = coordinate;
                     setLocation({
-                      address: result.address,
-                      latitude: result.coordinate.latitude,
-                      longitude: result.coordinate.longitude
+                      address_1,
+                      city,
+                      coordinate,
+                      latitude,
+                      longitude,
+                      state,
+                      zipcode
                     });
                     navigation.goBack();
                   }}
