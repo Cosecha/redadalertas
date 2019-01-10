@@ -43,13 +43,7 @@ export default class ReportForm extends Component {
   onSubmit = async values => {
     try {
       console.log(values);
-      const response = await orgApi.post("/event", {
-        description: values.description,
-        type: values.type,
-        present: values.present,
-        location: values.location,
-        expire: values.expire
-      });
+      const response = await orgApi.post("/event", values);
       console.log(response);
     } catch (error) {
       console.log(error);
