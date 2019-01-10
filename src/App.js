@@ -40,7 +40,7 @@ export default class App extends Component {
 
     return (
       <Root>
-        <AppContainer persistenceKey={persistenceKey} />
+        <AppContainer persistenceKey={null} />
       </Root>
     );
   }
