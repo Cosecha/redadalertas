@@ -31,7 +31,7 @@ export default class EventsMap extends Component {
         // setTimeout(this.map.fitToSuppliedMarkers(events.map(event => event.id)), 1000);
       });
     } catch (error) {
-      console.log(error);
+      console.error("Error rendering map: ", error);
       Toast.show({
         buttonText: "OK",
         text: "Error rendering map.",
@@ -41,6 +41,7 @@ export default class EventsMap extends Component {
   }
 
   render() {
+    const { navigation } = this.props;
     const { events } = this.state;
 
     return (
@@ -70,7 +71,11 @@ export default class EventsMap extends Component {
                 identifier={event.id}
                 key={event.id}
               >
-                <Callout>
+                <Callout
+                  onPress={() => {
+                    navigation.navigate("EventPage", { event })
+                  }}
+                >
                   <View>
                     <Text>{event.description || 'Test'}</Text>
                     <Text>{location.address_1}</Text>
