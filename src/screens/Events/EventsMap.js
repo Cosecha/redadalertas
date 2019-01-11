@@ -4,9 +4,10 @@ import { StyleSheet, Text, View } from "react-native";
 
 // Vendor
 import MapView, { Callout, Marker } from "react-native-maps";
-import { Toast } from "native-base";
+import { Toast, Fab, Icon } from "native-base";
 
 // Redadalertas
+import { colors } from "styles";
 import eventServices from "services/event";
 
 const styles = StyleSheet.create({
@@ -23,16 +24,26 @@ export default class EventsMap extends Component {
 
   state = { events: [] };
 
-  componentDidMount() {
-    this.getEvents();
+  async componentDidMount() {
+    await this.getEvents();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state != nextState;
   }
 
   async getEvents() {
     try {
       const response = await eventServices.gets();
+      if (response instanceof Error) throw response;
       this.setState({ events: response.data }, () => {
         const { events } = this.state;
         // setTimeout(this.map.fitToSuppliedMarkers(events.map(event => event.id)), 1000);
+      });
+      Toast.show({
+        buttonText: "OK",
+        text: "Events fetched successfully.",
+        type: "success"
       });
     } catch (error) {
       console.error("Error rendering map: ", error);
@@ -89,6 +100,12 @@ export default class EventsMap extends Component {
             );
           })}
         </MapView>
+        <Fab
+          style={{ backgroundColor: colors.primary }}
+          onPress={async ()=> {await this.getEvents()}}
+        >
+          <Icon name="refresh" />
+        </Fab>
       </View>
     );
   }
