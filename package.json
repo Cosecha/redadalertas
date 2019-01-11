@@ -16,10 +16,12 @@
     "react-native-geocoder": "^0.5.0",
     "react-native-gesture-handler": "^1.0.10",
     "react-native-maps": "^0.22.1",
+    "react-native-screens": "^1.0.0-alpha.21",
     "react-native-vector-icons": "^6.1.0",
     "react-navigation": "^3.0.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.2.2",
     "babel-eslint": "^10.0.1",
     "babel-jest": "23.6.0",
     "babel-plugin-module-resolver": "^3.1.1",
