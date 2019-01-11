@@ -66,7 +66,7 @@ export default class ReportForm extends Component {
     } catch (error) {
       Toast.show({
         buttonText: "OK",
-        text: "An error occurred.",
+        text: "Error submitting report: " + error,
         type: "danger"
       });
     }
