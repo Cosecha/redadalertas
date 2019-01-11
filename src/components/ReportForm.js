@@ -27,6 +27,7 @@ import { Formik } from "formik";
 // Redadalertas
 import { colors } from "styles";
 import eventServices from "services/event";
+import asyncStore from "utils/asyncstorage";
 
 const types = [
   { label: "Action", value: "action" },
@@ -39,7 +40,7 @@ const types = [
 ];
 const initialValues = {
   expire: {
-    at: null,
+    at: new Date(),
     deleteOnExpire: true
   },
   description: {
@@ -56,12 +57,14 @@ export default class ReportForm extends Component {
 
   onSubmit = async (values, { resetForm }) => {
     try {
-      console.log("ReportForm values: ", values);
+      const user = JSON.parse(await asyncStore.retrieve('user'));
       let data = {
         ...values,
-        // user: JSON.parse(localStorage.getItem('user'))
+        "created.by.user": user.credentials.id,
+        user: user
       }
-      await eventServices.post("/event", values);
+      let response = await eventServices.post(data);
+      if (response instanceof Error) throw response;
       this.clearForm(resetForm);
       this.props.navigation.navigate("EventsMap");
       Toast.show({
@@ -188,6 +191,7 @@ export default class ReportForm extends Component {
                       </Label>
                       <DatePicker
                         animationType="fade"
+                        defaultDate={new Date()}
                         formatChosenDate={date => date.toString().substr(4, 12)}
                         onDateChange={date =>
                           props.setFieldValue("expire.at", date)

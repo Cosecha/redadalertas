@@ -41,7 +41,6 @@ class EditLocation extends Component {
   geocode = async address => {
     try {
       const results = await Geocoder.geocodeAddress(address);
-      console.log(results);
       this.setState(
         {
           results: results.map(result => {
@@ -49,10 +48,12 @@ class EditLocation extends Component {
             return {
               address_1: result.feature,
               city: result.locality,
+              latitude: lat,
               coordinate: { latitude: lat, longitude: lng },
+              longitude: lng,
               identifier: `{lat}{lng}`,
               state: result.adminArea,
-              zipcode: result.postCode
+              zipcode: result.postalCode
             };
           })
         },
@@ -121,7 +122,6 @@ class EditLocation extends Component {
                     setLocation({
                       address_1,
                       city,
-                      coordinate,
                       latitude,
                       longitude,
                       state,
