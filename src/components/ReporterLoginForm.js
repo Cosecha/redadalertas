@@ -9,7 +9,7 @@ import {
 import { Formik } from "formik";
 
 // Redadalertas
-import orgApi from "utils/orgApi";
+import authServices from "services/auth";
 
 const styles = StyleSheet.create({
   container: {
@@ -37,7 +37,11 @@ export default class ReporterLoginForm extends Component {
 
   handleSubmit = async ()=> {
     try {
-      await orgApi.put("/auth", this.state);
+      let response = await authServices.login({ ...this.state });
+      if (response instanceof Error) throw response;
+      // store user details and basic auth credentials in local storage
+      // to keep user logged in between page refreshes
+      // localStorage.setItem('user', JSON.stringify(response));
       this.resetForm();
       this.props.navigation.navigate("ReportForm");
       Toast.show({

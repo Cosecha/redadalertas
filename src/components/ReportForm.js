@@ -26,7 +26,7 @@ import { Formik } from "formik";
 
 // Redadalertas
 import { colors } from "styles";
-import orgApi from "utils/orgApi";
+import eventServices from "services/event";
 
 const types = [
   { label: "Action", value: "action" },
@@ -56,8 +56,14 @@ export default class ReportForm extends Component {
 
   onSubmit = async (values, { resetForm }) => {
     try {
-      await orgApi.post("/event", values);
+      console.log("ReportForm values: ", values);
+      let data = {
+        ...values,
+        // user: JSON.parse(localStorage.getItem('user'))
+      }
+      await eventServices.post("/event", values);
       this.clearForm(resetForm);
+      this.props.navigation.navigate("EventsMap");
       Toast.show({
         buttonText: "OK",
         text: "Event submitted!",
