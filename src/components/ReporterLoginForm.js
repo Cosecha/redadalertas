@@ -10,6 +10,7 @@ import { Formik } from "formik";
 
 // Redadalertas
 import authServices from "services/auth";
+import asyncStore from "utils/asyncstorage";
 
 const styles = StyleSheet.create({
   container: {
@@ -41,7 +42,7 @@ export default class ReporterLoginForm extends Component {
       if (response instanceof Error) throw response;
       // store user details and basic auth credentials in local storage
       // to keep user logged in between page refreshes
-      // localStorage.setItem('user', JSON.stringify(response));
+      asyncStore.save("user", JSON.stringify(response));
       this.resetForm();
       this.props.navigation.navigate("ReportForm");
       Toast.show({
