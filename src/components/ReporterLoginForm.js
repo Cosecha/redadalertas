@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native";
 
 // Vendor
 import {
-  Container, Content, Header, Form, Item, Input, Button, Text, Toast
+  Container, Content, Header, Form, Item, Input, Label, Button, Text, Toast
 } from "native-base";
 import { Formik } from "formik";
 
@@ -14,12 +14,13 @@ import orgApi from "utils/orgApi";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: "column",
+    alignItems: "stretch",
     backgroundColor: "#F5FCFF"
   },
   input: {
-    width: "100%"
+    paddingTop: 15,
+    paddingBottom: 15
   }
 });
 
@@ -36,7 +37,6 @@ export default class ReporterLoginForm extends Component {
 
   handleSubmit = async ()=> {
     try {
-      console.log("handleSubmit state: ", this.state);
       await orgApi.put("/auth", this.state);
       this.resetForm();
       this.props.navigation.navigate("ReportForm");
@@ -68,9 +68,10 @@ export default class ReporterLoginForm extends Component {
         <Header />
         <Content>
           <Form>
-            <Item>
+            <Item fixedLabel>
+              <Label>Username</Label>
               <Input
-                placeholder="Username"
+                placeholder="username@mail.com"
                 style={styles.input}
                 value={this.state.username}
                 onChangeText={(username) => this.setState({
@@ -78,16 +79,17 @@ export default class ReporterLoginForm extends Component {
                 })}
               />
             </Item>
-            <Item last>
+            <Item fixedLabel>
+              <Label>Password</Label>
               <Input
-                placeholder="Password"
+                placeholder="password"
                 secureTextEntry={true}
                 style={styles.input}
                 value={this.state.password}
                 onChangeText={(password) => this.setState({ password })}
               />
             </Item>
-            <Button onPress={this.handleSubmit}>
+            <Button style={{ marginLeft: 15 }} onPress={this.handleSubmit}>
               <Text>Sign In</Text>
             </Button>
           </Form>
