@@ -7,7 +7,7 @@ import MapView, { Callout, Marker } from "react-native-maps";
 import { Toast } from "native-base";
 
 // Redadalertas
-import orgApi from "utils/orgApi";
+import eventServices from "services/event";
 
 const styles = StyleSheet.create({
   container: {
@@ -23,9 +23,13 @@ export default class EventsMap extends Component {
 
   state = { events: [] };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.getEvents();
+  }
+
+  async getEvents() {
     try {
-      const response = await orgApi.get("/events");
+      const response = await eventServices.gets();
       this.setState({ events: response.data }, () => {
         const { events } = this.state;
         // setTimeout(this.map.fitToSuppliedMarkers(events.map(event => event.id)), 1000);
@@ -59,7 +63,6 @@ export default class EventsMap extends Component {
           }}
         >
           {events.map(event => {
-            console.log("EventsMap event: ", event);
             const { location } = event;
             const latitude = parseFloat(location.latitude);
             const longitude = parseFloat(location.longitude);

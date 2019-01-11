@@ -16,6 +16,18 @@ async function post(data) {
   }
 }
 
+async function gets() {
+  let response;
+  try {
+    response = await orgApi.get("/events");
+    return response;
+  } catch (err) {
+    console.log("Events GET error: ", err.response || err);
+    return err;
+  }
+}
+
 export default eventServices = {
-  post
+  post,
+  gets
 };
