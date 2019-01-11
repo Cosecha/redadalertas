@@ -1,11 +1,11 @@
 
-export const authHeader = ()=> {
+function authHeader(user) {
     // return authorization header with basic auth credentials
-    // let user = JSON.parse(localStorage.getItem('user'));
-
     if (user && user.auth) {
-        return { 'Authorization': 'Basic ' + user.auth };
+        return { 'Authorization': user.auth };
     } else {
         return {};
     }
 };
+
+export default authHeader;
