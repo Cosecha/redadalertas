@@ -97,7 +97,7 @@ export default class ReportForm extends Component {
                   <Label>Type</Label>
                   <Picker
                     mode="dropdown"
-                    iosIcon={<Icon name="ios-arrow-down-outline" />}
+                    iosIcon={<Icon name="ios-arrow-dropdown" />}
                     onValueChange={props.handleChange("type")}
                     placeholder="Select event type"
                     selectedValue={props.values.type}
