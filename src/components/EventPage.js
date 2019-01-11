@@ -29,6 +29,7 @@ export default class EventPage extends Component {
     const { location } = event;
     return (
       <View style={styles.container}>
+        <Text>{event.description}</Text>
         <Text>{location.description}</Text>
         <Text>{location.address_1}</Text>
         <Text>{location.city}</Text>
