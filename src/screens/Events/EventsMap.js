@@ -28,13 +28,13 @@ export default class EventsMap extends Component {
       const response = await orgApi.get("/events");
       this.setState({ events: response.data }, () => {
         const { events } = this.state;
-        this.map.fitToSuppliedMarkers(events.map(event => event.id));
+        // setTimeout(this.map.fitToSuppliedMarkers(events.map(event => event.id)), 1000);
       });
     } catch (error) {
       console.log(error);
       Toast.show({
         buttonText: "OK",
-        text: "An error occurred.",
+        text: "Error rendering map.",
         type: "danger"
       });
     }
