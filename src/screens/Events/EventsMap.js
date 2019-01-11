@@ -51,16 +51,18 @@ export default class EventsMap extends Component {
             this.map = ref;
           }}
           region={{
-            latitude: 37.78825,
-            longitude: -122.4324,
+            latitude: 37.7620375,
+            longitude: -122.4369478,
             latitudeDelta: 0.1,
             longitudeDelta: 0.1
           }}
         >
           {events.map(event => {
-            console.log(event);
+            console.log("EventsMap event: ", event);
             const { location } = event;
-            const { latitude, longitude } = location;
+            const latitude = parseFloat(location.latitude);
+            const longitude = parseFloat(location.longitude);
+            let address2 = location.address_2 ? (<Text>{location.address_2}</Text>) : <></>;
 
             return (
               <Marker
@@ -70,7 +72,9 @@ export default class EventsMap extends Component {
               >
                 <Callout>
                   <View>
-                    <Text>Hi</Text>
+                    <Text>{event.description || 'Test'}</Text>
+                    <Text>{location.address_1}</Text>
+                    {address2}
                   </View>
                 </Callout>
               </Marker>
