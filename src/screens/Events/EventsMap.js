@@ -4,10 +4,11 @@ import { StyleSheet, Text, View } from "react-native";
 
 // Vendor
 import MapView, { Callout, Marker } from "react-native-maps";
-import { Toast } from "native-base";
+import { Toast, Fab, Icon } from "native-base";
 
 // Redadalertas
-import orgApi from "utils/orgApi";
+import { colors } from "styles";
+import eventServices from "services/event";
 
 const styles = StyleSheet.create({
   container: {
@@ -24,23 +25,55 @@ export default class EventsMap extends Component {
   state = { events: [] };
 
   async componentDidMount() {
+    await this.getEvents();
+    this.willFocusSub = this.props.navigation.addListener(
+      'willFocus',
+      async payload => await this.handleWillFocus(payload)
+    );
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state != nextState;
+  }
+
+  componentWillUnmount() {
+    this.willFocusSub.remove();
+  }
+
+  async handleWillFocus(payload) {
+    if (payload.action && payload.action.params
+      && payload.action.params.refresh === true) {
+      await this.getEvents();
+    }
+  }
+
+  async getEvents() {
     try {
-      const response = await orgApi.get("/events");
+      const response = await eventServices.gets();
+      if (response instanceof Error) throw response;
       this.setState({ events: response.data }, () => {
         const { events } = this.state;
-        this.map.fitToSuppliedMarkers(events.map(event => event.id));
+        setTimeout(()=> {
+          this.map.fitToSuppliedMarkers(events.map(event => event.id))
+        }, 1000);
       });
-    } catch (error) {
-      console.log(error);
       Toast.show({
         buttonText: "OK",
-        text: "An error occurred.",
+        text: "Events fetched successfully.",
+        type: "success"
+      });
+    } catch (error) {
+      console.error("Error rendering map: ", error);
+      Toast.show({
+        buttonText: "OK",
+        text: "Error rendering map.",
         type: "danger"
       });
     }
   }
 
   render() {
+    const { navigation } = this.props;
     const { events } = this.state;
 
     return (
@@ -51,16 +84,17 @@ export default class EventsMap extends Component {
             this.map = ref;
           }}
           region={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.1,
-            longitudeDelta: 0.1
+            latitude: 37.7620375,
+            longitude: -122.4369478,
+            latitudeDelta: 0.15,
+            longitudeDelta: 0.15
           }}
         >
           {events.map(event => {
-            console.log(event);
             const { location } = event;
-            const { latitude, longitude } = location;
+            const latitude = parseFloat(location.latitude);
+            const longitude = parseFloat(location.longitude);
+            let address2 = location.address_2 ? (<Text>{location.address_2}</Text>) : <></>;
 
             return (
               <Marker
@@ -68,15 +102,27 @@ export default class EventsMap extends Component {
                 identifier={event.id}
                 key={event.id}
               >
-                <Callout>
+                <Callout
+                  onPress={() => {
+                    navigation.navigate("EventPage", { event })
+                  }}
+                >
                   <View>
-                    <Text>Hi</Text>
+                    <Text>{event.description || 'Test'}</Text>
+                    <Text>{location.address_1}</Text>
+                    {address2}
                   </View>
                 </Callout>
               </Marker>
             );
           })}
         </MapView>
+        <Fab
+          style={{ backgroundColor: colors.primary }}
+          onPress={async ()=> {await this.getEvents()}}
+        >
+          <Icon name="refresh" />
+        </Fab>
       </View>
     );
   }

@@ -26,7 +26,8 @@ import { Formik } from "formik";
 
 // Redadalertas
 import { colors } from "styles";
-import orgApi from "utils/orgApi";
+import eventServices from "services/event";
+import asyncStore from "utils/asyncstorage";
 
 const types = [
   { label: "Action", value: "action" },
@@ -39,7 +40,7 @@ const types = [
 ];
 const initialValues = {
   expire: {
-    at: null,
+    at: new Date(),
     deleteOnExpire: true
   },
   description: {
@@ -56,8 +57,16 @@ export default class ReportForm extends Component {
 
   onSubmit = async (values, { resetForm }) => {
     try {
-      await orgApi.post("/event", values);
+      const user = JSON.parse(await asyncStore.retrieve('user'));
+      let data = {
+        ...values,
+        "created.by.user": user.credentials.id,
+        user: user
+      }
+      let response = await eventServices.post(data);
+      if (response instanceof Error) throw response;
       this.clearForm(resetForm);
+      this.props.navigation.navigate("EventsMap", { refresh: true });
       Toast.show({
         buttonText: "OK",
         text: "Event submitted!",
@@ -66,7 +75,7 @@ export default class ReportForm extends Component {
     } catch (error) {
       Toast.show({
         buttonText: "OK",
-        text: "An error occurred.",
+        text: "Error submitting report: " + error,
         type: "danger"
       });
     }
@@ -97,7 +106,7 @@ export default class ReportForm extends Component {
                   <Label>Type</Label>
                   <Picker
                     mode="dropdown"
-                    iosIcon={<Icon name="ios-arrow-down-outline" />}
+                    iosIcon={<Icon name="ios-arrow-dropdown" />}
                     onValueChange={props.handleChange("type")}
                     placeholder="Select event type"
                     selectedValue={props.values.type}
@@ -182,6 +191,7 @@ export default class ReportForm extends Component {
                       </Label>
                       <DatePicker
                         animationType="fade"
+                        defaultDate={new Date()}
                         formatChosenDate={date => date.toString().substr(4, 12)}
                         onDateChange={date =>
                           props.setFieldValue("expire.at", date)

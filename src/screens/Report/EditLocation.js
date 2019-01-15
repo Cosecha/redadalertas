@@ -41,7 +41,6 @@ class EditLocation extends Component {
   geocode = async address => {
     try {
       const results = await Geocoder.geocodeAddress(address);
-      console.log(results);
       this.setState(
         {
           results: results.map(result => {
@@ -49,16 +48,20 @@ class EditLocation extends Component {
             return {
               address_1: result.feature,
               city: result.locality,
+              latitude: lat,
               coordinate: { latitude: lat, longitude: lng },
+              longitude: lng,
               identifier: `{lat}{lng}`,
               state: result.adminArea,
-              zipcode: result.postCode
+              zipcode: result.postalCode
             };
           })
         },
         () => {
           const markerIds = this.state.results.map(result => result.identifier);
-          this.map.fitToSuppliedMarkers(markerIds);
+          setTimeout(()=> {
+            this.map.fitToSuppliedMarkers(markerIds);
+          }, 1000);
         }
       );
     } catch (error) {
@@ -98,8 +101,8 @@ class EditLocation extends Component {
             region={{
               latitude: 37.78825,
               longitude: -122.4324,
-              latitudeDelta: 0.1,
-              longitudeDelta: 0.1
+              latitudeDelta: 0.15,
+              longitudeDelta: 0.15
             }}
           >
             {results.map(result => (
@@ -121,7 +124,6 @@ class EditLocation extends Component {
                     setLocation({
                       address_1,
                       city,
-                      coordinate,
                       latitude,
                       longitude,
                       state,
