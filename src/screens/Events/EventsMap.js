@@ -26,10 +26,27 @@ export default class EventsMap extends Component {
 
   async componentDidMount() {
     await this.getEvents();
+    this.willFocusSub = this.props.navigation.addListener(
+      'willFocus',
+      async payload => await this.handleWillFocus(payload)
+    );
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return this.state != nextState;
+  }
+
+  componentWillUnmount() {
+    this.willFocusSub.remove();
+  }
+
+  async handleWillFocus(payload) {
+    if (payload.action && payload.action.params
+      && payload.action.params) {
+      if (payload.action.params.refresh === true) {
+        await this.getEvents();
+      }
+    }
   }
 
   async getEvents() {
@@ -39,7 +56,7 @@ export default class EventsMap extends Component {
       this.setState({ events: response.data }, () => {
         const { events } = this.state;
         setTimeout(()=> {
-          this.map.fitToSuppliedMarkers(events.map(event => event.id))  
+          this.map.fitToSuppliedMarkers(events.map(event => event.id))
         }, 1000);
       });
       Toast.show({
