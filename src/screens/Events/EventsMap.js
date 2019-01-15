@@ -69,8 +69,8 @@ export default class EventsMap extends Component {
           region={{
             latitude: 37.7620375,
             longitude: -122.4369478,
-            latitudeDelta: 0.1,
-            longitudeDelta: 0.1
+            latitudeDelta: 0.15,
+            longitudeDelta: 0.15
           }}
         >
           {events.map(event => {

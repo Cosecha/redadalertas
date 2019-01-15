@@ -99,8 +99,8 @@ class EditLocation extends Component {
             region={{
               latitude: 37.78825,
               longitude: -122.4324,
-              latitudeDelta: 0.1,
-              longitudeDelta: 0.1
+              latitudeDelta: 0.15,
+              longitudeDelta: 0.15
             }}
           >
             {results.map(result => (
