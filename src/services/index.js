@@ -1,7 +1,8 @@
 import axios from "axios";
+import env from "../../env.json";
 
 const orgApi = axios.create({
-  baseURL: "http://localhost:9999/api/"
+  baseURL: env.SERVICE_API_URL
 });
 
 export default orgApi;
