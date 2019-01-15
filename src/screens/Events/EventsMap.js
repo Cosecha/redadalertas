@@ -38,7 +38,9 @@ export default class EventsMap extends Component {
       if (response instanceof Error) throw response;
       this.setState({ events: response.data }, () => {
         const { events } = this.state;
-        // setTimeout(this.map.fitToSuppliedMarkers(events.map(event => event.id)), 1000);
+        setTimeout(()=> {
+          this.map.fitToSuppliedMarkers(events.map(event => event.id))  
+        }, 1000);
       });
       Toast.show({
         buttonText: "OK",

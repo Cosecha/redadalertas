@@ -59,7 +59,9 @@ class EditLocation extends Component {
         },
         () => {
           const markerIds = this.state.results.map(result => result.identifier);
-          this.map.fitToSuppliedMarkers(markerIds);
+          setTimeout(()=> {
+            this.map.fitToSuppliedMarkers(markerIds);
+          }, 1000);
         }
       );
     } catch (error) {
