@@ -108,8 +108,11 @@ export default class EventsMap extends Component {
                   }}
                 >
                   <View>
-                    <Text>{event.description || 'Test'}</Text>
+                    <Text style={{ maxWidth: 200 }}>
+                      {event.description || 'Test'} ({event.type})
+                    </Text>
                     <Text>{location.address_1}</Text>
+                    <Text>{location.city}, {location.state} {location.zipcode}</Text>
                     {address2}
                   </View>
                 </Callout>

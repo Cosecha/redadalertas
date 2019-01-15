@@ -6,6 +6,7 @@ import { StyleSheet, View } from "react-native";
 import {
   Button,
   Container,
+  Content,
   Header,
   Icon,
   Item,
@@ -132,6 +133,10 @@ class EditLocation extends Component {
                     navigation.goBack();
                   }}
                 >
+                  <Content>
+                    <Text>{result.address_1}</Text>
+                    <Text>{result.city}, {result.state} {result.zipcode}</Text>
+                  </Content>
                   <AddLocationCallout />
                 </Callout>
               </Marker>
