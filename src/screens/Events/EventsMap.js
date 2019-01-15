@@ -42,10 +42,8 @@ export default class EventsMap extends Component {
 
   async handleWillFocus(payload) {
     if (payload.action && payload.action.params
-      && payload.action.params) {
-      if (payload.action.params.refresh === true) {
-        await this.getEvents();
-      }
+      && payload.action.params.refresh === true) {
+      await this.getEvents();
     }
   }
 
