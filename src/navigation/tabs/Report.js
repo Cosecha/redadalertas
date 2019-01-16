@@ -3,7 +3,7 @@ import { createStackNavigator, createSwitchNavigator } from "react-navigation";
 
 // Redadalertas
 import EditLocation from "screens/Report/EditLocation";
-import ReportForm from "components/ReportForm";
+import ReportForm from "screens/Report/ReportForm";
 import ReporterLoginForm from "screens/Report/ReporterLoginForm";
 
 const Report = createSwitchNavigator(
