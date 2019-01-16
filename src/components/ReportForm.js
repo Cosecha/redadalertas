@@ -30,13 +30,14 @@ import eventServices from "services/event";
 import asyncStore from "utils/asyncstorage";
 
 const types = [
-  { label: "Action", value: "action" },
+  { label: "Raid", value: "sweep" },
+  { label: "Individual", value: "targeted" },
+  { label: "Traffic", value: "traffic" },
+  { label: "I-9 Audit", value: "i9" },
   { label: "Checkpoint", value: "checkpoint" },
-  { label: "I9", value: "i9" },
+  { label: "Action", value: "action" },
+  { label: "False Alarm", value: "falsealarm" },
   { label: "Other", value: "other" },
-  { label: "Sweep", value: "sweep" },
-  { label: "Targeted", value: "targeted" },
-  { label: "Traffic", value: "traffic" }
 ];
 const initialValues = {
   expire: {
