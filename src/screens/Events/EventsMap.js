@@ -19,6 +19,17 @@ const styles = StyleSheet.create({
   }
 });
 
+const types = [
+  { label: "Raid", value: "sweep" },
+  { label: "Individual", value: "targeted" },
+  { label: "Traffic Stop", value: "traffic" },
+  { label: "I-9 Audit", value: "i9" },
+  { label: "Checkpoint", value: "checkpoint" },
+  { label: "Action", value: "action" },
+  { label: "False Alarm", value: "falsealarm" },
+  { label: "Other", value: "other" },
+];
+
 export default class EventsMap extends Component {
   static navigationOptions = () => ({ title: "Event Map" });
 
@@ -72,6 +83,12 @@ export default class EventsMap extends Component {
     }
   }
 
+  getEventLabel(eventType) {
+    return types.find((type)=> {
+      return type.value == eventType;
+    }).label;
+  }
+
   render() {
     const { navigation } = this.props;
     const { events } = this.state;
@@ -108,8 +125,8 @@ export default class EventsMap extends Component {
                   }}
                 >
                   <View>
-                    <Text style={{ maxWidth: 200 }}>
-                      {event.description || 'Test'} ({event.type})
+                    <Text style={{ maxWidth: 200, fontWeight: "bold" }}>
+                      {this.getEventLabel(event.type)}
                     </Text>
                     <Text>{location.address_1}</Text>
                     <Text>{location.city}, {location.state} {location.zipcode}</Text>
