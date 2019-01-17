@@ -5338,10 +5338,10 @@ react-native-keyboard-aware-scroll-view@0.8.0:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
-react-native-maps@^0.22.1:
-  version "0.22.1"
-  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.22.1.tgz#ce856e71970e872e596e6fa4773279cae2c4dcdd"
-  integrity sha512-JjBpAXjzZY8AW4HTcAZxX+cGk6e6i+J5Vd//DViMUe0bRkKKv92ds1W9rqZ+o9PhUqdP++3DvKv0jrB05icqKA==
+react-native-maps@^0.23.0:
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.23.0.tgz#edbfdcad0e42190627eb1c8067eaba5965c8f81e"
+  integrity sha512-qxOIQGsDtQXQlSJdXMW1wg8pvLaVYdbiIolB7tZTTgTGgIA/hDxXwZbQZ08c4KDD6/VTk8krfd1APaHkqvh6og==
 
 react-native-safe-area-view@^0.11.0:
   version "0.11.0"
