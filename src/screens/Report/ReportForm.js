@@ -69,7 +69,10 @@ export default class ReportForm extends Component {
       let response = await eventServices.post(data);
       if (response instanceof Error) throw response;
       this.clearForm(resetForm);
-      this.props.navigation.navigate("EventsMap", { refresh: true });
+      this.props.navigation.navigate("EventsMap", {
+        refresh: true,
+        event: response.data[0]
+      });
       Toast.show({
         buttonText: "OK",
         text: "Event submitted!",
