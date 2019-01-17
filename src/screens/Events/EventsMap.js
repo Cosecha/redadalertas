@@ -33,13 +33,21 @@ const types = [
 export default class EventsMap extends Component {
   static navigationOptions = () => ({ title: "Event Map" });
 
-  state = { events: [] };
+  constructor(props) {
+    super(props);
+    this.state = { events: [] };
+    this.map = null;
+    this.markers = {};
+  }
 
   async componentDidMount() {
+    const { navigation } = this.props;
     await this.getEvents();
-    this.willFocusSub = this.props.navigation.addListener(
-      'willFocus',
+    this.willFocusSub = navigation.addListener('willFocus',
       async payload => await this.handleWillFocus(payload)
+    );
+    this.willBlurSub = navigation.addListener('willBlur',
+      async payload => await this.handleWillBlur(payload)
     );
   }
 
@@ -49,24 +57,44 @@ export default class EventsMap extends Component {
 
   componentWillUnmount() {
     this.willFocusSub.remove();
+    this.willBlurSub.remove();
   }
 
   async handleWillFocus(payload) {
-    if (payload.action && payload.action.params
-      && payload.action.params.refresh === true) {
-      await this.getEvents();
-    }
+    const params = (payload.action && payload.action.params) ? payload.action.params : null;
+    if (params && params.refresh === true) await this.getEvents(params.event || null);
   }
 
-  async getEvents() {
+  handleWillBlur() {
+    this.markers = {};
+  }
+
+  focusMarker(event) {
+    this.map.animateToRegion({
+        latitude: event.location.latitude,
+        longitude: event.location.longitude,
+        latitudeDelta: 0.025,
+        longitudeDelta: 0.025
+      }, 500);
+    setTimeout(()=> {
+      this.markers[event.id].showCallout();
+    }, 1500);
+  }
+
+  focusMap(events) {
+    setTimeout(()=> {
+      this.map.fitToSuppliedMarkers(events.map(event => event.id));
+    }, 1000);
+  }
+
+  async getEvents(newEvent) {
     try {
       const response = await eventServices.gets();
       if (response instanceof Error) throw response;
       this.setState({ events: response.data }, () => {
         const { events } = this.state;
-        setTimeout(()=> {
-          this.map.fitToSuppliedMarkers(events.map(event => event.id))
-        }, 1000);
+        if (newEvent) this.focusMarker(newEvent);
+        else this.focusMap(events);
       });
       Toast.show({
         buttonText: "OK",
@@ -97,10 +125,8 @@ export default class EventsMap extends Component {
       <View style={styles.container}>
         <MapView
           style={styles.map}
-          ref={ref => {
-            this.map = ref;
-          }}
-          region={{
+          ref={ref => { this.map = ref; }}
+          initialRegion={{
             latitude: 37.7620375,
             longitude: -122.4369478,
             latitudeDelta: 0.15,
@@ -118,12 +144,12 @@ export default class EventsMap extends Component {
                 coordinate={{ latitude, longitude }}
                 identifier={event.id}
                 key={event.id}
+                ref={ref => { this.markers[event.id] = ref; }}
+                onCalloutPress={() => {
+                  navigation.navigate("EventPage", { event })
+                }}
               >
-                <Callout
-                  onPress={() => {
-                    navigation.navigate("EventPage", { event })
-                  }}
-                >
+                <Callout tooltip={false}>
                   <View>
                     <Text style={{ maxWidth: 200, fontWeight: "bold" }}>
                       {this.getEventLabel(event.type)}
