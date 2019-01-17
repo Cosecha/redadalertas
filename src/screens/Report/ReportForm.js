@@ -42,7 +42,7 @@ const types = [
 const initialValues = {
   expire: {
     at: new Date(),
-    deleteOnExpire: true
+    deleteOnExpire: false
   },
   description: {
     en: "",
