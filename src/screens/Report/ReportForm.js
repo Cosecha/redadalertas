@@ -176,7 +176,7 @@ export default class ReportForm extends Component {
                       style={{ marginRight: 10 }}
                     >
                       <Text>
-                        {props.values.location.address ? "Edit" : "Add"}
+                        {props.values.location.address_1 ? "Edit" : "Add"}
                       </Text>
                     </Button>
                   </View>
