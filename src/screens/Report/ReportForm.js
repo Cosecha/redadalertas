@@ -224,12 +224,12 @@ export default class ReportForm extends Component {
                 </Item>
               </Form>
             </Content>
-            <Fab
-              style={{ backgroundColor: colors.primary }}
+            <Button block
+              style={{ backgroundColor: colors.primary, margin: 15 }}
               onPress={props.handleSubmit}
             >
-              <Icon name="add" />
-            </Fab>
+              <Text>Add Event</Text>
+            </Button>
           </Container>
         )}
       </Formik>
