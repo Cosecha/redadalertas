@@ -41,7 +41,7 @@ const types = [
 ];
 const initialValues = {
   expire: {
-    at: new Date(),
+    at: Date.now() + (1000 * 60 * 60 * 12), // 12 hours from now
     deleteOnExpire: false
   },
   description: {
@@ -52,9 +52,10 @@ const initialValues = {
   present: [],
   type: types[0].value
 };
+const initialState = { agencyInputValue: "", expireAt: 12 };
 
 export default class ReportForm extends Component {
-  state = { agencyInputValue: "" };
+  state = initialState;
 
   onSubmit = async (values, { resetForm }) => {
     try {
@@ -84,12 +85,12 @@ export default class ReportForm extends Component {
 
   clearForm = resetForm => {
     resetForm(initialValues);
-    this.setState({ agencyInputValue: "" });
+    this.setState(initialState);
   };
 
   render() {
     const { navigation } = this.props;
-    const { agencyInputValue } = this.state;
+    const { agencyInputValue, expireAt } = this.state;
 
     return (
       <Formik initialValues={initialValues} onSubmit={this.onSubmit}>
@@ -179,30 +180,33 @@ export default class ReportForm extends Component {
                     </Button>
                   </View>
                 </Item>
-                <Item>
-                  <View>
-                    <View
-                      style={{
-                        alignItems: "center",
-                        flexDirection: "row"
-                      }}
-                    >
+                <Item style={{ marginLeft: 15 }} fixedLabel>
                       <Label style={{ paddingTop: 15, paddingBottom: 15 }}>
-                        Expires On
+                        Expires
                       </Label>
-                      <DatePicker
-                        animationType="fade"
-                        defaultDate={new Date()}
-                        formatChosenDate={date => date.toString().substr(4, 12)}
-                        onDateChange={date =>
-                          props.setFieldValue("expire.at", date)
-                        }
-                      />
-                    </View>
-                    <Text style={{ color: colors.lightGray }}>
-                      Expires at the end of selected day.
-                    </Text>
-                  </View>
+                      <Picker
+                        mode="dropdown"
+                        iosIcon={<Icon name="ios-arrow-dropdown" />}
+                        onValueChange={(change)=>{
+                          // Format expire.at to current time + selected # of hours in milliseconds
+                          props.setFieldValue(
+                            "expire.at",
+                            Date.now() + (1000 * 60 * 60 * change)
+                          );
+                          // Save # of hours to display
+                          this.setState({ expireAt: change });
+                        }}
+                        placeholder="Select expiration time"
+                        selectedValue={expireAt}
+                      >
+                        {[1,2,4,8,12,24,48,72].map(time => (
+                          <Picker.Item
+                            key={time}
+                            label={time + " hour" + (time !== 1 ? "s" : "") + " from now"}
+                            value={time}
+                          />
+                        ))}
+                      </Picker>
                 </Item>
                 <Item fixedLabel style={{ marginTop: 15 }}>
                   <Label style={{ marginBottom: 15 }}>Delete on Expire?</Label>
