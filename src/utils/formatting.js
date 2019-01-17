@@ -8,4 +8,7 @@ function authHeader(user) {
     }
 };
 
-export default authHeader;
+export default formatting = {
+  addHours,
+  authHeader
+};
