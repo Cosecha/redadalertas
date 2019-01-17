@@ -137,6 +137,9 @@ android {
 }
 
 dependencies {
+    compile project(':appcenter-crashes')
+    compile project(':appcenter-analytics')
+    compile project(':appcenter')
     compile project(':react-native-geocoder')
     compile project(':react-native-maps')
     compile project(':react-native-gesture-handler')
