@@ -28,6 +28,7 @@ import { Formik } from "formik";
 import { colors } from "styles";
 import eventServices from "services/event";
 import asyncStore from "utils/asyncstorage";
+import { addHours } from "utils/formatting";
 
 const types = [
   { label: "Raid", value: "sweep" },
@@ -41,7 +42,7 @@ const types = [
 ];
 const initialValues = {
   expire: {
-    at: Date.now() + (1000 * 60 * 60 * 12), // 12 hours from now
+    at: addHours(Date.now(), 12), // 12 hours from now
     deleteOnExpire: false
   },
   description: {
@@ -191,7 +192,7 @@ export default class ReportForm extends Component {
                           // Format expire.at to current time + selected # of hours in milliseconds
                           props.setFieldValue(
                             "expire.at",
-                            Date.now() + (1000 * 60 * 60 * change)
+                            addHours(Date.now(), change)
                           );
                           // Save # of hours to display
                           this.setState({ expireAt: change });

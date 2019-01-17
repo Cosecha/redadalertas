@@ -1,3 +1,6 @@
+function addHours(date, hours) {
+  return date + (1000 * 60 * 60 * hours);
+}
 
 function authHeader(user) {
     // return authorization header with basic auth credentials
@@ -8,7 +11,7 @@ function authHeader(user) {
     }
 };
 
-export default formatting = {
+export {
   addHours,
   authHeader
 };
