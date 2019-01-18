@@ -49,6 +49,7 @@ export default class EventPage extends Component {
 
   render() {
     const { event } = this.state;
+    const { navigation } = this.props;
     const { location } = event;
     const agencies = event.present && event.present.length > 0 ? (
       <View>
@@ -71,6 +72,12 @@ export default class EventPage extends Component {
             {agencies}
             <Text style={{paddingTop: 15, color: "gray"}}>Details:</Text>
             <Text>{event.description}</Text>
+            <Button block
+              style={{ backgroundColor: colors.primary, margin: 15, marginTop: 25 }}
+              onPress={()=> navigation.navigate("EventEdit", { event })}
+            >
+              <Text>Edit Event</Text>
+            </Button>
           </Content>
         </Container>
       </View>
