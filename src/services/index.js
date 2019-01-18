@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const orgApi = axios.create({
-  baseURL: "http://localhost:9999/api/"
+  baseURL: process.env.SERVICE_API_URL
 });
 
 export default orgApi;

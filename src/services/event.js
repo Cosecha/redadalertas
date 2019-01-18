@@ -1,5 +1,5 @@
 import orgApi from "./";
-import authHeader from "utils/headers";
+import { authHeader } from "utils/formatting";
 
 async function post(data) {
   let response;

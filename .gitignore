@@ -2,6 +2,11 @@
 #
 .DS_Store
 
+# Ignore env vars
+env.json
+env.local.json
+env.remote.json
+
 # Xcode
 #
 build/
