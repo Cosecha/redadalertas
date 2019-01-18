@@ -262,13 +262,13 @@ export default class EventForm extends Component {
                   />
                 </Item>
               </Form>
+              <Button block
+                style={{ backgroundColor: colors.primary, margin: 15 }}
+                onPress={props.handleSubmit}
+              >
+                <Text>{(this.props.newEvent) ? "Submit" : "Submit Changes"}</Text>
+              </Button>
             </Content>
-            <Button block
-              style={{ backgroundColor: colors.primary, margin: 15 }}
-              onPress={props.handleSubmit}
-            >
-              <Text>Submit Changes</Text>
-            </Button>
           </Container>
         )}
       </Formik>
