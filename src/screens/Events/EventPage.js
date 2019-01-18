@@ -37,7 +37,6 @@ const types = [
 ];
 
 export default class EventPage extends Component {
-  static navigationOptions = () => ({ title: "Event Page" });
 
   constructor(props) {
     super(props);

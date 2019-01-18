@@ -16,6 +16,21 @@ async function post(data) {
   }
 }
 
+async function put(data) {
+  let response;
+  try {
+    const event = { ...data };
+    delete event['user'];
+    response = await orgApi.put("/event", data, {
+      headers: authHeader(data.user),
+    });
+    return response;
+  } catch (err) {
+    console.log("Event PUT error: ", err.response || err);
+    return err;
+  }
+}
+
 async function gets() {
   let response;
   try {
@@ -29,5 +44,6 @@ async function gets() {
 
 export default eventServices = {
   post,
+  put,
   gets
 };

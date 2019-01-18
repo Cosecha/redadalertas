@@ -4,25 +4,22 @@ import { StyleSheet, View } from "react-native";
 
 // Vendor
 import {
-  Container, Header, Content, H1, H2, H3, Button, Text,
+  Container, Header, Body, Title, Content, H1, H2, H3, Button, Text,
 } from 'native-base';
 
 // Redadalertas
 import { colors } from "styles";
+import eventServices from "services/event";
+import EventForm from "components/EventForm";
 
 const styles = StyleSheet.create({
-  view: {
+  container: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "stretch",
-    backgroundColor: "#F5FCFF",
-    color: "#000000"
+    flexDirection: "column",
+    justifyContent: "flex-start",
   },
-  content: {
-    padding: 20
-  }
 });
+
 
 const types = [
   { label: "Raid", value: "sweep" },
@@ -35,17 +32,22 @@ const types = [
   { label: "Other", value: "other" },
 ];
 
-export default class EventPage extends Component {
+export default class EventEdit extends Component {
+  static navigationOptions = () => ({ title: "Edit Event" });
 
   render() {
+    const { navigation } = this.props;
+    const { event } = navigation.state.params || null;
     return (
-      <View style={styles.view}>
-        <Container>
-          <Content style={styles.content}>
-            <Text>Event Edit Page</Text>
-          </Content>
-        </Container>
-      </View>
+      <Container style={styles.container}>
+        <Content>
+          <EventForm
+            eventToEdit={event}
+            nav={navigation}
+            newEvent={false}
+          />
+        </Content>
+      </Container>
     );
   }
 }
