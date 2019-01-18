@@ -27,7 +27,7 @@ import { Formik } from "formik";
 // Redadalertas
 import { colors } from "styles";
 import eventServices from "services/event";
-import asyncStore from "utils/asyncstorage";
+import { checkIfLoggedIn } from "utils/user";
 import { addHours } from "utils/formatting";
 
 const types = [
@@ -60,7 +60,8 @@ export default class ReportForm extends Component {
 
   onSubmit = async (values, { resetForm }) => {
     try {
-      const user = JSON.parse(await asyncStore.retrieve('user'));
+      const user = await checkIfLoggedIn();
+      if (!user) throw new Error("Not logged in.");
       let data = {
         ...values,
         "created.by.user": user.credentials.id,

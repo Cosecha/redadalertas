@@ -9,6 +9,7 @@ import {
 
 // Redadalertas
 import { colors } from "styles";
+import { checkIfLoggedIn } from "utils/user";
 
 const styles = StyleSheet.create({
   view: {
@@ -37,9 +38,30 @@ const types = [
 
 export default class EventPage extends Component {
   static navigationOptions = () => ({ title: "Event Page" });
-  state = {
-    event: this.props.navigation.state.params.event
-  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      event: this.props.navigation.state.params.event,
+      user: null
+    };
+  }
+
+  async componentDidMount() {
+    const { navigation } = this.props;
+    this.willFocusSub = navigation.addListener('willFocus',
+      async payload => this.setState({ user: await checkIfLoggedIn() })
+    );
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state != nextState;
+  }
+
+  componentWillUnmount() {
+    this.willFocusSub.remove();
+    this.setState({ user: null });
+  }
 
   getEventLabel(eventType) {
     return types.find((type)=> {
@@ -48,7 +70,7 @@ export default class EventPage extends Component {
   }
 
   render() {
-    const { event } = this.state;
+    const { event, user } = this.state;
     const { navigation } = this.props;
     const { location } = event;
     const agencies = event.present && event.present.length > 0 ? (
@@ -57,6 +79,14 @@ export default class EventPage extends Component {
         <Text>{event.present.map((item)=> {return item.agency}).join(", ")}</Text>
       </View>
     ) : <></>
+    const editButton = (user) ? (
+      <Button block
+        style={{ backgroundColor: colors.primary, margin: 15, marginTop: 25 }}
+        onPress={()=> navigation.navigate("EventEdit", { event })}
+      >
+        <Text>Edit Event</Text>
+      </Button>
+    ) : <></>;
 
     return (
       <View style={styles.view}>
@@ -72,12 +102,7 @@ export default class EventPage extends Component {
             {agencies}
             <Text style={{paddingTop: 15, color: "gray"}}>Details:</Text>
             <Text>{event.description}</Text>
-            <Button block
-              style={{ backgroundColor: colors.primary, margin: 15, marginTop: 25 }}
-              onPress={()=> navigation.navigate("EventEdit", { event })}
-            >
-              <Text>Edit Event</Text>
-            </Button>
+            {editButton}
           </Content>
         </Container>
       </View>
