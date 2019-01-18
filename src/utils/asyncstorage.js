@@ -17,7 +17,16 @@ async function retrieve(key) {
   }
 }
 
+async function remove(key) {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (err) {
+    return err;
+  }
+}
+
 export default asyncStore = {
   save,
-  retrieve
+  retrieve,
+  remove
 };
