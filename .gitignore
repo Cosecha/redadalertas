@@ -2,10 +2,6 @@
 #
 .DS_Store
 
-# Ignore env vars
-.env
-.env.production
-
 # Xcode
 #
 build/
