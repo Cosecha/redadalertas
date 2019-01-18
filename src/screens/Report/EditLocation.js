@@ -11,7 +11,8 @@ import {
   Icon,
   Item,
   Input,
-  Text
+  Text,
+  Toast
 } from "native-base";
 import Geocoder from "react-native-geocoder";
 import MapView, { Callout, Marker } from "react-native-maps";
@@ -66,14 +67,50 @@ class EditLocation extends Component {
         }
       );
     } catch (error) {
-      console.log(error);
+      console.log("Error geocoding location: ", error);
+      Toast.show({
+        buttonText: "OK",
+        text: "Error geocoding location: " + (error.message || error),
+        type: "danger"
+      });
     }
   };
+
+  sendLocation(location) {
+    try {
+      const {
+        address_1,
+        city,
+        state,
+        zipcode,
+        latitude,
+        longitude
+      } = location;
+      // Basic location validation
+      if (!address_1) throw new Error("No street address.");
+      if (!city) throw new Error("No city.");
+      if (!state) throw new Error("No state.");
+      if (!zipcode) throw new Error("No zipcode.");
+      if (!latitude) throw new Error("No latitude.");
+      if (!longitude) throw new Error("No longitude.");
+
+      const { navigation } = this.props;
+      const setLocation = navigation.getParam("setLocation");
+      setLocation(location);
+      navigation.goBack();
+    } catch (error) {
+      console.log("Error setting location: ", error);
+      Toast.show({
+        buttonText: "OK",
+        text: "Error setting location: " + (error.message || error),
+        type: "danger"
+      });
+    }
+  }
 
   render() {
     const { navigation } = this.props;
     const { inputValue, results } = this.state;
-    const setLocation = navigation.getParam("setLocation");
 
     return (
       <Container>
@@ -122,7 +159,7 @@ class EditLocation extends Component {
                       zipcode
                     } = result;
                     const { latitude, longitude } = coordinate;
-                    setLocation({
+                    this.sendLocation({
                       address_1,
                       city,
                       latitude,
@@ -130,7 +167,6 @@ class EditLocation extends Component {
                       state,
                       zipcode
                     });
-                    navigation.goBack();
                   }}
                 >
                   <Content>
