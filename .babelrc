@@ -18,6 +18,14 @@
         ],
         "root": ["./src"]
       }
+    ],
+    [
+      "transform-inline-environment-variables",
+      {
+        "include": [
+          "SERVICE_API_URL"
+        ]
+      }
     ]
   ]
 }
