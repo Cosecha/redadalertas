@@ -1,5 +1,8 @@
 {
-  "presets": ["module:metro-react-native-babel-preset"],
+  "presets": [
+    "module:metro-react-native-babel-preset",
+    "module:react-native-dotenv"
+  ],
   "plugins": [
     [
       "module-resolver",
@@ -14,14 +17,6 @@
           ".android.js"
         ],
         "root": ["./src"]
-      }
-    ],
-    [
-      "transform-inline-environment-variables",
-      {
-        "include": [
-          "SERVICE_API_URL"
-        ]
       }
     ]
   ]

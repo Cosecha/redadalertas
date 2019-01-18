@@ -1,7 +1,8 @@
 import axios from "axios";
+import { SERVICE_API_URL } from "react-native-dotenv";
 
 const orgApi = axios.create({
-  baseURL: process.env.SERVICE_API_URL
+  baseURL: SERVICE_API_URL
 });
 
 export default orgApi;
