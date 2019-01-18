@@ -29,6 +29,7 @@ import { colors } from "styles";
 import eventServices from "services/event";
 import { checkIfLoggedIn } from "utils/user";
 import { addHours } from "utils/formatting";
+import EventForm from "components/EventForm";
 
 const types = [
   { label: "Raid", value: "sweep" },
