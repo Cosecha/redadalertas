@@ -10,7 +10,7 @@ import { Formik } from "formik";
 
 // Redadalertas
 import authServices from "services/auth";
-import asyncStore from "utils/asyncstorage";
+import { checkIfLoggedIn } from "utils/user";
 
 const styles = StyleSheet.create({
   container: {
@@ -33,7 +33,23 @@ const initialValues = {
 export default class ReporterLoginForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...initialValues }
+    this.state = { ...initialValues, user: null }
+  }
+
+  async componentDidMount() {
+    const { navigation } = this.props;
+    this.willFocusSub = navigation.addListener('willFocus',
+      async payload => this.setState({ user: await checkIfLoggedIn() })
+    );
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state != nextState;
+  }
+
+  componentWillUnmount() {
+    this.willFocusSub.remove();
+    this.setState({ user: null });
   }
 
   handleSubmit = async ()=> {
@@ -53,7 +69,7 @@ export default class ReporterLoginForm extends Component {
     } catch (error) {
       Toast.show({
         buttonText: "OK",
-        text: "Error logging in: " + error,
+        text: "Error logging in: " + (error.message || error),
         type: "danger"
       });
     }

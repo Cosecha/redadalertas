@@ -2,9 +2,8 @@
 #
 .DS_Store
 
-# Ignore env vars
+# Add env vars to .gitignore
 .env
-.env.production
 
 # Xcode
 #

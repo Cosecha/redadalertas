@@ -29,7 +29,6 @@ import { colors } from "styles";
 import eventServices from "services/event";
 import { checkIfLoggedIn } from "utils/user";
 import { addHours } from "utils/formatting";
-import EventForm from "components/EventForm";
 
 const types = [
   { label: "Raid", value: "sweep" },
@@ -56,22 +55,53 @@ const initialValues = {
 };
 const initialState = { agencyInputValue: "", expireAt: 12 };
 
-export default class ReportForm extends Component {
+export default class EventForm extends Component {
   state = initialState;
 
+  componentDidMount() {
+    const { eventToEdit } = this.props || null;
+    if (eventToEdit) {
+      const agencyString = eventToEdit.present.map(a=> {return a.agency}).toString();
+      this.setState({
+        agencyInputValue: agencyString,
+        expireAt: null
+      });
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state != nextState;
+  }
+
   onSubmit = async (values, { resetForm }) => {
+    let response;
     try {
       const user = await checkIfLoggedIn();
       if (!user) throw new Error("Not logged in.");
       let data = {
         ...values,
-        "created.by.user": user.credentials.id,
         user: user
       }
-      let response = await eventServices.post(data);
+      if (data.updated) delete data["updated"];
+      if (this.props.newEvent === true) {
+        // If new event, add user info
+        data["created.by.user"] = user.credentials.id;
+        response = await eventServices.post(data);
+      } else {
+        // If updating event, add event _id, fix/remove server-generated data
+        if (data.created) delete data["created"];
+        if (typeof data.description == 'string') {
+          // TO-DO: remove this when server i18n is fixed
+          const i18nDesc = { en: data.description }
+          data.description = i18nDesc;
+        }
+        data._id = data.id;
+        delete data["id"];
+        response = await eventServices.put(data);
+      }
       if (response instanceof Error) throw response;
       this.clearForm(resetForm);
-      this.props.navigation.navigate("EventsMap", {
+      this.props.nav.navigate("EventsMap", {
         refresh: true,
         event: response.data[0]
       });
@@ -83,31 +113,28 @@ export default class ReportForm extends Component {
     } catch (error) {
       Toast.show({
         buttonText: "OK",
-        text: "Error submitting report: " + error,
+        text: "Error submitting report: " + (error.message || error),
         type: "danger"
       });
     }
   };
 
   clearForm = resetForm => {
-    resetForm(initialValues);
-    this.setState(initialState);
+    if (this.props.newEvent) {
+      resetForm(initialValues);
+      this.setState(initialState);
+    }
   };
 
   render() {
-    const { navigation } = this.props;
+    const { nav } = this.props;
+    const { eventToEdit } = this.props || null;
     const { agencyInputValue, expireAt } = this.state;
 
     return (
-      <Formik initialValues={initialValues} onSubmit={this.onSubmit}>
+      <Formik initialValues={eventToEdit || initialValues} onSubmit={this.onSubmit}>
         {props => (
           <Container>
-            <Header>
-              <Body>
-                <Title>Report Event</Title>
-              </Body>
-            </Header>
-
             <Content>
               <Form>
                 <Item style={{ marginLeft: 15 }} fixedLabel>
@@ -146,18 +173,25 @@ export default class ReportForm extends Component {
                   <Label>Description (EN)</Label>
                   <Input
                     multiline
-                    onChangeText={props.handleChange("description.en")}
+                    onChangeText={(change)=> {
+                      if (props.values.description && props.values.description.en) {
+                        props.setFieldValue("description.en", change);
+                      } else {
+                        props.setFieldValue("description", change);
+                      }
+                    }}
                     style={{ paddingTop: 15, paddingBottom: 15 }}
-                    value={props.values.description.en}
+                    value={props.values.description && props.values.description.en ? props.values.description.en : props.values.description}
                   />
                 </Item>
                 <Item>
                   <Label>Description (ES)</Label>
                   <Input
+                    disabled={!this.props.newEvent}
                     multiline
                     onChangeText={props.handleChange("description.es")}
                     style={{ paddingTop: 15, paddingBottom: 15 }}
-                    value={props.values.description.es}
+                    value={props.values.description && props.values.description.es ? props.values.description.es : ''}
                   />
                 </Item>
                 <Item>
@@ -172,7 +206,7 @@ export default class ReportForm extends Component {
                     <Button
                       bordered
                       onPress={() =>
-                        navigation.navigate("EditLocation", {
+                        nav.navigate("EditLocation", {
                           setLocation: location =>
                             props.setFieldValue("location", location)
                         })
@@ -202,7 +236,7 @@ export default class ReportForm extends Component {
                           // Save # of hours to display
                           this.setState({ expireAt: change });
                         }}
-                        placeholder="Select expiration time"
+                        placeholder={this.props.newEvent ? "Select expiration time" : "Change expiration time"}
                         selectedValue={expireAt}
                       >
                         {[1,2,4,8,12,24,48,72].map(time => (
@@ -228,13 +262,13 @@ export default class ReportForm extends Component {
                   />
                 </Item>
               </Form>
+              <Button block
+                style={{ backgroundColor: colors.primary, margin: 15 }}
+                onPress={props.handleSubmit}
+              >
+                <Text>{(this.props.newEvent) ? "Submit" : "Submit Changes"}</Text>
+              </Button>
             </Content>
-            <Button block
-              style={{ backgroundColor: colors.primary, margin: 15 }}
-              onPress={props.handleSubmit}
-            >
-              <Text>Add Event</Text>
-            </Button>
           </Container>
         )}
       </Formik>
