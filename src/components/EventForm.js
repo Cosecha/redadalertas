@@ -45,10 +45,12 @@ const initialValues = {
     at: addHours(Date.now(), 12), // 12 hours from now
     deleteOnExpire: false
   },
-  description: {
-    en: "",
-    es: ""
-  },
+  description: "",
+  // TO-DO: Switch to object when i18n is fixed
+  // {
+  //   en: "",
+  //   es: ""
+  // },
   location: {},
   present: [],
   type: types[0].value
@@ -174,24 +176,10 @@ export default class EventForm extends Component {
                   <Input
                     multiline
                     onChangeText={(change)=> {
-                      if (props.values.description && props.values.description.en) {
-                        props.setFieldValue("description.en", change);
-                      } else {
-                        props.setFieldValue("description", change);
-                      }
+                      props.setFieldValue("description", change);
                     }}
                     style={{ paddingTop: 15, paddingBottom: 15 }}
-                    value={props.values.description && props.values.description.en ? props.values.description.en : props.values.description}
-                  />
-                </Item>
-                <Item>
-                  <Label>Description (ES)</Label>
-                  <Input
-                    disabled={!this.props.newEvent}
-                    multiline
-                    onChangeText={props.handleChange("description.es")}
-                    style={{ paddingTop: 15, paddingBottom: 15 }}
-                    value={props.values.description && props.values.description.es ? props.values.description.es : ''}
+                    value={props.values.description}
                   />
                 </Item>
                 <Item>
