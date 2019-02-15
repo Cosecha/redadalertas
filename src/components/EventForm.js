@@ -84,6 +84,7 @@ export default class EventForm extends Component {
         ...values,
         user: user
       }
+      // Don't pass in old data.updated so new date gets generated:
       if (data.updated) delete data["updated"];
       if (this.props.newEvent === true) {
         // If new event, add user info
@@ -131,12 +132,14 @@ export default class EventForm extends Component {
   render() {
     const { nav } = this.props;
     const { eventToEdit } = this.props || null;
+    const { header } = this.props || <></>;
     const { agencyInputValue, expireAt } = this.state;
 
     return (
       <Formik initialValues={eventToEdit || initialValues} onSubmit={this.onSubmit}>
         {props => (
           <Container>
+            {header}
             <Content>
               <Form>
                 <Item style={{ marginLeft: 15 }} fixedLabel>

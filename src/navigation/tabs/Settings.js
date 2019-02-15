@@ -1,15 +1,28 @@
 // Vendor
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import { createStackNavigator } from "react-navigation";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
+// Redadalertas
+import SettingsPage from "screens/Settings/SettingsPage";
+import ChangePassword from "screens/Settings/ChangePassword";
+
+const Settings = createStackNavigator(
+  {
+    SettingsPage,
+    ChangePassword
+  },
+  {
+    initialRouteName: "SettingsPage"
   }
-});
-const Settings = () => <View style={styles.container} />;
+);
 
-export default Settings;
+const SettingsTab = createStackNavigator(
+  {
+    Settings
+  },
+  {
+    mode: "modal",
+    headerMode: "none"
+  }
+);
+
+export default SettingsTab;

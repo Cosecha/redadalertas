@@ -4,9 +4,9 @@ import { AsyncStorage, Text, StyleSheet, View } from "react-native";
 import { createBottomTabNavigator, createAppContainer } from "react-navigation";
 
 // Redadalertas
-import Events from "navigation/tabs/Events";
-import Report from "navigation/tabs/Report";
-import Settings from "navigation/tabs/Settings";
+import EventsTab from "navigation/tabs/Events";
+import ReportTab from "navigation/tabs/Report";
+import SettingsTab from "navigation/tabs/Settings";
 import { colors } from "styles";
 import { TabIcon } from "navigation/utils";
 import TabBarIcon from "ui/TabBarIcon";
