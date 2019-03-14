@@ -4,13 +4,13 @@ import { StyleSheet, View } from "react-native";
 
 // Vendor
 import {
-  Container, Content, H1, H2, H3, Button, Text, Item, Label, Input,
+  Container, Content, H1, H2, H3, Button, Text, Item, Label, Input, Toast
 } from 'native-base';
-
 import { Formik } from "formik";
 
 // Redadalertas
 import { colors } from "styles";
+import authServices from "services/auth";
 import userServices from "services/user";
 import { checkIfLoggedIn } from "utils/user";
 
@@ -25,6 +25,10 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 20
+  },
+  input: {
+    paddingTop: 15,
+    paddingBottom: 15
   }
 });
 
@@ -37,21 +41,34 @@ const initialValues = {
 export default class ChangePassword extends Component {
   static navigationOptions = () => ({ title: "Change Password" });
 
-  state = { ...initialValues };
-
-  onSubmit = async (values) => {
+  onSubmit = async (values, { resetForm }) => {
     let response;
+    let authResponse;
     try {
       if (values.newPassword1 !== values.newPassword2) {
         throw new Error("New passwords don't match.");
       }
-
       const user = await checkIfLoggedIn();
       if (!user) throw new Error("Not logged in.");
 
-      if (true) throw new Error("Incorrect password.");
+      // Attempt to login with current password
+      authResponse = await authServices.login({
+        username: user.credentials.email,
+        password: values.password
+      });
+      if (authResponse instanceof Error) throw new Error("Could not authorize current credentials.");
 
-      this.props.nav.navigate("SettingsPage", {
+      let data = {
+        _id: authResponse.credentials.id,
+        password: values.newPassword1,
+        user: authResponse
+      }
+      response = await userServices.put(data);
+      if (response instanceof Error) throw response;
+
+      asyncStore.save("user", JSON.stringify(response));
+      this.clearForm(resetForm);
+      this.props.navigation.navigate("SettingsPage", {
         refresh: true
       });
       Toast.show({
@@ -68,6 +85,10 @@ export default class ChangePassword extends Component {
     }
   };
 
+  clearForm = resetForm => {
+    resetForm(initialValues);
+  };
+
   render() {
     const { navigation } = this.props;
 
@@ -80,38 +101,35 @@ export default class ChangePassword extends Component {
                 <Container>
                   <Content>
                     <Item fixedLabel>
-                      <Label>Enter Current Password</Label>
+                      <Label>Current</Label>
                       <Input
-                        placeholder="password"
                         secureTextEntry={true}
                         style={styles.input}
-                        value={this.state.password}
-                        onChangeText={(password) => this.setState({ password })}
+                        onChangeText={change => props.setFieldValue("password", change)}
+                        value={props.values.password}
                       />
                     </Item>
                     <Item fixedLabel>
-                      <Label>Enter New Password</Label>
+                      <Label>New</Label>
                       <Input
-                        placeholder="password"
                         secureTextEntry={true}
                         style={styles.input}
-                        value={this.state.newPassword1}
-                        onChangeText={(password) => this.setState({ newPassword1 })}
+                        onChangeText={change => props.setFieldValue("newPassword1", change)}
+                        value={props.values.newPassword1}
                       />
                     </Item>
                     <Item fixedLabel>
-                      <Label>Enter New Password Again</Label>
+                      <Label>New Again</Label>
                       <Input
-                        placeholder="password"
                         secureTextEntry={true}
                         style={styles.input}
-                        value={this.state.newPassword2}
-                        onChangeText={(password) => this.setState({ newPassword2 })}
+                        onChangeText={change => props.setFieldValue("newPassword2", change)}
+                        value={props.values.newPassword2}
                       />
                     </Item>
                     <Button block
                       style={{ backgroundColor: colors.primary, margin: 15, marginTop: 25 }}
-                      onPress={()=> {}}
+                      onPress={props.handleSubmit}
                     >
                       <Text>Change Password</Text>
                     </Button>
