@@ -136,7 +136,7 @@ class EditLocation extends Component {
             ref={ref => {
               this.map = ref;
             }}
-            region={{
+            initialRegion={{
               latitude: 37.78825,
               longitude: -122.4324,
               latitudeDelta: 0.15,
