@@ -45,7 +45,7 @@ class EditLocation extends Component {
       const results = await Geocoder.geocodeAddress(address);
       this.setState(
         {
-          results: results.map(result => {
+          results: results.map((result, index) => {
             const { lat, lng } = result.position;
             return {
               address_1: result.feature,
@@ -53,7 +53,7 @@ class EditLocation extends Component {
               latitude: lat,
               coordinate: { latitude: lat, longitude: lng },
               longitude: lng,
-              identifier: `{lat}{lng}`,
+              identifier: `${index}`,
               state: result.adminArea,
               zipcode: result.postalCode
             };
