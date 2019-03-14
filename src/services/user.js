@@ -5,14 +5,13 @@ async function put(data) {
   let response;
   try {
     const user = { ...data };
-    delete event['user'];
-    response = await orgApi.put("/user", data, {
+    delete user['user'];
+    response = await orgApi.put("/user", user, {
       headers: authHeader(data.user),
     });
-    // TO-DO: If password changed, create and store new auth credentials
     return response;
   } catch (err) {
-    console.log("Event PUT error: ", err.response || err);
+    console.log("User PUT error: ", err.response || err);
     return err;
   }
 }
