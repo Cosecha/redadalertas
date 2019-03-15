@@ -66,14 +66,20 @@ export default class ChangePassword extends Component {
       response = await userServices.put(data);
       if (response instanceof Error) throw response;
 
-      asyncStore.save("user", JSON.stringify(response));
+      loginResponse = await authServices.login({
+        username: response.data.email,
+        password: values.newPassword2
+      });
+      if (loginResponse instanceof Error) throw new Error("Error logging in with new password.");
+
+      asyncStore.save("user", JSON.stringify(loginResponse));
       this.clearForm(resetForm);
-      this.props.navigation.navigate("ReporterLoginForm", {
+      this.props.navigation.navigate("SettingsPage", {
         refresh: true
       });
       Toast.show({
         buttonText: "OK",
-        text: "Password change successful. Please log in again.",
+        text: "Password change successful.",
         type: "success"
       });
     } catch (error) {
