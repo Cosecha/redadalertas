@@ -67,7 +67,7 @@ export default class SettingsPage extends Component {
       <View style={styles.container}>
         <Content>
         <Button
-          style={{ backgroundColor: colors.lightGray, margin: 15, marginTop: 25 }}
+          style={{ backgroundColor: colors.darkGray, margin: 15, marginTop: 25 }}
           onPress={()=> navigation.navigate("ChangePassword")}
         >
           <Text>Change Password</Text>
