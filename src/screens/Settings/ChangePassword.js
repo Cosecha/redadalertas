@@ -42,8 +42,6 @@ export default class ChangePassword extends Component {
   static navigationOptions = () => ({ title: "Change Password" });
 
   onSubmit = async (values, { resetForm }) => {
-    let response;
-    let authResponse;
     try {
       if (values.newPassword1 !== values.newPassword2) {
         throw new Error("New passwords don't match.");
@@ -52,21 +50,21 @@ export default class ChangePassword extends Component {
       if (!user) throw new Error("Not logged in.");
 
       // Attempt to login with current password
-      authResponse = await authServices.login({
+      const authResponse = await authServices.login({
         username: user.credentials.email,
         password: values.password
       });
       if (authResponse instanceof Error) throw new Error("Could not authorize current credentials.");
 
-      let data = {
+      const data = {
         _id: authResponse.credentials.id,
         password: values.newPassword1,
         user: authResponse
       }
-      response = await userServices.put(data);
+      const response = await userServices.put(data);
       if (response instanceof Error) throw response;
 
-      loginResponse = await authServices.login({
+      const loginResponse = await authServices.login({
         username: response.data.email,
         password: values.newPassword2
       });
