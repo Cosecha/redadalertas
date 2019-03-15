@@ -30,7 +30,7 @@ import eventServices from "services/event";
 import { checkIfLoggedIn } from "utils/user";
 
 const styles = StyleSheet.create({
-  container: {
+  view: {
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
@@ -64,7 +64,7 @@ export default class SettingsPage extends Component {
     const { navigation } = this.props;
 
     return (
-      <View style={styles.container}>
+      <View style={styles.view}>
         <Content>
         <Button
           style={{ backgroundColor: colors.darkGray, margin: 15, marginTop: 25 }}
