@@ -4,7 +4,17 @@ import { StyleSheet, View } from "react-native";
 
 // Vendor
 import {
-  Container, Content, Header, Title, Form, Item, Input, Label, Button, Text, Toast
+  Container,
+  Content,
+  Header,
+  Form,
+  Item,
+  Input,
+  Label,
+  Button,
+  Text,
+  Title,
+  Toast
 } from "native-base";
 import { Formik } from "formik";
 
@@ -26,20 +36,20 @@ const styles = StyleSheet.create({
 });
 
 const initialValues = {
-  username: '',
-  password: ''
-}
+  username: "",
+  password: ""
+};
 
 export default class ReporterLoginForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...initialValues, user: null }
+    this.state = { ...initialValues, user: null };
   }
 
   async componentDidMount() {
     const { navigation } = this.props;
-    this.willFocusSub = navigation.addListener('willFocus',
-      async payload => this.setState({ user: await checkIfLoggedIn() })
+    this.willFocusSub = navigation.addListener("willFocus", async payload =>
+      this.setState({ user: await checkIfLoggedIn() })
     );
   }
 
@@ -52,9 +62,9 @@ export default class ReporterLoginForm extends Component {
     this.setState({ user: null });
   }
 
-  handleSubmit = async ()=> {
+  handleSubmit = async () => {
     try {
-      let response = await authServices.login({ ...this.state });
+      const response = await authServices.login({ ...this.state });
       if (response instanceof Error) throw response;
       // store user details and basic auth credentials in local storage
       // to keep user logged in between page refreshes
@@ -69,7 +79,7 @@ export default class ReporterLoginForm extends Component {
     } catch (error) {
       Toast.show({
         buttonText: "OK",
-        text: "Error logging in: " + (error.message || error),
+        text: `Error logging in: ${error.message || error}`,
         type: "danger"
       });
     }
@@ -80,12 +90,8 @@ export default class ReporterLoginForm extends Component {
   }
 
   render() {
-
     return (
-      <Container
-        onSubmit={this.onSubmit}
-        style={styles.container}
-      >
+      <Container onSubmit={this.onSubmit} style={styles.container}>
         <Header>
           <Title>Log In</Title>
         </Header>
@@ -97,19 +103,21 @@ export default class ReporterLoginForm extends Component {
                 placeholder="username@mail.com"
                 style={styles.input}
                 value={this.state.username}
-                onChangeText={(username) => this.setState({
-                  username: username.toLowerCase()
-                })}
+                onChangeText={username =>
+                  this.setState({
+                    username: username.toLowerCase()
+                  })
+                }
               />
             </Item>
             <Item fixedLabel>
               <Label>Password</Label>
               <Input
                 placeholder="password"
-                secureTextEntry={true}
+                secureTextEntry
                 style={styles.input}
                 value={this.state.password}
-                onChangeText={(password) => this.setState({ password })}
+                onChangeText={password => this.setState({ password })}
               />
             </Item>
             <Button style={{ marginLeft: 15 }} onPress={this.handleSubmit}>
