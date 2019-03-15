@@ -52,6 +52,19 @@ class EditLocation extends Component {
     }
   };
 
+  displayCoordinates = async coordinates => {
+    try {
+      const results = await Geocoder.geocodePosition(coordinates);
+      this.displayResults(results);
+    } catch (error) {
+      Toast.show({
+        buttonText: "OK",
+        text: `Error geocoding coordinates: ${error.message || error}`,
+        type: "danger"
+      });
+    }
+  };
+
   displayResults = results => {
     this.setState(
       {
@@ -107,6 +120,14 @@ class EditLocation extends Component {
     }
   }
 
+  updateMarker = event => {
+    const {
+      coordinate: { latitude: lat, longitude: lng }
+    } = event.nativeEvent;
+
+    this.displayCoordinates({ lat, lng });
+  };
+
   render() {
     const { navigation } = this.props;
     const { inputValue, results } = this.state;
@@ -144,6 +165,8 @@ class EditLocation extends Component {
           >
             {results.map(result => (
               <Marker
+                draggable
+                onDragEnd={this.updateMarker}
                 coordinate={result.coordinate}
                 identifier={result.identifier}
                 key={result.identifier}
