@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native";
 
 // Vendor
 import {
-  Container, Content, Header, Form, Item, Input, Label, Button, Text, Toast
+  Container, Content, Header, Title, Form, Item, Input, Label, Button, Text, Toast
 } from "native-base";
 import { Formik } from "formik";
 
@@ -86,7 +86,9 @@ export default class ReporterLoginForm extends Component {
         onSubmit={this.onSubmit}
         style={styles.container}
       >
-        <Header />
+        <Header>
+          <Title>Log In</Title>
+        </Header>
         <Content>
           <Form>
             <Item fixedLabel>

@@ -4,6 +4,8 @@
 
 # Add env vars to .gitignore
 .env
+.env.local
+.env.staging
 
 # Xcode
 #

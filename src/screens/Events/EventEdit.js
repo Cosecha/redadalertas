@@ -20,18 +20,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
-const types = [
-  { label: "Raid", value: "sweep" },
-  { label: "Individual", value: "targeted" },
-  { label: "Traffic Stop", value: "traffic" },
-  { label: "I-9 Audit", value: "i9" },
-  { label: "Checkpoint", value: "checkpoint" },
-  { label: "Action", value: "action" },
-  { label: "False Alarm", value: "falsealarm" },
-  { label: "Other", value: "other" },
-];
-
 export default class EventEdit extends Component {
   static navigationOptions = () => ({ title: "Edit Event" });
 
