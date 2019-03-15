@@ -43,29 +43,7 @@ class EditLocation extends Component {
   displayAddress = async address => {
     try {
       const results = await Geocoder.geocodeAddress(address);
-      this.setState(
-        {
-          results: results.map((result, index) => {
-            const { lat, lng } = result.position;
-            return {
-              address_1: result.feature,
-              city: result.locality,
-              latitude: lat,
-              coordinate: { latitude: lat, longitude: lng },
-              longitude: lng,
-              identifier: `${index}`,
-              state: result.adminArea,
-              zipcode: result.postalCode
-            };
-          })
-        },
-        () => {
-          const markerIds = this.state.results.map(result => result.identifier);
-          setTimeout(() => {
-            this.map.fitToSuppliedMarkers(markerIds);
-          }, 1000);
-        }
-      );
+      this.displayResults(results);
     } catch (error) {
       console.log("Error geocoding location: ", error);
       Toast.show({
@@ -74,6 +52,32 @@ class EditLocation extends Component {
         type: "danger"
       });
     }
+  };
+
+  displayResults = results => {
+    this.setState(
+      {
+        results: results.map((result, index) => {
+          const { lat, lng } = result.position;
+          return {
+            address_1: result.feature,
+            city: result.locality,
+            latitude: lat,
+            coordinate: { latitude: lat, longitude: lng },
+            longitude: lng,
+            identifier: `${index}`,
+            state: result.adminArea,
+            zipcode: result.postalCode
+          };
+        })
+      },
+      () => {
+        const markerIds = this.state.results.map(result => result.identifier);
+        setTimeout(() => {
+          this.map.fitToSuppliedMarkers(markerIds);
+        }, 1000);
+      }
+    );
   };
 
   sendLocation(location) {
