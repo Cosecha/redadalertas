@@ -19,6 +19,7 @@ import {
 import { Formik } from "formik";
 
 // Redadalertas
+import { colors } from "styles";
 import authServices from "services/auth";
 import { checkIfLoggedIn } from "utils/user";
 
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "stretch",
-    backgroundColor: "#F5FCFF"
+    backgroundColor: colors.lightGray
   },
   input: {
     paddingTop: 15,

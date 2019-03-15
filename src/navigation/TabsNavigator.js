@@ -19,9 +19,9 @@ export default class TabsNavigator extends Component {
       ? {
           Events,
           Report,
-          Settings
+          SettingsTab
         }
-      : { Events, Settings };
+      : { Events, SettingsTab };
     const AppNavigator = createBottomTabNavigator(tabs, {
       defaultNavigationOptions: ({ navigation }) => ({
         tabBarIcon: ({ tintColor }) => {
