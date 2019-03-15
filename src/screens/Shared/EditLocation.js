@@ -40,7 +40,7 @@ const AddLocationCallout = () => (
 class EditLocation extends Component {
   state = { inputValue: "", results: [] };
 
-  geocode = async address => {
+  displayAddress = async address => {
     try {
       const results = await Geocoder.geocodeAddress(address);
       this.setState(
@@ -113,7 +113,7 @@ class EditLocation extends Component {
             <Input
               returnKeyType="search"
               onChangeText={address => this.setState({ inputValue: address })}
-              onSubmitEditing={() => this.geocode(inputValue)}
+              onSubmitEditing={() => this.displayAddress(inputValue)}
               placeholder="Enter Street Address"
               value={inputValue}
             />
