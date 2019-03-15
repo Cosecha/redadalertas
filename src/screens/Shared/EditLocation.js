@@ -61,7 +61,7 @@ class EditLocation extends Component {
         },
         () => {
           const markerIds = this.state.results.map(result => result.identifier);
-          setTimeout(()=> {
+          setTimeout(() => {
             this.map.fitToSuppliedMarkers(markerIds);
           }, 1000);
         }
@@ -70,7 +70,7 @@ class EditLocation extends Component {
       console.log("Error geocoding location: ", error);
       Toast.show({
         buttonText: "OK",
-        text: "Error geocoding location: " + (error.message || error),
+        text: `Error geocoding location: ${error.message || error}`,
         type: "danger"
       });
     }
@@ -78,14 +78,7 @@ class EditLocation extends Component {
 
   sendLocation(location) {
     try {
-      const {
-        address_1,
-        city,
-        state,
-        zipcode,
-        latitude,
-        longitude
-      } = location;
+      const { address_1, city, state, zipcode, latitude, longitude } = location;
       // Basic location validation
       if (!address_1) throw new Error("No street address.");
       if (!city) throw new Error("No city.");
@@ -102,7 +95,7 @@ class EditLocation extends Component {
       console.log("Error setting location: ", error);
       Toast.show({
         buttonText: "OK",
-        text: "Error setting location: " + (error.message || error),
+        text: `Error setting location: ${error.message || error}`,
         type: "danger"
       });
     }
