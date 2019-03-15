@@ -22,9 +22,7 @@ import IconBase from "ui/IconBase";
 import { colors } from "styles";
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
+  container: { flex: 1 },
   map: {
     ...StyleSheet.absoluteFillObject
   }
