@@ -80,6 +80,10 @@ class EditLocation extends Component {
     );
   };
 
+  calloutBody({ city, state, zipcode }) {
+    return `${city}, ${state} ${zipcode || ""}`;
+  }
+
   sendLocation(location) {
     try {
       const { address_1, city, state, zipcode, latitude, longitude } = location;
@@ -168,7 +172,7 @@ class EditLocation extends Component {
                 >
                   <Content>
                     <Text>{result.address_1}</Text>
-                    <Text>{result.city}, {result.state} {result.zipcode}</Text>
+                    <Text>{this.calloutBody(result)}</Text>
                   </Content>
                   <AddLocationCallout />
                 </Callout>
