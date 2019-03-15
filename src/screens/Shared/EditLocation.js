@@ -119,7 +119,7 @@ class EditLocation extends Component {
             />
           </Item>
           <Button transparent onPress={() => navigation.goBack()}>
-            <Text>Cancel</Text>
+            <Text style={{ color: colors.primary }}>Cancel</Text>
           </Button>
         </Header>
 
