@@ -1,4 +1,8 @@
 {
+  "env": {
+    "detox": true,
+    "mocha": true
+  },
   "extends": [
     "airbnb",
     "plugin:prettier/recommended",
