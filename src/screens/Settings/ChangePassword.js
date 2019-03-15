@@ -68,12 +68,12 @@ export default class ChangePassword extends Component {
 
       asyncStore.save("user", JSON.stringify(response));
       this.clearForm(resetForm);
-      this.props.navigation.navigate("SettingsPage", {
+      this.props.navigation.navigate("ReporterLoginForm", {
         refresh: true
       });
       Toast.show({
         buttonText: "OK",
-        text: "Password change successful.",
+        text: "Password change successful. Please log in again.",
         type: "success"
       });
     } catch (error) {
