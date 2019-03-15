@@ -43,7 +43,6 @@ class EditLocation extends Component {
       const results = await Geocoder.geocodeAddress(address);
       this.displayResults(results);
     } catch (error) {
-      console.log("Error geocoding location: ", error);
       Toast.show({
         buttonText: "OK",
         text: `Error geocoding location: ${error.message || error}`,
@@ -111,7 +110,6 @@ class EditLocation extends Component {
       setLocation(location);
       navigation.goBack();
     } catch (error) {
-      console.log("Error setting location: ", error);
       Toast.show({
         buttonText: "OK",
         text: `Error setting location: ${error.message || error}`,
