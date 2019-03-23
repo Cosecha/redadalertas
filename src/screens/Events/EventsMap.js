@@ -81,11 +81,6 @@ export default class EventsMap extends Component {
     }, 1500);
   }
 
-  focusMap(events) {
-    setTimeout(()=> {
-      this.map.fitToSuppliedMarkers(events.map(event => event.id));
-    }, 1000);
-  }
 
   async getEvents(newEvent) {
     try {
@@ -94,7 +89,6 @@ export default class EventsMap extends Component {
       this.setState({ events: response.data }, () => {
         const { events } = this.state;
         if (newEvent) this.focusMarker(newEvent);
-        else this.focusMap(events);
       });
       Toast.show({
         buttonText: "OK",
