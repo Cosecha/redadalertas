@@ -1,6 +1,7 @@
 // Setup
 import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { connect } from "react-redux";
 
 // Vendor
 import MapView, { Callout, Marker } from "react-native-maps";
@@ -9,6 +10,7 @@ import { Toast, Fab, Icon } from "native-base";
 // Redadalertas
 import { colors } from "styles";
 import eventServices from "services/event";
+import { getEvents } from "reducers/event";
 
 const styles = StyleSheet.create({
   container: {
@@ -30,19 +32,18 @@ const types = [
   { label: "Other", value: "other" },
 ];
 
-export default class EventsMap extends Component {
+class EventsMap extends Component {
   static navigationOptions = () => ({ title: "Event Map" });
 
   constructor(props) {
     super(props);
-    this.state = { events: [] };
     this.map = null;
     this.markers = {};
   }
 
   async componentDidMount() {
     const { navigation } = this.props;
-    await this.getEvents();
+    await this.props.getEvents();
     this.willFocusSub = navigation.addListener('willFocus',
       async payload => await this.handleWillFocus(payload)
     );
@@ -52,7 +53,10 @@ export default class EventsMap extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.state != nextState;
+    console.log("shouldComponentUpdate this.state != nextState? ", this.state != nextState);
+    console.log("shouldComponentUpdate this.props != nextProps? ", this.props != nextProps);
+    console.log("shouldComponentUpdate? ", (this.state != nextState) || (this.props != nextProps));
+    return (this.state != nextState) || (this.props != nextProps);
   }
 
   componentWillUnmount() {
@@ -62,7 +66,7 @@ export default class EventsMap extends Component {
 
   async handleWillFocus(payload) {
     const params = (payload.action && payload.action.params) ? payload.action.params : null;
-    if (params && params.refresh === true) await this.getEvents(params.event || null);
+    if (params && params.refresh === true) await this.props.getEvents(params.event || null);
   }
 
   handleWillBlur() {
@@ -81,13 +85,13 @@ export default class EventsMap extends Component {
     }, 1500);
   }
 
-
-  async getEvents(newEvent) {
+  populateMap(newEvent) {
     try {
-      const response = await eventServices.gets();
-      if (response instanceof Error) throw response;
-      this.setState({ events: response.data }, () => {
-        const { events } = this.state;
+      // if (response instanceof Error) throw response;
+      // this.setState({ events: response.data }, () => {
+      //   const { events } = this.state;
+      // });
+      this.props.events.forEach(event => {
         if (newEvent) this.focusMarker(newEvent);
       });
       Toast.show({
@@ -112,8 +116,7 @@ export default class EventsMap extends Component {
   }
 
   render() {
-    const { navigation } = this.props;
-    const { events } = this.state;
+    const { navigation, events } = this.props;
 
     return (
       <View style={styles.container}>
@@ -159,7 +162,7 @@ export default class EventsMap extends Component {
         </MapView>
         <Fab
           style={{ backgroundColor: colors.primary }}
-          onPress={async ()=> {await this.getEvents()}}
+          onPress={async ()=> {await this.props.getEvents()}}
         >
           <Icon name="refresh" />
         </Fab>
@@ -167,3 +170,16 @@ export default class EventsMap extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  let storedEvents = state.events.map(event => ({ ...event }));
+  return {
+    events: storedEvents
+  }
+}
+
+const mapDispatchToProps = {
+  getEvents
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventsMap);
