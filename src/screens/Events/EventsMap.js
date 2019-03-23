@@ -53,9 +53,6 @@ class EventsMap extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log("shouldComponentUpdate this.state != nextState? ", this.state != nextState);
-    console.log("shouldComponentUpdate this.props != nextProps? ", this.props != nextProps);
-    console.log("shouldComponentUpdate? ", (this.state != nextState) || (this.props != nextProps));
     return (this.state != nextState) || (this.props != nextProps);
   }
 
