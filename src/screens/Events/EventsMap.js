@@ -43,7 +43,7 @@ class EventsMap extends Component {
 
   async componentDidMount() {
     const { navigation } = this.props;
-    await this.props.getEvents();
+    await this.populateMap();
     this.willFocusSub = navigation.addListener('willFocus',
       async payload => await this.handleWillFocus(payload)
     );
@@ -82,12 +82,10 @@ class EventsMap extends Component {
     }, 1500);
   }
 
-  populateMap(newEvent) {
+  async populateMap(newEvent) {
     try {
-      // if (response instanceof Error) throw response;
-      // this.setState({ events: response.data }, () => {
-      //   const { events } = this.state;
-      // });
+      await this.props.getEvents();
+      if (this.props.error) throw this.props.error;
       this.props.events.forEach(event => {
         if (newEvent) this.focusMarker(newEvent);
       });
@@ -97,7 +95,7 @@ class EventsMap extends Component {
         type: "success"
       });
     } catch (error) {
-      console.error("Error rendering map: ", error);
+      console.log("Error rendering map: ", error);
       Toast.show({
         buttonText: "OK",
         text: "Error rendering map.",
@@ -159,7 +157,7 @@ class EventsMap extends Component {
         </MapView>
         <Fab
           style={{ backgroundColor: colors.primary }}
-          onPress={async ()=> {await this.props.getEvents()}}
+          onPress={async ()=> {await this.populateMap()}}
         >
           <Icon name="refresh" />
         </Fab>
@@ -169,14 +167,17 @@ class EventsMap extends Component {
 }
 
 const mapStateToProps = state => {
-  let storedEvents = state.events.map(event => ({ ...event }));
+  let storedEvents = state.event.events.map(event => ({ ...event }));
   return {
-    events: storedEvents
+    events: storedEvents,
+    error: state.event.error
   }
 }
 
-const mapDispatchToProps = {
-  getEvents
+const mapDispatchToProps = (dispatch)=> {
+  return {
+    getEvents: () => dispatch(getEvents())
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsMap);
