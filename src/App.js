@@ -2,8 +2,8 @@
 import React, { Component } from "react";
 import { createBottomTabNavigator, createAppContainer } from "react-navigation";
 import { createStore, applyMiddleware } from "redux";
-import thunk from 'redux-thunk';
 import { Provider } from "react-redux";
+import thunkMiddleware from 'redux-thunk';
 
 // Redadalertas
 import rootReducer from "reducers/index";
@@ -17,7 +17,7 @@ import TabBarIcon from "ui/TabBarIcon";
 
 const persistenceKey = __DEV__ ? "NavigationState" : null;
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
 export default class App extends Component {
   state = { isReporter: true };
