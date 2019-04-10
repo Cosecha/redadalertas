@@ -114,6 +114,7 @@ class EventsMap extends Component {
     return (
       <View style={styles.container}>
         <MapView
+          testID="eventsMap"
           style={styles.map}
           ref={ref => { this.map = ref; }}
           initialRegion={{
@@ -154,6 +155,7 @@ class EventsMap extends Component {
           })}
         </MapView>
         <Fab
+          testID="refreshEvents"
           style={{ backgroundColor: colors.primary }}
           onPress={async ()=> {await this.populateMap()}}
         >

@@ -111,6 +111,7 @@ export default class ChangePassword extends Component {
                         style={styles.input}
                         onChangeText={change => props.setFieldValue("password", change)}
                         value={props.values.password}
+                        testID="currentPasswordField"
                       />
                     </Item>
                     <Item fixedLabel>
@@ -120,6 +121,7 @@ export default class ChangePassword extends Component {
                         style={styles.input}
                         onChangeText={change => props.setFieldValue("newPassword1", change)}
                         value={props.values.newPassword1}
+                        testID="newPasswordField"
                       />
                     </Item>
                     <Item fixedLabel>
@@ -129,11 +131,13 @@ export default class ChangePassword extends Component {
                         style={styles.input}
                         onChangeText={change => props.setFieldValue("newPassword2", change)}
                         value={props.values.newPassword2}
+                        testID="repeatNewPasswordField"
                       />
                     </Item>
                     <Button block
                       style={{ backgroundColor: colors.primary, margin: 15, marginTop: 25 }}
                       onPress={props.handleSubmit}
+                      testID="changePassword"
                     >
                       <Text>Change Password</Text>
                     </Button>

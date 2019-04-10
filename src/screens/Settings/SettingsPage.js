@@ -69,6 +69,7 @@ export default class SettingsPage extends Component {
         <Button
           style={{ backgroundColor: colors.darkGray, margin: 15, marginTop: 25 }}
           onPress={()=> navigation.navigate("ChangePassword")}
+          testID="navigateToPasswordForm"
         >
           <Text>Change Password</Text>
         </Button>
