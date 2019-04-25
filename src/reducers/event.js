@@ -1,29 +1,17 @@
 export const SET_EVENTS = "SET_EVENTS";
-export const GET_EVENTS_ERROR = "GET_EVENTS_ERROR";
 import eventServices from "services/event";
+import setEventsError from "./errors";
 
-const initialState = {
-  events: [],
-  error: null
-};
+const initialState = [];
 
-export default function eventReducer(state = initialState, action) {
+export default function eventsReducer(state = initialState, action) {
   switch (action.type) {
     case SET_EVENTS:
-      return { ...state, error: null, events: action.payload };
-    case GET_EVENTS_ERROR:
-      return { ...state, error: action.payload.error };
+      return action.payload;
     default:
       return state;
   }
 }
-
-const getEventsError = error => {
-  return {
-    type: GET_EVENTS_ERROR,
-    payload: { error }
-  }
-};
 
 const setEvents = events => {
   return {
@@ -39,7 +27,7 @@ export function getEvents() {
       if (response instanceof Error) throw response;
       dispatch(setEvents(response.data));
     } catch (error) {
-      dispatch(getEventsError(error));
+      dispatch(setEventsError(error));
     }
   }
 }

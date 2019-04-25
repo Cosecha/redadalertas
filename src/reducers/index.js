@@ -1,10 +1,12 @@
 import { combineReducers } from "redux";
 
-import eventReducer from "./event";
+import eventsReducer from "./event";
+import errorsReducer from "./errors";
 
 const rootReducer = combineReducers(
   {
-    events: eventReducer
+    events: eventsReducer,
+    errors: errorsReducer
   }
 );
 

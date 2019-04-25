@@ -85,7 +85,7 @@ class EventsMap extends Component {
   async populateMap(newEvent) {
     try {
       await this.props.getEvents();
-      if (this.props.error) throw this.props.error;
+      if (this.props.errors.event) throw this.props.errors.event;
       this.props.events.forEach(event => {
         if (newEvent) this.focusMarker(newEvent);
       });
@@ -167,11 +167,10 @@ class EventsMap extends Component {
 }
 
 const mapStateToProps = state => {
-  let storedEvents = state.event.events.map(event => ({ ...event }));
   return {
-    events: storedEvents,
-    error: state.event.error
-  }
+    events: state.events.map(event => ({ ...event })),
+    errors: state.errors
+  };
 }
 
 const mapDispatchToProps = (dispatch)=> {
