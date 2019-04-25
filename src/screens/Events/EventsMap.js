@@ -168,7 +168,7 @@ class EventsMap extends Component {
 
 const mapStateToProps = state => {
   return {
-    events: state.events.map(event => ({ ...event })),
+    events: state.events,
     errors: state.errors
   };
 }
