@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 
 import eventsReducer from "./event";
-import errorsReducer from "./errors";
+import errorsReducer from "./error";
 
 const rootReducer = combineReducers(
   {
