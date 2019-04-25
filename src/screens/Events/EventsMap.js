@@ -86,9 +86,7 @@ class EventsMap extends Component {
     try {
       await this.props.getEvents();
       if (this.props.errors.event) throw this.props.errors.event;
-      this.props.events.forEach(event => {
-        if (newEvent) this.focusMarker(newEvent);
-      });
+      if (newEvent) this.focusMarker(newEvent);
       Toast.show({
         buttonText: "OK",
         text: "Events fetched successfully.",

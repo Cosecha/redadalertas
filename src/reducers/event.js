@@ -1,6 +1,6 @@
 export const SET_EVENTS = "SET_EVENTS";
 import eventServices from "services/event";
-import setEventsError from "./errors";
+import setEventsError from "./error";
 
 const initialState = [];
 
