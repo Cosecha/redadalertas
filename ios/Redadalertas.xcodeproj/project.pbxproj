@@ -78,6 +78,7 @@
 		E9319A0A1D994A04BD6829CC /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 10707086A5E44DE294E483D5 /* Feather.ttf */; };
 		EDB79C2356834F14B7AC699A /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8CE8EB62E103402BB0441F74 /* MaterialIcons.ttf */; };
 		FA24A77121CC91B6006B7068 /* libRNGeocoder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA24A77021CC9080006B7068 /* libRNGeocoder.a */; };
+		FA407E3E2277F0E200D25AB0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA407E3D2277F0E100D25AB0 /* GoogleService-Info.plist */; };
 		FAEAF90F774643BD863700FD /* libAppCenterReactNativeCrashes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D8AFAB75B9D4FC8A45FB52F /* libAppCenterReactNativeCrashes.a */; };
 		FCF7ECF13BBB41EEBAE76AF5 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5594A2BAED174EADA80251A9 /* Entypo.ttf */; };
 		FF4B740EEE9F4E2E86A5F0C9 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8DE0EB8D5F1470F85AA160B /* libRNGestureHandler.a */; };
@@ -494,6 +495,7 @@
 		F8578D3FF55644289E3B3BBA /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
 		FA24A76B21CC9080006B7068 /* RNGeocoder.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNGeocoder.xcodeproj; path = "../node_modules/react-native-geocoder/ios/RNGeocoder.xcodeproj"; sourceTree = "<group>"; };
 		FA407D9E2274A88500D25AB0 /* Redadalertas.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Redadalertas.entitlements; path = Redadalertas/Redadalertas.entitlements; sourceTree = "<group>"; };
+		FA407E3D2277F0E100D25AB0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Redadalertas/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -789,6 +791,7 @@
 				2606451903D2478390AEB043 /* Resources */,
 				FA24A73321CC9020006B7068 /* Recovered References */,
 				F14CD1CC22314659889DBD8E /* AppCenter-Config.plist */,
+				FA407E3D2277F0E100D25AB0 /* GoogleService-Info.plist */,
 				8866914BEA18FE7C9393DCD8 /* Pods */,
 			);
 			indentWidth = 2;
@@ -1440,6 +1443,7 @@
 				FCF7ECF13BBB41EEBAE76AF5 /* Entypo.ttf in Resources */,
 				7725C5A060F34CC3A2DFDA23 /* EvilIcons.ttf in Resources */,
 				E9319A0A1D994A04BD6829CC /* Feather.ttf in Resources */,
+				FA407E3E2277F0E200D25AB0 /* GoogleService-Info.plist in Resources */,
 				46AF4D2F44BC4A159656DB6E /* FontAwesome.ttf in Resources */,
 				2097060389854508AEEEDA5A /* FontAwesome5_Brands.ttf in Resources */,
 				E9137759072B4DB7940CD958 /* FontAwesome5_Regular.ttf in Resources */,
