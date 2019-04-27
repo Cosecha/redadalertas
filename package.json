@@ -17,6 +17,7 @@
     "react": "16.6.1",
     "react-native": "0.57.7",
     "react-native-dotenv": "^0.2.0",
+    "react-native-firebase": "^5.3.1",
     "react-native-geocoder": "^0.5.0",
     "react-native-gesture-handler": "^1.0.10",
     "react-native-maps": "^0.23.0",
