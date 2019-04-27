@@ -12,4 +12,5 @@ target 'Redadalertas' do
 
   # Required by RNFirebase
   pod 'Firebase/Core', '~> 5.20.1'
+  pod 'Firebase/Messaging', '~> 5.20.1'
 end
