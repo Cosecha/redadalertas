@@ -29,7 +29,7 @@ const types = [
   { label: "Checkpoint", value: "checkpoint" },
   { label: "Action", value: "action" },
   { label: "False Alarm", value: "falsealarm" },
-  { label: "Other", value: "other" },
+  { label: "Other", value: "other" }
 ];
 
 class EventsMap extends Component {
@@ -44,10 +44,12 @@ class EventsMap extends Component {
   async componentDidMount() {
     const { navigation } = this.props;
     await this.populateMap();
-    this.willFocusSub = navigation.addListener('willFocus',
+    this.willFocusSub = navigation.addListener(
+      "willFocus",
       async payload => await this.handleWillFocus(payload)
     );
-    this.willBlurSub = navigation.addListener('willBlur',
+    this.willBlurSub = navigation.addListener(
+      "willBlur",
       async payload => await this.handleWillBlur(payload)
     );
   }
@@ -62,8 +64,10 @@ class EventsMap extends Component {
   }
 
   async handleWillFocus(payload) {
-    const params = (payload.action && payload.action.params) ? payload.action.params : null;
-    if (params && params.refresh === true) await this.props.getEvents(params.event || null);
+    const params =
+      payload.action && payload.action.params ? payload.action.params : null;
+    if (params && params.refresh === true)
+      await this.props.getEvents(params.event || null);
   }
 
   handleWillBlur() {
@@ -71,13 +75,16 @@ class EventsMap extends Component {
   }
 
   focusMarker(event) {
-    this.map.animateToRegion({
+    this.map.animateToRegion(
+      {
         latitude: event.location.latitude,
         longitude: event.location.longitude,
         latitudeDelta: 0.025,
         longitudeDelta: 0.025
-      }, 500);
-    setTimeout(()=> {
+      },
+      500
+    );
+    setTimeout(() => {
       this.markers[event.id].showCallout();
     }, 1500);
   }
@@ -103,9 +110,7 @@ class EventsMap extends Component {
   }
 
   getEventLabel(eventType) {
-    return types.find((type)=> {
-      return type.value == eventType;
-    }).label;
+    return types.find(type => type.value == eventType).label;
   }
 
   render() {
@@ -115,7 +120,9 @@ class EventsMap extends Component {
       <View style={styles.container}>
         <MapView
           style={styles.map}
-          ref={ref => { this.map = ref; }}
+          ref={ref => {
+            this.map = ref;
+          }}
           initialRegion={{
             latitude: 37.7620375,
             longitude: -122.4369478,
@@ -127,16 +134,22 @@ class EventsMap extends Component {
             const { location } = event;
             const latitude = parseFloat(location.latitude);
             const longitude = parseFloat(location.longitude);
-            let address2 = location.address_2 ? (<Text>{location.address_2}</Text>) : <></>;
+            const address2 = location.address_2 ? (
+              <Text>{location.address_2}</Text>
+            ) : (
+              <></>
+            );
 
             return (
               <Marker
                 coordinate={{ latitude, longitude }}
                 identifier={event.id}
                 key={event.id}
-                ref={ref => { this.markers[event.id] = ref; }}
+                ref={ref => {
+                  this.markers[event.id] = ref;
+                }}
                 onCalloutPress={() => {
-                  navigation.navigate("EventPage", { event })
+                  navigation.navigate("EventPage", { event });
                 }}
               >
                 <Callout tooltip={false}>
@@ -155,7 +168,9 @@ class EventsMap extends Component {
         </MapView>
         <Fab
           style={{ backgroundColor: colors.primary }}
-          onPress={async ()=> {await this.populateMap()}}
+          onPress={async () => {
+            await this.populateMap();
+          }}
         >
           <Icon name="refresh" />
         </Fab>
@@ -164,17 +179,16 @@ class EventsMap extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    events: state.events,
-    errors: state.errors
-  };
-}
+const mapStateToProps = state => ({
+  events: state.events,
+  errors: state.errors
+});
 
-const mapDispatchToProps = (dispatch)=> {
-  return {
-    getEvents: () => dispatch(getEvents())
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  getEvents: () => dispatch(getEvents())
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventsMap);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EventsMap);
