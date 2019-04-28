@@ -9,7 +9,6 @@ import { Toast, Fab, Icon } from "native-base";
 
 // Redadalertas
 import { colors } from "styles";
-import eventServices from "services/event";
 import { getEvents } from "reducers/event";
 
 const styles = StyleSheet.create({
