@@ -138,6 +138,9 @@ class EventsMap extends Component {
             ) : (
               <></>
             );
+            const cityStateZip = `
+              ${location.city}, ${location.state} ${location.zipcode}
+            `;
 
             return (
               <Marker
@@ -157,7 +160,7 @@ class EventsMap extends Component {
                       {this.getEventLabel(event.type)}
                     </Text>
                     <Text>{location.address_1}</Text>
-                    <Text>{location.city}, {location.state} {location.zipcode}</Text>
+                    <Text>{cityStateZip}</Text>
                     {address2}
                   </View>
                 </Callout>
