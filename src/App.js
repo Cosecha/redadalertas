@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { createBottomTabNavigator, createAppContainer } from "react-navigation";
 import { createStore, applyMiddleware } from "redux";
+import firebase from "react-native-firebase";
 import { Provider } from "react-redux";
 import thunkMiddleware from "redux-thunk";
 
@@ -21,6 +22,25 @@ const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
 export default class App extends Component {
   state = { isReporter: true };
+
+  componentDidMount() {
+    this.checkNotificationPermission();
+  }
+
+  async checkNotificationPermission() {
+    const enabled = await firebase.messaging().hasPermission();
+    if (!enabled) {
+      this.requestPermission();
+    }
+  }
+
+  async requestPermission() {
+    try {
+      await firebase.messaging().requestPermission();
+    } catch (error) {
+      // User has rejected permissions
+    }
+  }
 
   render() {
     const { isReporter } = this.state;

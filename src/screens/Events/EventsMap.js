@@ -10,6 +10,7 @@ import { Toast, Fab, Icon } from "native-base";
 // Redadalertas
 import { colors } from "styles";
 import { getEvents } from "reducers/event";
+import { Notification } from "utils/notification";
 
 const styles = StyleSheet.create({
   container: {
@@ -54,7 +55,33 @@ class EventsMap extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return (this.state != nextState) || (this.props != nextProps);
+    return this.state != nextState || this.props != nextProps;
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      props: { events: fetchedEvents }
+    } = this;
+    const previousEventIds = prevProps.events.map(event => event.id);
+    const newEvents = fetchedEvents.filter(
+      event => !previousEventIds.includes(event.id)
+    );
+
+    if (newEvents.length > 1) {
+      new Notification({
+        id: "newEvents",
+        title: `${newEvents.length} New Events`,
+        body: "New events have been reported."
+      }).display();
+    } else if (newEvents.length === 1) {
+      const event = newEvents[0];
+      const typeLabel = this.getEventLabel(event.type);
+      new Notification({
+        id: "newEvent",
+        title: `${typeLabel} Reported`,
+        body: `${typeLabel} reported at ${event.location.address_1}`
+      }).display();
+    }
   }
 
   componentWillUnmount() {
