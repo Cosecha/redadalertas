@@ -92,8 +92,7 @@ class EventsMap extends Component {
   async handleWillFocus(payload) {
     const params =
       payload.action && payload.action.params ? payload.action.params : null;
-    if (params && params.refresh === true)
-      await this.props.getEvents(params.event || null);
+    if (params && params.refresh === true) await this.populateMap(params.event);
   }
 
   handleWillBlur() {
