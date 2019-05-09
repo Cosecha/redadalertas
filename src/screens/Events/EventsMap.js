@@ -69,6 +69,7 @@ class EventsMap extends Component {
 
     if (newEvents.length > 1) {
       new Notification({
+        data: { route: "EventsMap" },
         id: "newEvents",
         title: `${newEvents.length} New Events`,
         body: "New events have been reported."
@@ -77,6 +78,7 @@ class EventsMap extends Component {
       const event = newEvents[0];
       const typeLabel = this.getEventLabel(event.type);
       new Notification({
+        data: { route: "EventPage", params: { event }},
         id: "newEvent",
         title: `${typeLabel} Reported`,
         body: `${typeLabel} reported at ${event.location.address_1}`

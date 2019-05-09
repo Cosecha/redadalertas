@@ -16,6 +16,7 @@ import { colors } from "styles";
 import { TabIcon } from "navigation/utils";
 import TabBarIcon from "ui/TabBarIcon";
 import { persistor, store } from "redux/configureStore";
+import { navigate, setNavigator } from "utils/navigation";
 
 const persistenceKey = __DEV__ ? "NavigationState" : null;
 
@@ -23,7 +24,14 @@ export default class App extends Component {
   state = { isReporter: true };
 
   componentDidMount() {
+    this.createNotificationListeners();
     this.checkNotificationPermission();
+  }
+
+  componentWillUnmount() {
+    // I know this looks like a bug, but it's the way react-native-firebase
+    // shows to remove listeners: calling the function again. So weird.
+    this.notificationOpenedListener();
   }
 
   async checkNotificationPermission() {
@@ -39,6 +47,15 @@ export default class App extends Component {
     } catch (error) {
       // User has rejected permissions
     }
+  }
+
+  async createNotificationListeners() {
+    this.notificationOpenedListener = firebase
+      .notifications()
+      .onNotificationOpened(notificationOpen => {
+        const { data: { route, params } } = notificationOpen.notification;
+        navigate(route, params)
+      });
   }
 
   render() {
@@ -72,7 +89,10 @@ export default class App extends Component {
           persistor={persistor}
         >
           <Root>
-            <AppContainer persistenceKey={null} />
+            <AppContainer
+              persistenceKey={null}
+              ref={navigator => setNavigator(navigator)}
+            />
           </Root>
         </PersistGate>
       </Provider>
