@@ -1,10 +1,8 @@
 // Vendor
 import React, { Component } from "react";
 import { createBottomTabNavigator, createAppContainer } from "react-navigation";
-import { createStore, applyMiddleware } from "redux";
 import firebase from "react-native-firebase";
 import { Provider } from "react-redux";
-import thunkMiddleware from "redux-thunk";
 
 // Redadalertas
 import rootReducer from "reducers/index";
@@ -15,10 +13,9 @@ import Settings from "navigation/tabs/Settings";
 import { colors } from "styles";
 import { TabIcon } from "navigation/utils";
 import TabBarIcon from "ui/TabBarIcon";
+import { store } from "redux/configureStore";
 
 const persistenceKey = __DEV__ ? "NavigationState" : null;
-
-const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
 export default class App extends Component {
   state = { isReporter: true };
