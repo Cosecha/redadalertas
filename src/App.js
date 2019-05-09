@@ -1,6 +1,6 @@
 // Vendor
 import React, { Component } from "react";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, Alert } from "react-native";
 import { createBottomTabNavigator, createAppContainer } from "react-navigation";
 import firebase from "react-native-firebase";
 import { PersistGate } from "redux-persist/integration/react";
@@ -37,7 +37,14 @@ export default class App extends Component {
   async checkNotificationPermission() {
     const enabled = await firebase.messaging().hasPermission();
     if (!enabled) {
-      this.requestPermission();
+      Alert.alert(
+        "Would you like to receive notifications?",
+        "We will only notify you of newly reported alerts in your area.",
+        [
+          { text: 'No', style: 'cancel' },
+          { text: 'Ok', onPress: () => this.requestPermission() }
+        ]
+      )
     }
   }
 
