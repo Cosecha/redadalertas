@@ -1,6 +1,7 @@
-export const SET_EVENTS = "SET_EVENTS";
 import eventServices from "services/event";
 import setEventsError from "./error";
+
+export const SET_EVENTS = "SET_EVENTS";
 
 const initialState = [];
 
@@ -13,12 +14,10 @@ export default function eventsReducer(state = initialState, action) {
   }
 }
 
-const setEvents = events => {
-  return {
-    type: SET_EVENTS,
-    payload: events
-  }
-};
+const setEvents = events => ({
+  type: SET_EVENTS,
+  payload: events
+});
 
 export function getEvents() {
   return async dispatch => {
@@ -29,5 +28,5 @@ export function getEvents() {
     } catch (error) {
       dispatch(setEventsError(error));
     }
-  }
+  };
 }

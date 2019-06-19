@@ -1,6 +1,5 @@
 {
   "env": {
-    "detox": true,
     "mocha": true
   },
   "extends": [
@@ -17,15 +16,5 @@
   "rules": {
     "react/jsx-filename-extension": 0,
     "react-native/no-raw-text": 0
-  },
-  "settings": {
-    "import/resolver": {
-      "babel-module": {
-        "alias": {
-          "ui": "./src/components/ui"
-        },
-        "root": ["./src"]
-      }
-    }
   }
 }

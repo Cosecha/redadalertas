@@ -1,9 +1,10 @@
 // Vendor
 import React, { Component } from "react";
+import { ActivityIndicator, Alert } from "react-native";
 import { createBottomTabNavigator, createAppContainer } from "react-navigation";
-import { createStore, applyMiddleware } from "redux";
+import firebase from "react-native-firebase";
+import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
-import thunkMiddleware from 'redux-thunk';
 
 // Redadalertas
 import rootReducer from "reducers/index";
@@ -14,13 +15,55 @@ import Settings from "navigation/tabs/Settings";
 import { colors } from "styles";
 import { TabIcon } from "navigation/utils";
 import TabBarIcon from "ui/TabBarIcon";
+import { persistor, store } from "redux/configureStore";
+import { navigate, setNavigator } from "utils/navigation";
 
 const persistenceKey = __DEV__ ? "NavigationState" : null;
 
-const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
-
 export default class App extends Component {
   state = { isReporter: true };
+
+  componentDidMount() {
+    this.createNotificationListeners();
+    this.checkNotificationPermission();
+  }
+
+  componentWillUnmount() {
+    // I know this looks like a bug, but it's the way react-native-firebase
+    // shows to remove listeners: calling the function again. So weird.
+    this.notificationOpenedListener();
+  }
+
+  async checkNotificationPermission() {
+    const enabled = await firebase.messaging().hasPermission();
+    if (!enabled) {
+      Alert.alert(
+        "Would you like to receive notifications?",
+        "We will only notify you of newly reported alerts in your area.",
+        [
+          { text: 'No', style: 'cancel' },
+          { text: 'Ok', onPress: () => this.requestPermission() }
+        ]
+      )
+    }
+  }
+
+  async requestPermission() {
+    try {
+      await firebase.messaging().requestPermission();
+    } catch (error) {
+      // User has rejected permissions
+    }
+  }
+
+  async createNotificationListeners() {
+    this.notificationOpenedListener = firebase
+      .notifications()
+      .onNotificationOpened(notificationOpen => {
+        const { data: { route, params } } = notificationOpen.notification;
+        navigate(route, params)
+      });
+  }
 
   render() {
     const { isReporter } = this.state;
@@ -46,9 +89,19 @@ export default class App extends Component {
 
     return (
       <Provider store={store}>
-        <Root>
-          <AppContainer persistenceKey={null} />
-        </Root>
+        <PersistGate
+          loading={
+            <ActivityIndicator color={colors.primary} size="large" />
+          }
+          persistor={persistor}
+        >
+          <Root>
+            <AppContainer
+              persistenceKey={null}
+              ref={navigator => setNavigator(navigator)}
+            />
+          </Root>
+        </PersistGate>
       </Provider>
     );
   }

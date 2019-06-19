@@ -9,8 +9,8 @@ import { Toast, Fab, Icon } from "native-base";
 
 // Redadalertas
 import { colors } from "styles";
-import eventServices from "services/event";
 import { getEvents } from "reducers/event";
+import { Notification } from "utils/notification";
 
 const styles = StyleSheet.create({
   container: {
@@ -29,7 +29,7 @@ const types = [
   { label: "Checkpoint", value: "checkpoint" },
   { label: "Action", value: "action" },
   { label: "False Alarm", value: "falsealarm" },
-  { label: "Other", value: "other" },
+  { label: "Other", value: "other" }
 ];
 
 class EventsMap extends Component {
@@ -44,16 +44,46 @@ class EventsMap extends Component {
   async componentDidMount() {
     const { navigation } = this.props;
     await this.populateMap();
-    this.willFocusSub = navigation.addListener('willFocus',
+    this.willFocusSub = navigation.addListener(
+      "willFocus",
       async payload => await this.handleWillFocus(payload)
     );
-    this.willBlurSub = navigation.addListener('willBlur',
+    this.willBlurSub = navigation.addListener(
+      "willBlur",
       async payload => await this.handleWillBlur(payload)
     );
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return (this.state != nextState) || (this.props != nextProps);
+    return this.state != nextState || this.props != nextProps;
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      props: { events: fetchedEvents }
+    } = this;
+    const previousEventIds = prevProps.events.map(event => event.id);
+    const newEvents = fetchedEvents.filter(
+      event => !previousEventIds.includes(event.id)
+    );
+
+    if (newEvents.length > 1) {
+      new Notification({
+        data: { route: "EventsMap" },
+        id: "newEvents",
+        title: `${newEvents.length} New Events`,
+        body: "New events have been reported."
+      }).display();
+    } else if (newEvents.length === 1) {
+      const event = newEvents[0];
+      const typeLabel = this.getEventLabel(event.type);
+      new Notification({
+        data: { route: "EventPage", params: { event }},
+        id: "newEvent",
+        title: `${typeLabel} Reported`,
+        body: `${typeLabel} reported at ${event.location.address_1}`
+      }).display();
+    }
   }
 
   componentWillUnmount() {
@@ -62,8 +92,9 @@ class EventsMap extends Component {
   }
 
   async handleWillFocus(payload) {
-    const params = (payload.action && payload.action.params) ? payload.action.params : null;
-    if (params && params.refresh === true) await this.props.getEvents(params.event || null);
+    const params =
+      payload.action && payload.action.params ? payload.action.params : null;
+    if (params && params.refresh === true) await this.populateMap(params.event);
   }
 
   handleWillBlur() {
@@ -71,13 +102,16 @@ class EventsMap extends Component {
   }
 
   focusMarker(event) {
-    this.map.animateToRegion({
+    this.map.animateToRegion(
+      {
         latitude: event.location.latitude,
         longitude: event.location.longitude,
         latitudeDelta: 0.025,
         longitudeDelta: 0.025
-      }, 500);
-    setTimeout(()=> {
+      },
+      500
+    );
+    setTimeout(() => {
       this.markers[event.id].showCallout();
     }, 1500);
   }
@@ -103,9 +137,7 @@ class EventsMap extends Component {
   }
 
   getEventLabel(eventType) {
-    return types.find((type)=> {
-      return type.value == eventType;
-    }).label;
+    return types.find(type => type.value == eventType).label;
   }
 
   render() {
@@ -115,7 +147,9 @@ class EventsMap extends Component {
       <View style={styles.container}>
         <MapView
           style={styles.map}
-          ref={ref => { this.map = ref; }}
+          ref={ref => {
+            this.map = ref;
+          }}
           initialRegion={{
             latitude: 37.7620375,
             longitude: -122.4369478,
@@ -127,16 +161,25 @@ class EventsMap extends Component {
             const { location } = event;
             const latitude = parseFloat(location.latitude);
             const longitude = parseFloat(location.longitude);
-            let address2 = location.address_2 ? (<Text>{location.address_2}</Text>) : <></>;
+            const address2 = location.address_2 ? (
+              <Text>{location.address_2}</Text>
+            ) : (
+              <></>
+            );
+            const cityStateZip = `
+              ${location.city}, ${location.state} ${location.zipcode}
+            `;
 
             return (
               <Marker
                 coordinate={{ latitude, longitude }}
                 identifier={event.id}
                 key={event.id}
-                ref={ref => { this.markers[event.id] = ref; }}
+                ref={ref => {
+                  this.markers[event.id] = ref;
+                }}
                 onCalloutPress={() => {
-                  navigation.navigate("EventPage", { event })
+                  navigation.navigate("EventPage", { event });
                 }}
               >
                 <Callout tooltip={false}>
@@ -145,7 +188,7 @@ class EventsMap extends Component {
                       {this.getEventLabel(event.type)}
                     </Text>
                     <Text>{location.address_1}</Text>
-                    <Text>{location.city}, {location.state} {location.zipcode}</Text>
+                    <Text>{cityStateZip}</Text>
                     {address2}
                   </View>
                 </Callout>
@@ -155,7 +198,9 @@ class EventsMap extends Component {
         </MapView>
         <Fab
           style={{ backgroundColor: colors.primary }}
-          onPress={async ()=> {await this.populateMap()}}
+          onPress={async () => {
+            await this.populateMap();
+          }}
         >
           <Icon name="refresh" />
         </Fab>
@@ -164,17 +209,16 @@ class EventsMap extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    events: state.events,
-    errors: state.errors
-  };
-}
+const mapStateToProps = state => ({
+  events: state.events,
+  errors: state.errors
+});
 
-const mapDispatchToProps = (dispatch)=> {
-  return {
-    getEvents: () => dispatch(getEvents())
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  getEvents: () => dispatch(getEvents())
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventsMap);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EventsMap);

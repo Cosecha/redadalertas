@@ -9,4 +9,8 @@ target 'Redadalertas' do
   pod 'AppCenter/Crashes', '~> 1.12.0'
   pod 'AppCenter/Analytics', '~> 1.12.0'
   pod 'AppCenterReactNativeShared', '~> 1.11.0'
+
+  # Required by RNFirebase
+  pod 'Firebase/Core', '~> 5.20.1'
+  pod 'Firebase/Messaging', '~> 5.20.1'
 end
