@@ -27,7 +27,7 @@ import { Formik } from "formik";
 // Redadalertas
 import { colors } from "styles";
 import eventServices from "services/event";
-import { checkIfLoggedIn } from "utils/user";
+import { checkForUserLogin } from "utils/user";
 
 const styles = StyleSheet.create({
   view: {
@@ -43,7 +43,7 @@ export default class SettingsPage extends Component {
   onSubmit = async () => {
     let response;
     try {
-      const user = await checkIfLoggedIn();
+      const user = await checkForUserLogin();
       if (!user) throw new Error("Not logged in.");
 
       Toast.show({

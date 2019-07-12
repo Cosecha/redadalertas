@@ -12,7 +12,7 @@ import { Formik } from "formik";
 import { colors } from "styles";
 import authServices from "services/auth";
 import userServices from "services/user";
-import { checkIfLoggedIn } from "utils/user";
+import { checkForUserLogin } from "utils/user";
 
 const styles = StyleSheet.create({
   view: {
@@ -46,7 +46,7 @@ export default class ChangePassword extends Component {
       if (values.newPassword1 !== values.newPassword2) {
         throw new Error("New passwords don't match.");
       }
-      const user = await checkIfLoggedIn();
+      const user = await checkForUserLogin();
       if (!user) throw new Error("Not logged in.");
 
       // Attempt to login with current password

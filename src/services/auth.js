@@ -1,4 +1,3 @@
-import base64 from "base-64";
 import { addHours } from "utils/formatting";
 import asyncStore from "utils/asyncstorage";
 import orgApi from ".";

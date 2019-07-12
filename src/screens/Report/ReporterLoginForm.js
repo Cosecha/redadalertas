@@ -21,7 +21,7 @@ import { Formik } from "formik";
 // Redadalertas
 import { colors } from "styles";
 import authServices from "services/auth";
-import { checkIfLoggedIn } from "utils/user";
+import { checkForUserLogin } from "utils/user";
 
 const styles = StyleSheet.create({
   container: {
@@ -50,7 +50,7 @@ export default class ReporterLoginForm extends Component {
   async componentDidMount() {
     const { navigation } = this.props;
     this.willFocusSub = navigation.addListener("willFocus", async payload =>
-      this.setState({ user: await checkIfLoggedIn() })
+      this.setState({ user: await checkForUserLogin() })
     );
   }
 
