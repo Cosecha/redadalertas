@@ -65,11 +65,11 @@ export default class ReporterLoginForm extends Component {
 
   handleSubmit = async () => {
     try {
-      const response = await authServices.login({ ...this.state });
+      const response = await authServices.login({
+        username: this.state.username,
+        password: this.state.password
+      });
       if (response instanceof Error) throw response;
-      // store user details and basic auth credentials in local storage
-      // to keep user logged in between page refreshes
-      asyncStore.save("user", JSON.stringify(response));
       this.resetForm();
       this.props.navigation.navigate("ReportForm");
       Toast.show({

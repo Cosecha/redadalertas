@@ -2,10 +2,10 @@ function addHours(date, hours) {
   return date + (1000 * 60 * 60 * hours);
 }
 
-function authHeader(user) {
-    // return authorization header with basic auth credentials
-    if (user && user.auth) {
-        return { 'Authorization': user.auth };
+function authHeader(token) {
+    // return authorization header with bearer auth credentials
+    if (token) {
+        return { 'Authorization': 'Bearer ' + token };
     } else {
         return {};
     }
