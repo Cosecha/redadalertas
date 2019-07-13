@@ -14,6 +14,7 @@ async function login(data) {
     asyncStore.save("user", JSON.stringify(credentials));
     return credentials;
   } catch (err) {
+    console.log("auth login POST error: ", err.response || err);
     return err;
   }
 }
