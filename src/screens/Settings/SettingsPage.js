@@ -1,6 +1,7 @@
 // Setup
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
+import { connect } from "react-redux";
 
 // Vendor
 import {
@@ -27,7 +28,9 @@ import { Formik } from "formik";
 // Redadalertas
 import { colors } from "styles";
 import eventServices from "services/event";
+import { getUserToken } from "reducers/user";
 import { checkForUserLogin } from "utils/user";
+import asyncStore from "utils/asyncstorage";
 
 const styles = StyleSheet.create({
   view: {
@@ -35,10 +38,17 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
   },
+  content: {
+    padding: 20
+  }
 });
 
-export default class SettingsPage extends Component {
+class SettingsPage extends Component {
   static navigationOptions = () => ({ title: "Settings" });
+
+  async componentDidMount() {
+    await this.props.getUserToken();
+  }
 
   onSubmit = async () => {
     let response;
@@ -65,9 +75,10 @@ export default class SettingsPage extends Component {
 
     return (
       <View style={styles.view}>
-        <Content>
+        <Content style={styles.content}>
+        <Text>{this.props.user.username}</Text>
         <Button
-          style={{ backgroundColor: colors.darkGray, margin: 15, marginTop: 25 }}
+          style={{ backgroundColor: colors.darkGray, marginTop: 20 }}
           onPress={()=> navigation.navigate("ChangePassword")}
         >
           <Text>Change Password</Text>
@@ -77,3 +88,17 @@ export default class SettingsPage extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user,
+  errors: state.errors
+});
+
+const mapDispatchToProps = dispatch => ({
+  getUserToken: () => dispatch(getUserToken())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SettingsPage);

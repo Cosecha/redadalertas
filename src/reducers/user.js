@@ -12,7 +12,7 @@ export default function userReducer(state = initialState, action) {
     case SET_USER:
       return action.payload;
     case CLEAR_USER:
-      return {};
+      return { ...initialState };
     default:
       return state;
   }
@@ -24,8 +24,7 @@ const setUser = user => ({
 });
 
 const clearUser = user => ({
-  type: CLEAR_USER,
-  payload: {}
+  type: CLEAR_USER
 });
 
 
