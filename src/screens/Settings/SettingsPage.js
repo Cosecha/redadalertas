@@ -28,7 +28,8 @@ import { Formik } from "formik";
 // Redadalertas
 import { colors } from "styles";
 import eventServices from "services/event";
-import { getUserToken } from "reducers/user";
+import authServices from "services/auth";
+import { getUserToken, deleteUserToken } from "reducers/user";
 import { checkForUserLogin } from "utils/user";
 import asyncStore from "utils/asyncstorage";
 
@@ -40,6 +41,10 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 20
+  },
+  button: {
+    backgroundColor: colors.darkGray,
+    marginTop: 20
   }
 });
 
@@ -47,41 +52,71 @@ class SettingsPage extends Component {
   static navigationOptions = () => ({ title: "Settings" });
 
   async componentDidMount() {
-    await this.props.getUserToken();
+    this.willFocusSub = this.props.navigation.addListener(
+      "willFocus",
+      async payload => await this.handleWillFocus(payload)
+    );
   }
 
-  onSubmit = async () => {
+  componentWillUnmount() {
+    this.willFocusSub.remove();
+  }
+
+  handleLogout = async () => {
     let response;
     try {
-      const user = await checkForUserLogin();
-      if (!user) throw new Error("Not logged in.");
-
+      response = await authServices.logout();
+      if (response instanceof Error) throw response;
+      
+      await this.props.deleteUserToken();
+      this.props.navigation.navigate("ReporterLoginForm");
       Toast.show({
         buttonText: "OK",
-        text: "User change(s) successful.",
+        text: "User logout successful.",
         type: "success"
       });
     } catch (error) {
       Toast.show({
         buttonText: "OK",
-        text: "Error submitting changes: " + (error.message || error),
+        text: "Error logging out: " + (error.message || error),
         type: "danger"
       });
     }
   };
 
+  async handleWillFocus(payload) {
+    const user = await checkForUserLogin();
+    if (!user || user instanceof Error) {
+      Toast.show({
+        buttonText: "OK",
+        text: "Not logged in.",
+        type: "danger"
+      });
+      this.props.navigation.navigate("ReporterLoginForm");
+    } else {
+      await this.props.getUserToken();
+    }
+  }
+
   render() {
-    const { navigation } = this.props;
+    const { navigation, user } = this.props;
+    if (!user.username) return(<></>);
 
     return (
       <View style={styles.view}>
         <Content style={styles.content}>
-        <Text>{this.props.user.username}</Text>
+        <Text>{user.username}</Text>
         <Button
-          style={{ backgroundColor: colors.darkGray, marginTop: 20 }}
+          style={styles.button}
           onPress={()=> navigation.navigate("ChangePassword")}
         >
           <Text>Change Password</Text>
+        </Button>
+        <Button
+          style={styles.button}
+          onPress={this.handleLogout}
+        >
+          <Text>Logout</Text>
         </Button>
         </Content>
       </View>
@@ -95,7 +130,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getUserToken: () => dispatch(getUserToken())
+  getUserToken: () => dispatch(getUserToken()),
+  deleteUserToken: () => dispatch(deleteUserToken())
 });
 
 export default connect(

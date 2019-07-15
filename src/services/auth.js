@@ -14,11 +14,27 @@ async function login(data) {
     asyncStore.save("user", JSON.stringify(credentials));
     return credentials;
   } catch (err) {
-    console.log("auth login POST error: ", err.response || err);
+    console.log("auth login error: ", err.response || err);
+    return err;
+  }
+}
+
+async function logout() {
+  let user;
+  try {
+    user = JSON.parse(await asyncStore.retrieve("user"));
+    if (!user) throw new Error("No user to log out.");
+
+    // Delete user details and authentication token from local storage
+    asyncStore.remove("user");
+    return user;
+  } catch (err) {
+    console.log("auth logout error: ", err.response || err);
     return err;
   }
 }
 
 export default {
-  login
+  login,
+  logout
 };

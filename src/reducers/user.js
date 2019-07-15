@@ -40,3 +40,13 @@ export function getUserToken() {
     }
   };
 }
+
+export function deleteUserToken() {
+  return async dispatch => {
+    try {
+      dispatch(clearUser());
+    } catch (error) {
+      dispatch(setUserError(error));
+    }
+  };
+}
