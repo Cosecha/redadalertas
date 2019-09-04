@@ -9,7 +9,7 @@ import {
 
 // Redadalertas
 import { colors } from "styles";
-import { checkIfLoggedIn } from "utils/user";
+import { checkForUserLogin } from "utils/user";
 
 const styles = StyleSheet.create({
   view: {
@@ -49,7 +49,7 @@ export default class EventPage extends Component {
   async componentDidMount() {
     const { navigation } = this.props;
     this.willFocusSub = navigation.addListener('willFocus',
-      async payload => this.setState({ user: await checkIfLoggedIn() })
+      async payload => this.setState({ user: await checkForUserLogin() })
     );
   }
 

@@ -4,10 +4,9 @@ import { authHeader } from "utils/formatting";
 async function put(data) {
   let response;
   try {
-    const user = { ...data };
-    delete user['user'];
-    response = await orgApi.put("/user", user, {
-      headers: authHeader(data.user),
+    const user = JSON.parse(await asyncStore.retrieve("user"));
+    response = await orgApi.put("/user", data, {
+      headers: authHeader(user.token),
     });
     return response;
   } catch (err) {

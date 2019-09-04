@@ -27,8 +27,8 @@ import { Formik } from "formik";
 // Redadalertas
 import { colors } from "styles";
 import eventServices from "services/event";
-import { checkIfLoggedIn } from "utils/user";
 import { addHours } from "utils/formatting";
+import asyncStore from "utils/asyncstorage";
 
 const types = [
   { label: "Raid", value: "sweep" },
@@ -78,17 +78,17 @@ export default class EventForm extends Component {
   onSubmit = async (values, { resetForm }) => {
     let response;
     try {
-      const user = await checkIfLoggedIn();
+      const user = JSON.parse(await asyncStore.retrieve("user"));
       if (!user) throw new Error("Not logged in.");
+      // Add username so created.by.user user id gets added on server:
       let data = {
         ...values,
-        user: user
+        user: { username: user.username }
       }
-      // Don't pass in old data.updated so new date gets generated:
+      // Don't pass in data.updated so new date gets added on server:
       if (data.updated) delete data["updated"];
+
       if (this.props.newEvent === true) {
-        // If new event, add user info
-        data["created.by.user"] = user.credentials.id;
         response = await eventServices.post(data);
       } else {
         // If updating event, add event _id, fix/remove server-generated data

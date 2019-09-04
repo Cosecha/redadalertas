@@ -1,25 +1,40 @@
-import base64 from "base-64";
 import { addHours } from "utils/formatting";
+import asyncStore from "utils/asyncstorage";
 import orgApi from ".";
 
 async function login(data) {
   try {
-    const response = await orgApi.put("/auth", data);
+    const response = await orgApi.post("/auth", data);
     if (response instanceof Error) throw response;
     if (!response) throw new Error("No response.");
+    if (!response.data) throw new Error("Response has no data.");
     const credentials = response.data;
-    if (!credentials.isValid) throw new Error("Login not valid.");
-    const basicAuth = `Basic ${base64.encode(
-      `${data.username}:${data.password}`
-    )}`;
-    credentials.auth = basicAuth;
-    credentials.expireAt = addHours(Date.now(), 7 * 24); // 1 week
+    if (!credentials) throw new Error("Login returned no credentials.");
+    // store user details and authentication token in local storage
+    asyncStore.save("user", JSON.stringify(credentials));
     return credentials;
   } catch (err) {
+    console.log("auth login error: ", err.response || err);
+    return err;
+  }
+}
+
+async function logout() {
+  let user;
+  try {
+    user = JSON.parse(await asyncStore.retrieve("user"));
+    if (!user) throw new Error("No user to log out.");
+
+    // Delete user details and authentication token from local storage
+    asyncStore.remove("user");
+    return user;
+  } catch (err) {
+    console.log("auth logout error: ", err.response || err);
     return err;
   }
 }
 
 export default {
-  login
+  login,
+  logout
 };

@@ -21,7 +21,7 @@ import { Formik } from "formik";
 // Redadalertas
 import { colors } from "styles";
 import authServices from "services/auth";
-import { checkIfLoggedIn } from "utils/user";
+import { checkForUserLogin } from "utils/user";
 
 const styles = StyleSheet.create({
   container: {
@@ -50,7 +50,7 @@ export default class ReporterLoginForm extends Component {
   async componentDidMount() {
     const { navigation } = this.props;
     this.willFocusSub = navigation.addListener("willFocus", async payload =>
-      this.setState({ user: await checkIfLoggedIn() })
+      this.setState({ user: await checkForUserLogin() })
     );
   }
 
@@ -65,11 +65,11 @@ export default class ReporterLoginForm extends Component {
 
   handleSubmit = async () => {
     try {
-      const response = await authServices.login({ ...this.state });
+      const response = await authServices.login({
+        username: this.state.username,
+        password: this.state.password
+      });
       if (response instanceof Error) throw response;
-      // store user details and basic auth credentials in local storage
-      // to keep user logged in between page refreshes
-      asyncStore.save("user", JSON.stringify(response));
       this.resetForm();
       this.props.navigation.navigate("ReportForm");
       Toast.show({

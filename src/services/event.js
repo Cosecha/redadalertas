@@ -1,13 +1,13 @@
 import orgApi from "./";
+import asyncStore from "utils/asyncstorage";
 import { authHeader } from "utils/formatting";
 
 async function post(data) {
   let response;
   try {
-    const event = { ...data };
-    delete event['user'];
+    const user = JSON.parse(await asyncStore.retrieve("user"));
     response = await orgApi.post("/event", data, {
-      headers: authHeader(data.user),
+      headers: authHeader(user.token),
     });
     return response;
   } catch (err) {
@@ -19,10 +19,9 @@ async function post(data) {
 async function put(data) {
   let response;
   try {
-    const event = { ...data };
-    delete event['user'];
+    const user = JSON.parse(await asyncStore.retrieve("user"));
     response = await orgApi.put("/event", data, {
-      headers: authHeader(data.user),
+      headers: authHeader(user.token),
     });
     return response;
   } catch (err) {
