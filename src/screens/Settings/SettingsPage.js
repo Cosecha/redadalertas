@@ -13,6 +13,7 @@ import {
   DatePicker,
   Fab,
   Form,
+  H3,
   Header,
   Icon,
   Item,
@@ -38,6 +39,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
+    paddingBottom: 20
   },
   content: {
     padding: 20
@@ -67,7 +69,7 @@ class SettingsPage extends Component {
     try {
       response = await authServices.logout();
       if (response instanceof Error) throw response;
-      
+
       await this.props.deleteUserToken();
       this.props.navigation.navigate("ReporterLoginForm");
       Toast.show({
@@ -92,7 +94,6 @@ class SettingsPage extends Component {
         text: "Not logged in.",
         type: "danger"
       });
-      this.props.navigation.navigate("ReporterLoginForm");
     } else {
       await this.props.getUserToken();
     }
@@ -100,11 +101,9 @@ class SettingsPage extends Component {
 
   render() {
     const { navigation, user } = this.props;
-    if (!user.username) return(<></>);
-
-    return (
+    const userBlock = (user.username) ? (
       <View style={styles.view}>
-        <Content style={styles.content}>
+        <H3>User Settings</H3>
         <Text>{user.username}</Text>
         <Button
           style={styles.button}
@@ -118,6 +117,16 @@ class SettingsPage extends Component {
         >
           <Text>Logout</Text>
         </Button>
+      </View>
+    ) : (<></>);
+
+    return (
+      <View style={styles.view}>
+        <Content style={styles.content}>
+          {userBlock}
+          <View style={styles.view}>
+            <H3>Device Settings</H3>
+          </View>
         </Content>
       </View>
     );
