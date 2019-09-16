@@ -11,7 +11,7 @@ async function login(data) {
     const credentials = response.data;
     if (!credentials) throw new Error("Login returned no credentials.");
     // store user details and authentication token in local storage
-    asyncStore.save("user", JSON.stringify(credentials));
+    await asyncStore.save("user", JSON.stringify(credentials));
     return credentials;
   } catch (err) {
     console.log("auth login error: ", err.response || err);
@@ -26,7 +26,7 @@ async function logout() {
     if (!user) throw new Error("No user to log out.");
 
     // Delete user details and authentication token from local storage
-    asyncStore.remove("user");
+    await asyncStore.remove("user");
     return user;
   } catch (err) {
     console.log("auth logout error: ", err.response || err);

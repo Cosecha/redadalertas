@@ -1,6 +1,7 @@
 // Setup
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
+import { connect } from "react-redux";
 
 // Vendor
 import {
@@ -21,7 +22,7 @@ import { Formik } from "formik";
 // Redadalertas
 import { colors } from "styles";
 import authServices from "services/auth";
-import { checkForUserLogin } from "utils/user";
+import { saveUserToken } from "reducers/user";
 
 const styles = StyleSheet.create({
   container: {
@@ -41,26 +42,25 @@ const initialValues = {
   password: ""
 };
 
-export default class ReporterLoginForm extends Component {
+class ReporterLoginForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...initialValues, user: null };
+    this.state = { ...initialValues };
   }
 
   async componentDidMount() {
-    const { navigation } = this.props;
-    this.willFocusSub = navigation.addListener("willFocus", async payload =>
-      this.setState({ user: await checkForUserLogin() })
+    this.willFocusSub = this.props.navigation.addListener(
+      "willFocus",
+      async payload => await this.handleWillFocus(payload)
     );
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.state != nextState;
+    return ((this.state != nextState) || (this.props != nextProps));
   }
 
   componentWillUnmount() {
     this.willFocusSub.remove();
-    this.setState({ user: null });
   }
 
   handleSubmit = async () => {
@@ -70,11 +70,12 @@ export default class ReporterLoginForm extends Component {
         password: this.state.password
       });
       if (response instanceof Error) throw response;
+      await this.props.saveUserToken(response);
       this.resetForm();
       this.props.navigation.navigate("ReportForm");
       Toast.show({
         buttonText: "OK",
-        text: "User successfully logged in.",
+        text: "You will be logged in for 1 week.",
         type: "success"
       });
     } catch (error) {
@@ -85,6 +86,19 @@ export default class ReporterLoginForm extends Component {
       });
     }
   };
+
+  handleWillFocus(payload) {
+    const user = this.props.user;
+    if (!user || Object.keys(user).length < 1 || user instanceof Error) {
+      Toast.show({
+        buttonText: "OK",
+        text: "Please log in.",
+        type: "danger"
+      });
+    } else {
+      this.props.navigation.navigate("ReportForm");
+    }
+  }
 
   resetForm() {
     this.setState(initialValues);
@@ -130,3 +144,17 @@ export default class ReporterLoginForm extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user,
+  errors: state.errors
+});
+
+const mapDispatchToProps = dispatch => ({
+  saveUserToken: (user) => dispatch(saveUserToken(user))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ReporterLoginForm);

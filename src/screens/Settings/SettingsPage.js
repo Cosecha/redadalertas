@@ -30,8 +30,7 @@ import { Formik } from "formik";
 import { colors } from "styles";
 import eventServices from "services/event";
 import authServices from "services/auth";
-import { getUserToken, deleteUserToken } from "reducers/user";
-import { checkForUserLogin } from "utils/user";
+import { deleteUserToken } from "reducers/user";
 import asyncStore from "utils/asyncstorage";
 
 const styles = StyleSheet.create({
@@ -52,17 +51,6 @@ const styles = StyleSheet.create({
 
 class SettingsPage extends Component {
   static navigationOptions = () => ({ title: "Settings" });
-
-  async componentDidMount() {
-    this.willFocusSub = this.props.navigation.addListener(
-      "willFocus",
-      async payload => await this.handleWillFocus(payload)
-    );
-  }
-
-  componentWillUnmount() {
-    this.willFocusSub.remove();
-  }
 
   handleLogout = async () => {
     let response;
@@ -86,22 +74,9 @@ class SettingsPage extends Component {
     }
   };
 
-  async handleWillFocus(payload) {
-    const user = await checkForUserLogin();
-    if (!user || user instanceof Error) {
-      Toast.show({
-        buttonText: "OK",
-        text: "Not logged in.",
-        type: "danger"
-      });
-    } else {
-      await this.props.getUserToken();
-    }
-  }
-
   render() {
     const { navigation, user } = this.props;
-    const userBlock = (user.username) ? (
+    const userBlock = (user && user.username) ? (
       <View style={styles.view}>
         <H3>User Settings</H3>
         <Text>{user.username}</Text>
@@ -139,8 +114,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getUserToken: () => dispatch(getUserToken()),
-  deleteUserToken: () => dispatch(deleteUserToken())
+  deleteUserToken: () => dispatch(deleteUserToken()),
 });
 
 export default connect(

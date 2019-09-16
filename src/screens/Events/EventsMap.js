@@ -11,6 +11,8 @@ import { Toast, Fab, Icon } from "native-base";
 import { colors } from "styles";
 import { getEvents } from "reducers/event";
 import { Notification } from "utils/notification";
+import { checkForUserLogin } from "utils/user";
+import { saveUserToken } from "reducers/user";
 
 const styles = StyleSheet.create({
   container: {
@@ -43,6 +45,8 @@ class EventsMap extends Component {
 
   async componentDidMount() {
     const { navigation } = this.props;
+    const user = await checkForUserLogin();
+    if (user) await this.props.saveUserToken(user);
     await this.populateMap();
     this.willFocusSub = navigation.addListener(
       "willFocus",
@@ -210,11 +214,13 @@ class EventsMap extends Component {
 }
 
 const mapStateToProps = state => ({
+  user: state.user,
   events: state.events,
   errors: state.errors
 });
 
 const mapDispatchToProps = dispatch => ({
+  saveUserToken: (user) => dispatch(saveUserToken(user)),
   getEvents: () => dispatch(getEvents())
 });
 
