@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 // Vendor
 import MapView, { Callout, Marker } from "react-native-maps";
-import { Toast, Fab, Icon } from "native-base";
+import { Toast, Fab, Icon, Button } from "native-base";
 
 // Redadalertas
 import { colors } from "styles";
@@ -20,6 +20,9 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject
+  },
+  icon: {
+    backgroundColor: colors.primary
   }
 });
 
@@ -33,6 +36,12 @@ const types = [
   { label: "False Alarm", value: "falsealarm" },
   { label: "Other", value: "other" }
 ];
+const initialRegion = {
+  latitude: 37.7620375,
+  longitude: -122.4369478,
+  latitudeDelta: 0.15,
+  longitudeDelta: 0.15
+}
 
 class EventsMap extends Component {
   static navigationOptions = () => ({ title: "Event Map" });
@@ -154,12 +163,7 @@ class EventsMap extends Component {
           ref={ref => {
             this.map = ref;
           }}
-          initialRegion={{
-            latitude: 37.7620375,
-            longitude: -122.4369478,
-            latitudeDelta: 0.15,
-            longitudeDelta: 0.15
-          }}
+          region={initialRegion}
         >
           {events.map(event => {
             const { location } = event;
@@ -199,13 +203,16 @@ class EventsMap extends Component {
           })}
         </MapView>
         <Fab
-          style={{ backgroundColor: colors.primary }}
+          style={styles.icon}
+          position="bottomRight"
           onPress={async () => {
             await this.populateMap();
+            this.map.animateToRegion(initialRegion);
           }}
         >
           <Icon name="refresh" />
         </Fab>
+
       </View>
     );
   }
