@@ -1,6 +1,7 @@
 // Setup
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
+import { connect } from "react-redux";
 
 // Vendor
 import {
@@ -57,7 +58,7 @@ const initialValues = {
 };
 const initialState = { agencyInputValue: "", expireAt: 12 };
 
-export default class EventForm extends Component {
+class EventForm extends Component {
   state = initialState;
 
   componentDidMount() {
@@ -78,21 +79,18 @@ export default class EventForm extends Component {
   onSubmit = async (values, { resetForm }) => {
     let response;
     try {
-      const user = JSON.parse(await asyncStore.retrieve("user"));
+      const user = this.props.user;
       if (!user) throw new Error("Not logged in.");
-      // Add username so created.by.user user id gets added on server:
-      let data = {
-        ...values,
-        user: { username: user.username }
-      }
-      // Don't pass in data.updated so new date gets added on server:
-      if (data.updated) delete data["updated"];
+
+      let data = { ...values }
 
       if (this.props.newEvent === true) {
         response = await eventServices.post(data);
       } else {
         // If updating event, add event _id, fix/remove server-generated data
         if (data.created) delete data["created"];
+        if (data.updated) delete data["updated"];
+        // If updating event, add event _id
         if (typeof data.description == 'string') {
           // TO-DO: remove this when server i18n is fixed
           const i18nDesc = { en: data.description }
@@ -110,7 +108,7 @@ export default class EventForm extends Component {
       });
       Toast.show({
         buttonText: "OK",
-        text: "Event submitted!",
+        text: (this.props.newEvent === true) ? "Event submitted." : "Event updated.",
         type: "success"
       });
     } catch (error) {
@@ -266,3 +264,15 @@ export default class EventForm extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+const mapDispatchToProps = dispatch => ({
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EventForm);
