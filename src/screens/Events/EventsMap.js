@@ -170,9 +170,7 @@ class EventsMap extends Component {
             ) : (
               <></>
             );
-            const cityStateZip = `
-              ${location.city}, ${location.state} ${location.zipcode}
-            `;
+            const cityStateZip = `${location.city}, ${location.state} ${location.zipcode}`;
 
             return (
               <Marker
