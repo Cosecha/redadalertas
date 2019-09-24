@@ -15,6 +15,7 @@
     "native-base": "^2.8.1",
     "prop-types": "^15.6.2",
     "react": "16.6.1",
+    "react-localize-redux": "^3.5.3",
     "react-native": "0.57.7",
     "react-native-dotenv": "^0.2.0",
     "react-native-firebase": "^5.3.1",
