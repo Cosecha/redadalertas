@@ -2,6 +2,8 @@
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
+import { Translate, withLocalize, getLanguages, getActiveLanguage, setActiveLanguage
+} from "react-localize-redux";
 
 // Vendor
 import {
@@ -102,7 +104,36 @@ class SettingsPage extends Component {
         <Content style={styles.content}>
           {userBlock}
           <View style={styles.view}>
-            <H3>Device Settings</H3>
+            <Translate>
+            {({ translate }) => (
+              <H3>{translate("settings.device")}</H3>
+            )}
+            </Translate>
+            <Form>
+              <Item>
+                <Label><Translate id="settings.language" /></Label>
+                <Text>{this.props.currentLanguage}</Text>
+              </Item>
+              <Translate>
+                {({ translate, activeLanguage, languages }) => (
+                  <Picker
+                    mode="dropdown"
+                    iosIcon={<Icon name="ios-arrow-dropdown" />}
+                    onValueChange={(change) => this.props.setActiveLanguage(change)}
+                    placeholder={translate("settings.select")}
+                    selectedValue={activeLanguage.name}
+                  >
+                    {languages.map(language => (
+                      <Picker.Item
+                        key={language.code}
+                        label={language.name}
+                        value={language.code}
+                      />
+                    ))}
+                  </Picker>
+                )}
+              </Translate>
+            </Form>
           </View>
         </Content>
       </View>
@@ -113,10 +144,13 @@ class SettingsPage extends Component {
 const mapStateToProps = state => ({
   device: state.device,
   user: state.user,
-  errors: state.errors
+  errors: state.errors,
+  languages: getLanguages(state.localize),
+  currentLanguage: getActiveLanguage(state.localize).name
 });
 
 const mapDispatchToProps = dispatch => ({
+  setActiveLanguage: (language) => dispatch(setActiveLanguage(language)),
   saveDeviceSettings: (settings) => dispatch(saveDeviceSettings(settings)),
   deleteUserToken: () => dispatch(deleteUserToken()),
 });
@@ -124,4 +158,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SettingsPage);
+)(withLocalize(SettingsPage));

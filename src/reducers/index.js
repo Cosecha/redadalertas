@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { localizeReducer } from "react-localize-redux";
 
 import eventsReducer from "./event";
 import errorsReducer from "./error";
@@ -7,6 +8,7 @@ import deviceReducer from "./device";
 
 const rootReducer = combineReducers(
   {
+    localize: localizeReducer,
     device: deviceReducer,
     events: eventsReducer,
     user: userReducer,

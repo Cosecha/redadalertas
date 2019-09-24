@@ -5,7 +5,6 @@ export const SET_DEVICE = "SET_DEVICE";
 export const RESET_DEVICE = "RESET_DEVICE";
 
 const initialState = {
-  language: "en",
   location: {
     zip: 94110
   }
