@@ -17,7 +17,7 @@ export default function errorsReducer(state = initialState, action) {
   }
 }
 
-const getEventsError = error => {
+const setEventsError = error => {
   return {
     type: SET_EVENTS_ERROR,
     payload: { error }
