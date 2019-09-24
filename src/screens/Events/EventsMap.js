@@ -21,20 +21,57 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject
   },
-  icon: {
+  fabIcon: {
     backgroundColor: colors.primary
+  },
+  marker: {
+    width: 30,
+    height: 30,
+    borderRadius: 30 / 2,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.darkGray,
+    backgroundColor: 'gray',
+  },
+  markerIcon: {
+    fontSize: 25,
+    textAlign: "center",
+    color: "white"
+  },
+  callout: {
+    width: 200,
+    maxHeight: 200,
+    maxWidth: 200,
+  },
+  calloutText: {
+    fontWeight: "bold"
   }
 });
 
 const types = [
-  { label: "Raid", value: "sweep" },
-  { label: "Individual", value: "targeted" },
-  { label: "Traffic Stop", value: "traffic" },
-  { label: "I-9 Audit", value: "i9" },
-  { label: "Checkpoint", value: "checkpoint" },
-  { label: "Action", value: "action" },
-  { label: "False Alarm", value: "falsealarm" },
-  { label: "Other", value: "other" }
+  { label: "Raid", value: "sweep",
+    markerColor: "red", markerIcon: "radio"
+  },
+  { label: "Individual", value: "targeted",
+    markerColor: "orange", markerIcon: "man"
+  },
+  { label: "Traffic Stop", value: "traffic",
+    markerColor: "yellow", markerIcon: "car"
+  },
+  { label: "I-9 Audit", value: "i9",
+    markerColor: "green", markerIcon: "business"
+  },
+  { label: "Checkpoint", value: "checkpoint",
+    markerColor: "blue", markerIcon: "pin"
+  },
+  { label: "Action", value: "action",
+    markerColor: "indigo", markerIcon: "megaphone"
+  },
+  { label: "False Alarm", value: "falsealarm",
+    markerColor: "violet", markerIcon: "close-circle"
+  },
+  { label: "Other", value: "other",
+    markerColor: "gray", markerIcon: "today" }
 ];
 const initialRegion = {
   latitude: 37.7620375,
@@ -153,6 +190,14 @@ class EventsMap extends Component {
     return types.find(type => type.value == eventType).label;
   }
 
+  getEventColor(eventType) {
+    return types.find(type => type.value == eventType).markerColor;
+  }
+
+  getEventIcon(eventType) {
+    return types.find(type => type.value == eventType).markerIcon;
+  }
+
   render() {
     const { navigation, events } = this.props;
 
@@ -175,6 +220,8 @@ class EventsMap extends Component {
               <></>
             );
             const cityStateZip = `${location.city}, ${location.state} ${location.zipcode}`;
+            const markerColor = this.getEventColor(event.type);
+            const markerIcon = this.getEventIcon(event.type);
 
             return (
               <Marker
@@ -188,9 +235,14 @@ class EventsMap extends Component {
                   navigation.navigate("EventPage", { event });
                 }}
               >
-                <Callout tooltip={false}>
+                <View
+                  style={[styles.marker, { backgroundColor: markerColor }]}
+                >
+                  <Icon name={markerIcon} style={styles.markerIcon} />
+                </View>
+                <Callout style={styles.callout} tooltip={false}>
                   <View>
-                    <Text style={{ maxWidth: 200, fontWeight: "bold" }}>
+                    <Text style={styles.calloutText}>
                       {this.getEventLabel(event.type)}
                     </Text>
                     <Text>{location.address_1}</Text>
@@ -203,7 +255,7 @@ class EventsMap extends Component {
           })}
         </MapView>
         <Fab
-          style={styles.icon}
+          style={styles.fabIcon}
           position="bottomRight"
           onPress={async () => {
             await this.populateMap();
