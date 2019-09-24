@@ -30,6 +30,7 @@ import { Formik } from "formik";
 import { colors } from "styles";
 import eventServices from "services/event";
 import authServices from "services/auth";
+import { saveDeviceSettings } from "reducers/device";
 import { deleteUserToken } from "reducers/user";
 import asyncStore from "utils/asyncstorage";
 
@@ -75,7 +76,8 @@ class SettingsPage extends Component {
   };
 
   render() {
-    const { navigation, user } = this.props;
+    const { navigation, user, device } = this.props;
+
     const userBlock = (user && user.username) ? (
       <View style={styles.view}>
         <H3>User Settings</H3>
@@ -109,11 +111,13 @@ class SettingsPage extends Component {
 }
 
 const mapStateToProps = state => ({
+  device: state.device,
   user: state.user,
   errors: state.errors
 });
 
 const mapDispatchToProps = dispatch => ({
+  saveDeviceSettings: (settings) => dispatch(saveDeviceSettings(settings)),
   deleteUserToken: () => dispatch(deleteUserToken()),
 });
 
