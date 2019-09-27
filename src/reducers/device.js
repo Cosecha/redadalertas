@@ -1,7 +1,7 @@
 import setDeviceError from "./error";
 
 export const SET_DEVICE = "SET_DEVICE";
-export const RESET_DEVICE = "RESET_DEVICE";
+export const CLEAR_DEVICE = "CLEAR_DEVICE";
 export const SET_DEVICE_LANGUAGE = "SET_DEVICE_LANGUAGE";
 
 const initialState = {
@@ -17,7 +17,7 @@ export default function deviceReducer(state = initialState, action) {
       return { ...state, language: action.payload };
     case SET_DEVICE:
       return { ...action.payload };
-    case RESET_DEVICE:
+    case CLEAR_DEVICE:
       return { ...initialState };
     default:
       return state;
@@ -34,8 +34,8 @@ const setDeviceLanguage = language => ({
   payload: language
 });
 
-const resetDevice = () => ({
-  type: RESET_DEVICE
+const clearDevice = () => ({
+  type: CLEAR_DEVICE
 });
 
 export function saveDeviceLanguage(language) {
@@ -58,10 +58,10 @@ export function saveDevice(settings) {
   };
 }
 
-export function resetDeviceSettings() {
+export function resetDevice() {
   return dispatch => {
     try {
-      dispatch(resetDevice());
+      dispatch(clearDevice());
     } catch (error) {
       dispatch(setDeviceError(error));
     }

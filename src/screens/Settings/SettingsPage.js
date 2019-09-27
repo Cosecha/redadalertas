@@ -32,7 +32,7 @@ import { Formik } from "formik";
 import { colors } from "styles";
 import authServices from "services/auth";
 import deviceServices from "services/device";
-import { saveDeviceLanguage, resetDeviceSettings } from "reducers/device";
+import { saveDeviceLanguage, resetDevice } from "reducers/device";
 import { deleteUserToken } from "reducers/user";
 import asyncStore from "utils/asyncstorage";
 
@@ -72,6 +72,28 @@ class SettingsPage extends Component {
       Toast.show({
         buttonText: "OK",
         text: "Error logging out: " + (error.message || error),
+        type: "danger"
+      });
+    }
+  };
+
+  handleDeviceReset = async () => {
+    try {
+      // set default language with react-localize-redux (redux i18n library)
+      await this.props.setActiveLanguage('en');
+      // reset device in redux store
+      await this.props.resetDevice();
+      // delete device settings in asyncstorage (device storage)
+      await deviceServices.reset();
+      Toast.show({
+        buttonText: "OK",
+        text: "Device reset successful.",
+        type: "success"
+      });
+    } catch (error) {
+      Toast.show({
+        buttonText: "OK",
+        text: "Error resetting device: " + (error.message || error),
         type: "danger"
       });
     }
@@ -143,6 +165,12 @@ class SettingsPage extends Component {
                 )}
               </Translate>
             </Form>
+            <Button
+              style={styles.button}
+              onPress={this.handleDeviceReset}
+            >
+              <Text>Reset Device</Text>
+            </Button>
           </View>
         </Content>
       </View>
@@ -160,7 +188,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   setActiveLanguage: (language) => dispatch(setActiveLanguage(language)),
   saveDeviceLanguage: (language) => dispatch(saveDeviceLanguage(language)),
-  resetDeviceSettings: () => dispatch(resetDeviceSettings(settings)),
+  resetDevice: () => dispatch(resetDevice()),
   deleteUserToken: () => dispatch(deleteUserToken()),
 });
 
