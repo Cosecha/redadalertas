@@ -112,9 +112,9 @@ class EventsMap extends Component {
     const {
       props: { events: fetchedEvents }
     } = this;
-    const previousEventIds = prevProps.events.map(event => event.id);
+    const previousEventIds = prevProps.events.map(event => event._id);
     const newEvents = fetchedEvents.filter(
-      event => !previousEventIds.includes(event.id)
+      event => !previousEventIds.includes(event._id)
     );
 
     if (newEvents.length > 1) {
@@ -162,7 +162,7 @@ class EventsMap extends Component {
       500
     );
     setTimeout(() => {
-      this.markers[event.id].showCallout();
+      this.markers[event._id].showCallout();
     }, 1500);
   }
 
@@ -226,10 +226,10 @@ class EventsMap extends Component {
             return (
               <Marker
                 coordinate={{ latitude, longitude }}
-                identifier={event.id}
-                key={event.id}
+                identifier={event._id}
+                key={event._id}
                 ref={ref => {
-                  this.markers[event.id] = ref;
+                  this.markers[event._id] = ref;
                 }}
                 onCalloutPress={() => {
                   navigation.navigate("EventPage", { event });

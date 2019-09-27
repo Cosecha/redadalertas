@@ -30,7 +30,6 @@ import { Formik } from "formik";
 
 // Redadalertas
 import { colors } from "styles";
-import eventServices from "services/event";
 import authServices from "services/auth";
 import { saveDeviceSettings } from "reducers/device";
 import { deleteUserToken } from "reducers/user";
@@ -112,7 +111,7 @@ class SettingsPage extends Component {
             <Form>
               <Item>
                 <Label><Translate id="settings.language" /></Label>
-                <Text>{this.props.currentLanguage}</Text>
+                <Text>{this.props.activeLanguage.name}</Text>
               </Item>
               <Translate>
                 {({ translate, activeLanguage, languages }) => (
@@ -145,8 +144,7 @@ const mapStateToProps = state => ({
   device: state.device,
   user: state.user,
   errors: state.errors,
-  languages: getLanguages(state.localize),
-  currentLanguage: getActiveLanguage(state.localize).name
+  languages: getLanguages(state.localize)
 });
 
 const mapDispatchToProps = dispatch => ({
