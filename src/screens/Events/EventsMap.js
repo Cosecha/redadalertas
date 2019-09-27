@@ -5,12 +5,14 @@ import { connect } from "react-redux";
 
 // Vendor
 import MapView, { Callout, Marker } from "react-native-maps";
-import { Toast, Fab, Icon } from "native-base";
+import { Toast, Fab, Icon, Button } from "native-base";
 
 // Redadalertas
 import { colors } from "styles";
 import { getEvents } from "reducers/event";
 import { Notification } from "utils/notification";
+import { checkForUserLogin } from "utils/user";
+import { saveUserToken } from "reducers/user";
 
 const styles = StyleSheet.create({
   container: {
@@ -18,6 +20,9 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject
+  },
+  icon: {
+    backgroundColor: colors.primary
   }
 });
 
@@ -31,6 +36,12 @@ const types = [
   { label: "False Alarm", value: "falsealarm" },
   { label: "Other", value: "other" }
 ];
+const initialRegion = {
+  latitude: 37.7620375,
+  longitude: -122.4369478,
+  latitudeDelta: 0.15,
+  longitudeDelta: 0.15
+}
 
 class EventsMap extends Component {
   static navigationOptions = () => ({ title: "Event Map" });
@@ -43,6 +54,8 @@ class EventsMap extends Component {
 
   async componentDidMount() {
     const { navigation } = this.props;
+    const user = await checkForUserLogin();
+    if (user) await this.props.saveUserToken(user);
     await this.populateMap();
     this.willFocusSub = navigation.addListener(
       "willFocus",
@@ -150,12 +163,7 @@ class EventsMap extends Component {
           ref={ref => {
             this.map = ref;
           }}
-          initialRegion={{
-            latitude: 37.7620375,
-            longitude: -122.4369478,
-            latitudeDelta: 0.15,
-            longitudeDelta: 0.15
-          }}
+          region={initialRegion}
         >
           {events.map(event => {
             const { location } = event;
@@ -166,9 +174,7 @@ class EventsMap extends Component {
             ) : (
               <></>
             );
-            const cityStateZip = `
-              ${location.city}, ${location.state} ${location.zipcode}
-            `;
+            const cityStateZip = `${location.city}, ${location.state} ${location.zipcode}`;
 
             return (
               <Marker
@@ -197,24 +203,29 @@ class EventsMap extends Component {
           })}
         </MapView>
         <Fab
-          style={{ backgroundColor: colors.primary }}
+          style={styles.icon}
+          position="bottomRight"
           onPress={async () => {
             await this.populateMap();
+            this.map.animateToRegion(initialRegion);
           }}
         >
           <Icon name="refresh" />
         </Fab>
+
       </View>
     );
   }
 }
 
 const mapStateToProps = state => ({
+  user: state.user,
   events: state.events,
   errors: state.errors
 });
 
 const mapDispatchToProps = dispatch => ({
+  saveUserToken: (user) => dispatch(saveUserToken(user)),
   getEvents: () => dispatch(getEvents())
 });
 

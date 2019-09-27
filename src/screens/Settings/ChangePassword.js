@@ -1,6 +1,7 @@
 // Setup
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
+import { connect } from "react-redux";
 
 // Vendor
 import {
@@ -13,6 +14,7 @@ import { colors } from "styles";
 import authServices from "services/auth";
 import userServices from "services/user";
 import { checkForUserLogin } from "utils/user";
+import { saveUserToken } from "reducers/user";
 
 const styles = StyleSheet.create({
   view: {
@@ -38,7 +40,7 @@ const initialValues = {
   newPassword2: ""
 }
 
-export default class ChangePassword extends Component {
+class ChangePassword extends Component {
   static navigationOptions = () => ({ title: "Change Password" });
 
   onSubmit = async (values, { resetForm }) => {
@@ -71,6 +73,7 @@ export default class ChangePassword extends Component {
         password: values.newPassword2
       });
       if (loginResponse instanceof Error) throw new Error("Error logging in with new password.");
+      await this.props.saveUserToken(loginResponse);
 
       this.clearForm(resetForm);
       this.props.navigation.navigate("SettingsPage", {
@@ -148,3 +151,17 @@ export default class ChangePassword extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user,
+  errors: state.errors
+});
+
+const mapDispatchToProps = dispatch => ({
+  saveUserToken: (user) => dispatch(saveUserToken(user))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChangePassword);

@@ -15,6 +15,6 @@ async function put(data) {
   }
 }
 
-export default eventServices = {
+export default userServices = {
   put
 };

@@ -10,7 +10,7 @@ const initialState = {};
 export default function userReducer(state = initialState, action) {
   switch (action.type) {
     case SET_USER:
-      return action.payload;
+      return { ...action.payload };
     case CLEAR_USER:
       return { ...initialState };
     default:
@@ -23,18 +23,17 @@ const setUser = user => ({
   payload: user
 });
 
-const clearUser = user => ({
+const clearUser = () => ({
   type: CLEAR_USER
 });
 
 
-export function getUserToken() {
-  return async dispatch => {
-    let user;
+export function saveUserToken(user) {
+  return dispatch => {
+    let userToken = user;
     try {
-      user = JSON.parse(await asyncStore.retrieve("user"));
-      if (user instanceof Error) throw user;
-      dispatch(setUser(user));
+      if (userToken instanceof Error) throw userToken;
+      dispatch(setUser(userToken));
     } catch (error) {
       dispatch(setUserError(error));
     }
@@ -42,7 +41,7 @@ export function getUserToken() {
 }
 
 export function deleteUserToken() {
-  return async dispatch => {
+  return dispatch => {
     try {
       dispatch(clearUser());
     } catch (error) {

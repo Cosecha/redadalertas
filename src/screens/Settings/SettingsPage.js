@@ -13,6 +13,7 @@ import {
   DatePicker,
   Fab,
   Form,
+  H3,
   Header,
   Icon,
   Item,
@@ -29,8 +30,7 @@ import { Formik } from "formik";
 import { colors } from "styles";
 import eventServices from "services/event";
 import authServices from "services/auth";
-import { getUserToken, deleteUserToken } from "reducers/user";
-import { checkForUserLogin } from "utils/user";
+import { deleteUserToken } from "reducers/user";
 import asyncStore from "utils/asyncstorage";
 
 const styles = StyleSheet.create({
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
+    paddingBottom: 20
   },
   content: {
     padding: 20
@@ -51,23 +52,12 @@ const styles = StyleSheet.create({
 class SettingsPage extends Component {
   static navigationOptions = () => ({ title: "Settings" });
 
-  async componentDidMount() {
-    this.willFocusSub = this.props.navigation.addListener(
-      "willFocus",
-      async payload => await this.handleWillFocus(payload)
-    );
-  }
-
-  componentWillUnmount() {
-    this.willFocusSub.remove();
-  }
-
   handleLogout = async () => {
     let response;
     try {
       response = await authServices.logout();
       if (response instanceof Error) throw response;
-      
+
       await this.props.deleteUserToken();
       this.props.navigation.navigate("ReporterLoginForm");
       Toast.show({
@@ -84,27 +74,11 @@ class SettingsPage extends Component {
     }
   };
 
-  async handleWillFocus(payload) {
-    const user = await checkForUserLogin();
-    if (!user || user instanceof Error) {
-      Toast.show({
-        buttonText: "OK",
-        text: "Not logged in.",
-        type: "danger"
-      });
-      this.props.navigation.navigate("ReporterLoginForm");
-    } else {
-      await this.props.getUserToken();
-    }
-  }
-
   render() {
     const { navigation, user } = this.props;
-    if (!user.username) return(<></>);
-
-    return (
+    const userBlock = (user && user.username) ? (
       <View style={styles.view}>
-        <Content style={styles.content}>
+        <H3>User Settings</H3>
         <Text>{user.username}</Text>
         <Button
           style={styles.button}
@@ -118,6 +92,16 @@ class SettingsPage extends Component {
         >
           <Text>Logout</Text>
         </Button>
+      </View>
+    ) : (<></>);
+
+    return (
+      <View style={styles.view}>
+        <Content style={styles.content}>
+          {userBlock}
+          <View style={styles.view}>
+            <H3>Device Settings</H3>
+          </View>
         </Content>
       </View>
     );
@@ -130,8 +114,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getUserToken: () => dispatch(getUserToken()),
-  deleteUserToken: () => dispatch(deleteUserToken())
+  deleteUserToken: () => dispatch(deleteUserToken()),
 });
 
 export default connect(
