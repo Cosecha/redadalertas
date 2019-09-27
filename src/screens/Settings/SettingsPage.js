@@ -31,7 +31,8 @@ import { Formik } from "formik";
 // Redadalertas
 import { colors } from "styles";
 import authServices from "services/auth";
-import { saveDeviceSettings } from "reducers/device";
+import deviceServices from "services/device";
+import { saveDeviceLanguage, resetDeviceSettings } from "reducers/device";
 import { deleteUserToken } from "reducers/user";
 import asyncStore from "utils/asyncstorage";
 
@@ -76,6 +77,15 @@ class SettingsPage extends Component {
     }
   };
 
+  handleLanguageChange = async (change) => {
+    // set active language with react-localize-redux (redux i18n library)
+    await this.props.setActiveLanguage(change);
+    // set active language in device (redux store)
+    await this.props.saveDeviceLanguage(change);
+    // save device settings to asyncstorage (device storage)
+    await deviceServices.set(this.props.device);
+  }
+
   render() {
     const { navigation, user, device } = this.props;
 
@@ -118,7 +128,7 @@ class SettingsPage extends Component {
                   <Picker
                     mode="dropdown"
                     iosIcon={<Icon name="ios-arrow-dropdown" />}
-                    onValueChange={(change) => this.props.setActiveLanguage(change)}
+                    onValueChange={(change) => this.handleLanguageChange(change)}
                     placeholder={translate("settings.select")}
                     selectedValue={activeLanguage.name}
                   >
@@ -149,7 +159,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setActiveLanguage: (language) => dispatch(setActiveLanguage(language)),
-  saveDeviceSettings: (settings) => dispatch(saveDeviceSettings(settings)),
+  saveDeviceLanguage: (language) => dispatch(saveDeviceLanguage(language)),
+  resetDeviceSettings: () => dispatch(resetDeviceSettings(settings)),
   deleteUserToken: () => dispatch(deleteUserToken()),
 });
 

@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { connect } from "react-redux";
+import { Translate, withLocalize, setActiveLanguage } from "react-localize-redux";
 
 // Vendor
 import MapView, { Callout, Marker } from "react-native-maps";
@@ -10,6 +11,7 @@ import { Toast, Fab, Icon, Button } from "native-base";
 // Redadalertas
 import { colors } from "styles";
 import { getEvents } from "reducers/event";
+import { saveDevice } from "reducers/device";
 import { Notification } from "utils/notification";
 import { checkForUserLogin } from "utils/user";
 import { saveUserToken } from "reducers/user";
@@ -91,8 +93,7 @@ class EventsMap extends Component {
 
   async componentDidMount() {
     const { navigation } = this.props;
-    const user = await checkForUserLogin();
-    if (user) await this.props.saveUserToken(user);
+    await this.initializeState();
     await this.populateMap();
     this.willFocusSub = navigation.addListener(
       "willFocus",
@@ -102,6 +103,21 @@ class EventsMap extends Component {
       "willBlur",
       async payload => await this.handleWillBlur(payload)
     );
+  }
+
+  async initializeState() {
+    const user = await checkForUserLogin();
+    if (user) await this.props.saveUserToken(user);
+    const deviceSettings = await deviceServices.get();
+    if (deviceSettings) {
+      // If there are settings in device storage, set them
+      if (deviceSettings.language) {
+        // Set language in react-localize-redux
+        this.props.setActiveLanguage(deviceSettings.language);
+      }
+      // Save settings in redux store
+      await this.props.saveDevice(deviceSettings);
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -277,11 +293,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  setActiveLanguage: (language) => dispatch(setActiveLanguage(language)),
   saveUserToken: (user) => dispatch(saveUserToken(user)),
+  saveDevice: (settings) => dispatch(saveDevice(settings)),
   getEvents: () => dispatch(getEvents())
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(EventsMap);
+)(withLocalize(EventsMap));

@@ -88,7 +88,7 @@ class EventForm extends Component {
         // If updating event, add event _id, fix/remove server-generated data
         if (data.created) delete data["created"];
         if (data.updated) delete data["updated"];
-        
+
         response = await eventServices.put(data);
       }
       if (response instanceof Error) throw response;
@@ -282,10 +282,7 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
-const mapDispatchToProps = dispatch => ({
-});
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(EventForm);
