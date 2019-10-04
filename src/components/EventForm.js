@@ -26,6 +26,7 @@ import {
 import { Formik } from "formik";
 
 // Redadalertas
+import TranslationInput from "components/TranslationInput";
 import { colors } from "styles";
 import eventServices from "services/event";
 import { addHours } from "utils/formatting";
@@ -85,7 +86,7 @@ class EventForm extends Component {
       if (this.props.newEvent === true) {
         response = await eventServices.post(data);
       } else {
-        // If updating event, add event _id, fix/remove server-generated data
+        // If updating event, remove server-generated data
         if (data.created) delete data["created"];
         if (data.updated) delete data["updated"];
 
@@ -163,39 +164,11 @@ class EventForm extends Component {
                     value={agencyInputValue}
                   />
                 </Item>
-                <Item>
-                  <Label>Description (EN)</Label>
-                  <Input
-                    multiline
-                    onChangeText={(change)=> {
-                      props.setFieldValue("description.en", change);
-                    }}
-                    style={{ paddingTop: 15, paddingBottom: 15 }}
-                    value={props.values.description.en}
-                  />
-                </Item>
-                <Item>
-                  <Label>Description (ES)</Label>
-                  <Input
-                    multiline
-                    onChangeText={(change)=> {
-                      props.setFieldValue("description.es", change);
-                    }}
-                    style={{ paddingTop: 15, paddingBottom: 15 }}
-                    value={props.values.description.es || ""}
-                  />
-                </Item>
-                <Item>
-                  <Label>Description (FR)</Label>
-                  <Input
-                    multiline
-                    onChangeText={(change)=> {
-                      props.setFieldValue("description.fr", change);
-                    }}
-                    style={{ paddingTop: 15, paddingBottom: 15 }}
-                    value={props.values.description.fr || ""}
-                  />
-                </Item>
+                <TranslationInput
+                  fieldName="Description"
+                  fieldValue="description"
+                  formikProps={props}
+                />
                 <Item>
                   <Label>Location</Label>
                   <Input
