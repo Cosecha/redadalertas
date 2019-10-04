@@ -5,7 +5,7 @@ import { createBottomTabNavigator, createAppContainer } from "react-navigation";
 import firebase from "react-native-firebase";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
-import { LocalizeProvider } from "react-localize-redux";
+import { Translate, LocalizeProvider } from "react-localize-redux";
 
 // Redadalertas
 import rootReducer from "reducers/index";
@@ -92,6 +92,8 @@ export default class App extends Component {
     return (
     <Provider store={store}>
       <LocalizeProvider store={store} initialize={translationsConfig}>
+      <Translate>
+      {({ translate }) => (
         <PersistGate
           loading={
             <ActivityIndicator color={colors.primary} size="large" />
@@ -100,11 +102,14 @@ export default class App extends Component {
         >
           <Root>
             <AppContainer
+              screenProps={{ translate }}
               persistenceKey={null}
               ref={navigator => setNavigator(navigator)}
             />
           </Root>
         </PersistGate>
+      )}
+      </Translate>
       </LocalizeProvider>
     </Provider>
     );

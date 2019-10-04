@@ -4,8 +4,7 @@
     "farewell": "Goodbye"
   },
   "events": {
-    "events": "Events",
-    "map": "Map",
+    "map": "Events Map",
     "report": "Report"
   },
   "settings": {

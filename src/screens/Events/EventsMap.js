@@ -83,7 +83,9 @@ const initialRegion = {
 }
 
 class EventsMap extends Component {
-  static navigationOptions = () => ({ title: "Event Map" });
+  static navigationOptions = ({navigation, screenProps}) => ({
+    title: screenProps.translate("events.map")
+  });
 
   constructor(props) {
     super(props);
