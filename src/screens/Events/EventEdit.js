@@ -9,7 +9,6 @@ import {
 
 // Redadalertas
 import { colors } from "styles";
-import eventServices from "services/event";
 import EventForm from "components/EventForm";
 
 const styles = StyleSheet.create({

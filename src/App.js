@@ -5,6 +5,7 @@ import { createBottomTabNavigator, createAppContainer } from "react-navigation";
 import firebase from "react-native-firebase";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
+import { LocalizeProvider } from "react-localize-redux";
 
 // Redadalertas
 import rootReducer from "reducers/index";
@@ -17,6 +18,7 @@ import { TabIcon } from "navigation/utils";
 import TabBarIcon from "ui/TabBarIcon";
 import { persistor, store } from "redux/configureStore";
 import { navigate, setNavigator } from "utils/navigation";
+import translationsConfig from "./translations/config";
 
 const persistenceKey = __DEV__ ? "NavigationState" : null;
 
@@ -88,7 +90,8 @@ export default class App extends Component {
     const AppContainer = createAppContainer(AppNavigator);
 
     return (
-      <Provider store={store}>
+    <Provider store={store}>
+      <LocalizeProvider store={store} initialize={translationsConfig}>
         <PersistGate
           loading={
             <ActivityIndicator color={colors.primary} size="large" />
@@ -102,7 +105,8 @@ export default class App extends Component {
             />
           </Root>
         </PersistGate>
-      </Provider>
+      </LocalizeProvider>
+    </Provider>
     );
   }
 }

@@ -1,6 +1,9 @@
 // Setup
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { StyleSheet, View } from "react-native";
+import { Translate, withLocalize, getLanguages, getActiveLanguage, setActiveLanguage
+} from "react-localize-redux";
 
 // Vendor
 import {
@@ -36,7 +39,7 @@ const types = [
   { label: "Other", value: "other" },
 ];
 
-export default class EventPage extends Component {
+class EventPage extends Component {
 
   constructor(props) {
     super(props);
@@ -71,7 +74,9 @@ export default class EventPage extends Component {
   render() {
     const { event, user } = this.state;
     const { navigation } = this.props;
-    const { location } = event;
+    const language = this.props.activeLanguage.code;
+    const { location, description } = event;
+
     const agencies = event.present && event.present.length > 0 ? (
       <View>
         <Text style={{paddingTop: 15, color: "gray"}}>Agencies:</Text>
@@ -100,7 +105,7 @@ export default class EventPage extends Component {
             <Text>{location.city}, {location.state} {location.zipcode}</Text>
             {agencies}
             <Text style={{paddingTop: 15, color: "gray"}}>Details:</Text>
-            <Text>{event.description}</Text>
+            <Text>{event.description[language] || event.description.en}</Text>
             {editButton}
           </Content>
         </Container>
@@ -108,3 +113,15 @@ export default class EventPage extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user,
+  errors: state.errors,
+  languages: getLanguages(state.localize)
+});
+
+
+export default connect(
+  mapStateToProps,
+  null
+)(withLocalize(EventPage));

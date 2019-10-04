@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { connect } from "react-redux";
+import { Translate, withLocalize, setActiveLanguage } from "react-localize-redux";
 
 // Vendor
 import MapView, { Callout, Marker } from "react-native-maps";
@@ -10,6 +11,7 @@ import { Toast, Fab, Icon, Button } from "native-base";
 // Redadalertas
 import { colors } from "styles";
 import { getEvents } from "reducers/event";
+import { saveDevice } from "reducers/device";
 import { Notification } from "utils/notification";
 import { checkForUserLogin } from "utils/user";
 import { saveUserToken } from "reducers/user";
@@ -21,20 +23,57 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject
   },
-  icon: {
+  fabIcon: {
     backgroundColor: colors.primary
+  },
+  marker: {
+    width: 30,
+    height: 30,
+    borderRadius: 30 / 2,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.darkGray,
+    backgroundColor: 'gray',
+  },
+  markerIcon: {
+    fontSize: 25,
+    textAlign: "center",
+    color: "white"
+  },
+  callout: {
+    width: 200,
+    maxHeight: 200,
+    maxWidth: 200,
+  },
+  calloutText: {
+    fontWeight: "bold"
   }
 });
 
 const types = [
-  { label: "Raid", value: "sweep" },
-  { label: "Individual", value: "targeted" },
-  { label: "Traffic Stop", value: "traffic" },
-  { label: "I-9 Audit", value: "i9" },
-  { label: "Checkpoint", value: "checkpoint" },
-  { label: "Action", value: "action" },
-  { label: "False Alarm", value: "falsealarm" },
-  { label: "Other", value: "other" }
+  { label: "Raid", value: "sweep",
+    markerColor: "red", markerIcon: "radio"
+  },
+  { label: "Individual", value: "targeted",
+    markerColor: "orange", markerIcon: "man"
+  },
+  { label: "Traffic Stop", value: "traffic",
+    markerColor: "yellow", markerIcon: "car"
+  },
+  { label: "I-9 Audit", value: "i9",
+    markerColor: "green", markerIcon: "business"
+  },
+  { label: "Checkpoint", value: "checkpoint",
+    markerColor: "blue", markerIcon: "pin"
+  },
+  { label: "Action", value: "action",
+    markerColor: "indigo", markerIcon: "megaphone"
+  },
+  { label: "False Alarm", value: "falsealarm",
+    markerColor: "violet", markerIcon: "close-circle"
+  },
+  { label: "Other", value: "other",
+    markerColor: "gray", markerIcon: "today" }
 ];
 const initialRegion = {
   latitude: 37.7620375,
@@ -54,8 +93,7 @@ class EventsMap extends Component {
 
   async componentDidMount() {
     const { navigation } = this.props;
-    const user = await checkForUserLogin();
-    if (user) await this.props.saveUserToken(user);
+    await this.initializeState();
     await this.populateMap();
     this.willFocusSub = navigation.addListener(
       "willFocus",
@@ -67,6 +105,21 @@ class EventsMap extends Component {
     );
   }
 
+  async initializeState() {
+    const user = await checkForUserLogin();
+    if (user) await this.props.saveUserToken(user);
+    const deviceSettings = await deviceServices.get();
+    if (deviceSettings) {
+      // If there are settings in device storage, set them
+      if (deviceSettings.language) {
+        // Set language in react-localize-redux
+        this.props.setActiveLanguage(deviceSettings.language);
+      }
+      // Save settings in redux store
+      await this.props.saveDevice(deviceSettings);
+    }
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     return this.state != nextState || this.props != nextProps;
   }
@@ -75,9 +128,9 @@ class EventsMap extends Component {
     const {
       props: { events: fetchedEvents }
     } = this;
-    const previousEventIds = prevProps.events.map(event => event.id);
+    const previousEventIds = prevProps.events.map(event => event._id);
     const newEvents = fetchedEvents.filter(
-      event => !previousEventIds.includes(event.id)
+      event => !previousEventIds.includes(event._id)
     );
 
     if (newEvents.length > 1) {
@@ -125,7 +178,7 @@ class EventsMap extends Component {
       500
     );
     setTimeout(() => {
-      this.markers[event.id].showCallout();
+      this.markers[event._id].showCallout();
     }, 1500);
   }
 
@@ -153,6 +206,14 @@ class EventsMap extends Component {
     return types.find(type => type.value == eventType).label;
   }
 
+  getEventColor(eventType) {
+    return types.find(type => type.value == eventType).markerColor;
+  }
+
+  getEventIcon(eventType) {
+    return types.find(type => type.value == eventType).markerIcon;
+  }
+
   render() {
     const { navigation, events } = this.props;
 
@@ -175,22 +236,29 @@ class EventsMap extends Component {
               <></>
             );
             const cityStateZip = `${location.city}, ${location.state} ${location.zipcode}`;
+            const markerColor = this.getEventColor(event.type);
+            const markerIcon = this.getEventIcon(event.type);
 
             return (
               <Marker
                 coordinate={{ latitude, longitude }}
-                identifier={event.id}
-                key={event.id}
+                identifier={event._id}
+                key={event._id}
                 ref={ref => {
-                  this.markers[event.id] = ref;
+                  this.markers[event._id] = ref;
                 }}
                 onCalloutPress={() => {
                   navigation.navigate("EventPage", { event });
                 }}
               >
-                <Callout tooltip={false}>
+                <View
+                  style={[styles.marker, { backgroundColor: markerColor }]}
+                >
+                  <Icon name={markerIcon} style={styles.markerIcon} />
+                </View>
+                <Callout style={styles.callout} tooltip={false}>
                   <View>
-                    <Text style={{ maxWidth: 200, fontWeight: "bold" }}>
+                    <Text style={styles.calloutText}>
                       {this.getEventLabel(event.type)}
                     </Text>
                     <Text>{location.address_1}</Text>
@@ -203,7 +271,7 @@ class EventsMap extends Component {
           })}
         </MapView>
         <Fab
-          style={styles.icon}
+          style={styles.fabIcon}
           position="bottomRight"
           onPress={async () => {
             await this.populateMap();
@@ -225,11 +293,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  setActiveLanguage: (language) => dispatch(setActiveLanguage(language)),
   saveUserToken: (user) => dispatch(saveUserToken(user)),
+  saveDevice: (settings) => dispatch(saveDevice(settings)),
   getEvents: () => dispatch(getEvents())
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(EventsMap);
+)(withLocalize(EventsMap));

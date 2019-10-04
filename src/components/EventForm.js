@@ -29,7 +29,6 @@ import { Formik } from "formik";
 import { colors } from "styles";
 import eventServices from "services/event";
 import { addHours } from "utils/formatting";
-import asyncStore from "utils/asyncstorage";
 
 const types = [
   { label: "Raid", value: "sweep" },
@@ -46,12 +45,11 @@ const initialValues = {
     at: addHours(Date.now(), 12), // 12 hours from now
     deleteOnExpire: false
   },
-  description: "",
-  // TO-DO: Switch to object when i18n is fixed
-  // {
-  //   en: "",
-  //   es: ""
-  // },
+  description: {
+    en: "",
+    es: "",
+    fr: ""
+  },
   location: {},
   present: [],
   type: types[0].value
@@ -90,14 +88,7 @@ class EventForm extends Component {
         // If updating event, add event _id, fix/remove server-generated data
         if (data.created) delete data["created"];
         if (data.updated) delete data["updated"];
-        // If updating event, add event _id
-        if (typeof data.description == 'string') {
-          // TO-DO: remove this when server i18n is fixed
-          const i18nDesc = { en: data.description }
-          data.description = i18nDesc;
-        }
-        data._id = data.id;
-        delete data["id"];
+
         response = await eventServices.put(data);
       }
       if (response instanceof Error) throw response;
@@ -177,10 +168,32 @@ class EventForm extends Component {
                   <Input
                     multiline
                     onChangeText={(change)=> {
-                      props.setFieldValue("description", change);
+                      props.setFieldValue("description.en", change);
                     }}
                     style={{ paddingTop: 15, paddingBottom: 15 }}
-                    value={props.values.description}
+                    value={props.values.description.en}
+                  />
+                </Item>
+                <Item>
+                  <Label>Description (ES)</Label>
+                  <Input
+                    multiline
+                    onChangeText={(change)=> {
+                      props.setFieldValue("description.es", change);
+                    }}
+                    style={{ paddingTop: 15, paddingBottom: 15 }}
+                    value={props.values.description.es || ""}
+                  />
+                </Item>
+                <Item>
+                  <Label>Description (FR)</Label>
+                  <Input
+                    multiline
+                    onChangeText={(change)=> {
+                      props.setFieldValue("description.fr", change);
+                    }}
+                    style={{ paddingTop: 15, paddingBottom: 15 }}
+                    value={props.values.description.fr || ""}
                   />
                 </Item>
                 <Item>
@@ -269,10 +282,7 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
-const mapDispatchToProps = dispatch => ({
-});
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(EventForm);
