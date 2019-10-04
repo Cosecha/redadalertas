@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
-import { Translate, withLocalize, getLanguages, getActiveLanguage, setActiveLanguage
+import { Translate, withLocalize, getLanguages, setActiveLanguage
 } from "react-localize-redux";
 
 // Vendor
@@ -112,68 +112,71 @@ class SettingsPage extends Component {
     const { navigation, user, device } = this.props;
 
     const userBlock = (user && user.username) ? (
-      <View style={styles.view}>
-        <H3>User Settings</H3>
+      <Translate>
+      {({ translate }) => (
+        <View style={styles.view}>
+
+        <H3>{translate("settings.user")}</H3>
         <Text>{user.username}</Text>
         <Button
           style={styles.button}
           onPress={()=> navigation.navigate("ChangePassword")}
         >
-          <Text>Change Password</Text>
+          <Text>{translate("password.change")}</Text>
         </Button>
         <Button
           style={styles.button}
           onPress={this.handleLogout}
         >
-          <Text>Logout</Text>
+          <Text>{translate("logout.logout")}</Text>
         </Button>
-      </View>
+        </View>
+
+      )}
+      </Translate>
     ) : (<></>);
 
     return (
+      <Translate>
+      {({ translate, activeLanguage, languages }) => (
       <View style={styles.view}>
         <Content style={styles.content}>
           {userBlock}
           <View style={styles.view}>
-            <Translate>
-            {({ translate }) => (
               <H3>{translate("settings.device")}</H3>
-            )}
-            </Translate>
+
             <Form>
               <Item>
-                <Label><Translate id="settings.language" /></Label>
+                <Label>{translate("settings.language")}</Label>
                 <Text>{this.props.activeLanguage.name}</Text>
               </Item>
-              <Translate>
-                {({ translate, activeLanguage, languages }) => (
-                  <Picker
-                    mode="dropdown"
-                    iosIcon={<Icon name="ios-arrow-dropdown" />}
-                    onValueChange={(change) => this.handleLanguageChange(change)}
-                    placeholder={translate("settings.select")}
-                    selectedValue={activeLanguage.name}
-                  >
-                    {languages.map(language => (
-                      <Picker.Item
-                        key={language.code}
-                        label={language.name}
-                        value={language.code}
-                      />
-                    ))}
-                  </Picker>
-                )}
-              </Translate>
+              <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="ios-arrow-dropdown" />}
+                onValueChange={(change) => this.handleLanguageChange(change)}
+                placeholder={translate("settings.changeLang")}
+                selectedValue={activeLanguage.name}
+              >
+                {languages.map(language => (
+                  <Picker.Item
+                    key={language.code}
+                    label={language.name}
+                    value={language.code}
+                  />
+                ))}
+              </Picker>
             </Form>
             <Button
               style={styles.button}
               onPress={this.handleDeviceReset}
             >
-              <Text>Reset Device</Text>
+              <Text>{translate("settings.reset")}</Text>
             </Button>
           </View>
         </Content>
       </View>
+    )}
+    </Translate>
     );
   }
 }

@@ -1,0 +1,43 @@
+{
+  "welcome": {
+    "greeting": "Hello",
+    "farewell": "Goodbye"
+  },
+  "events": {
+    "events": "Events",
+    "map": "Map",
+    "report": "Report"
+  },
+  "settings": {
+    "user": "User Settings",
+    "device": "Device Settings",
+    "language": "Language",
+    "changeLang": "Change Language",
+    "location": "Location",
+    "selectLoc": "Select Location",
+    "reset": "Reset Device"
+  },
+  "password": {
+    "change": "Change Password",
+    "success": "Password change successful.",
+    "error": "Error changing password"
+  },
+  "logout": {
+    "logout": "Log Out",
+    "success": "User logout successful.",
+    "error": "Error logging out",
+    "noUser": "No user to log out."
+  },
+  "login": {
+    "login": "Log In",
+    "username": "Username",
+    "password": "Password",
+    "signin": "Sign In",
+    "loginSuccess": "You will be logged in for 1 week.",
+    "error": "Error logging in",
+    "please": "Please log in.",
+    "noRes": "No response.",
+    "noData": "Response has no data.",
+    "noCred": "Login returned no credentials."
+  }
+}

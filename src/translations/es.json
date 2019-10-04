@@ -1,0 +1,43 @@
+{
+  "welcome": {
+    "greeting": "Hola",
+    "farewell": "Adios"
+  },
+  "events": {
+    "events": "Eventos",
+    "map": "Mapa",
+    "report": "Reportes"
+  },
+  "settings": {
+    "user": "Ajustes de Usuario",
+    "device": "Configuración de Dispositivo",
+    "language": "Idioma",
+    "changeLang": "Cambiar el Idioma",
+    "location": "Ubicación",
+    "selectLoc": "Seleccionar Ubicación",
+    "reset": "Reiniciar el Dispositivo"
+  },
+  "password": {
+    "change": "Cambiar Contraseña",
+    "success": "Cambio de contraseña exitoso.",
+    "error": "Error al cambiar la contraseña"
+  },
+  "logout": {
+    "logout": "Cerrar Sesión",
+    "success": "Sesión del Usuario Terminado.",
+    "error": "Error al cerrar sesión",
+    "noUser": "Ningún usuario debe cerrar sesión."
+  },
+  "login": {
+    "login": "Iniciar Sesión",
+    "username": "Nombre de usuario",
+    "password": "Contraseña",
+    "signin": "Registrarse",
+    "loginSuccess": "Iniciará sesión durante 1 semana.",
+    "error": "Error al iniciar sesión",
+    "please": "Por favor iniciar sesión.",
+    "noRes": "Ninguna respuesta.",
+    "noData": "La respuesta no tiene datos.",
+    "noCred": "El inicio de sesión no devolvió credenciales."
+  }
+}
