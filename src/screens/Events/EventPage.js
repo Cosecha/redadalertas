@@ -2,8 +2,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { StyleSheet, View } from "react-native";
-import { Translate, withLocalize, getLanguages, getActiveLanguage, setActiveLanguage
-} from "react-localize-redux";
+import { Translate, withLocalize } from "react-localize-redux";
 
 // Vendor
 import {
@@ -116,8 +115,7 @@ class EventPage extends Component {
 
 const mapStateToProps = state => ({
   user: state.user,
-  errors: state.errors,
-  languages: getLanguages(state.localize)
+  errors: state.errors
 });
 
 

@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
-import { Translate, withLocalize, getLanguages, setActiveLanguage
+import { Translate, withLocalize, setActiveLanguage
 } from "react-localize-redux";
 
 // Vendor
@@ -143,8 +143,7 @@ class SettingsPage extends Component {
         <Content style={styles.content}>
           {userBlock}
           <View style={styles.view}>
-              <H3>{translate("settings.device")}</H3>
-
+            <H3>{translate("settings.device")}</H3>
             <Form>
               <Item>
                 <Label>{translate("settings.language")}</Label>
@@ -184,8 +183,7 @@ class SettingsPage extends Component {
 const mapStateToProps = state => ({
   device: state.device,
   user: state.user,
-  errors: state.errors,
-  languages: getLanguages(state.localize)
+  errors: state.errors
 });
 
 const mapDispatchToProps = dispatch => ({
