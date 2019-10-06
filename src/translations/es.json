@@ -3,9 +3,68 @@
     "greeting": "Hola",
     "farewell": "Adios"
   },
+  "tabs": {
+    "events": "Eventos",
+    "report": "Informar",
+    "settings": "Configuraciones"
+  },
   "events": {
     "map": "Mapa de Eventos",
-    "report": "Reportes"
+    "fetchSuccess": "Eventos recuperados con éxito.",
+    "fetchError": "Error al representar el mapa.",
+    "newEvents": "Nuevos Eventos",
+    "newReports": "Nuevos eventos han sido reportados.",
+    "reported": "Reportado",
+    "reportedAddress": "Informado en"
+  },
+  "event": {
+    "agencies": "Agencias",
+    "details": "Detalles",
+    "edit": "Editar Evento",
+    "updated": "Evento actualizado.",
+    "type": {
+      "sweep": "Redada",
+      "targeted": "Individual",
+      "traffic": "Parada de tráfico",
+      "i9": "Auditoría I-9",
+      "checkpoint": "Control",
+      "action": "Acción/Protesta",
+      "falsealarm": "Falsa Alarma",
+      "other": "Otro",
+    }
+  },
+  "report": {
+    "event": "Reportar Evento",
+    "type": "Tipo",
+    "present": "Agencias Actuales",
+    "description": "Descripción",
+    "location": "Ubicación",
+    "expires": "Expira",
+    "hours": "hora${s}",
+    "fromNow": "a partir de ahora",
+    "selectExpire": "Seleccione el tiempo de caducidad",
+    "changeExpire": "Cambiar el tiempo de caducidad",
+    "delete": "¿Eliminar al caducar?",
+    "submit": "Enviar",
+    "change": "Presentar cambios",
+    "submitted": "Evento enviado",
+    "error": "Error al enviar el informe"
+  },
+  "geo": {
+    "add": "Añadir",
+    "addLoc": "Añadir Ubicación",
+    "edit": "Editar",
+    "cancel": "Cancelar",
+    "enter": "Ingrese la Dirección de la Calle",
+    "locError": "Error al establecer la ubicación",
+    "error": "Ubicación de geocodificación de error",
+    "coordError": "Error de coordenadas de geocodificación",
+    "noStreet": "Sin domicilio.",
+    "noCity": "Ninguna ciudad.",
+    "noState": "Sin estado.",
+    "noZip": "Sin código postal.",
+    "noLat": "Sin latitud.",
+    "noLong": "Sin longitud."
   },
   "settings": {
     "user": "Ajustes de Usuario",
@@ -19,7 +78,10 @@
   "password": {
     "change": "Cambiar Contraseña",
     "success": "Cambio de contraseña exitoso.",
-    "error": "Error al cambiar la contraseña"
+    "error": "Error al cambiar la contraseña",
+    "current": "Actual",
+    "new": "Nueva",
+    "newAgain": "Nueva de Nuevo",
   },
   "logout": {
     "logout": "Cerrar Sesión",
@@ -32,7 +94,7 @@
     "username": "Nombre de usuario",
     "password": "Contraseña",
     "signin": "Registrarse",
-    "loginSuccess": "Iniciará sesión durante 1 semana.",
+    "success": "Iniciará sesión durante 1 semana.",
     "error": "Error al iniciar sesión",
     "please": "Por favor iniciar sesión.",
     "noRes": "Ninguna respuesta.",

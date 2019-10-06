@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
+import { Translate, withLocalize } from "react-localize-redux";
 
 // Vendor
 import {
@@ -76,10 +77,11 @@ class EventForm extends Component {
   }
 
   onSubmit = async (values, { resetForm }) => {
+    const { translate } = this.props;
     let response;
     try {
       const user = this.props.user;
-      if (!user) throw new Error("Not logged in.");
+      if (!user) throw new Error(translate("login.please"));
 
       let data = { ...values }
 
@@ -100,13 +102,13 @@ class EventForm extends Component {
       });
       Toast.show({
         buttonText: "OK",
-        text: (this.props.newEvent === true) ? "Event submitted." : "Event updated.",
+        text: (this.props.newEvent === true) ? translate("report.submitted") : translate("event.updated"),
         type: "success"
       });
     } catch (error) {
       Toast.show({
         buttonText: "OK",
-        text: "Error submitting report: " + (error.message || error),
+        text: `${translate("report.error")}: ` + (error.message || error),
         type: "danger"
       });
     }
@@ -126,6 +128,8 @@ class EventForm extends Component {
     const { agencyInputValue, expireAt } = this.state;
 
     return (
+      <Translate>
+      {({ translate }) => (
       <Formik initialValues={eventToEdit || initialValues} onSubmit={this.onSubmit}>
         {props => (
           <Container>
@@ -133,7 +137,7 @@ class EventForm extends Component {
             <Content>
               <Form>
                 <Item style={{ marginLeft: 15 }} fixedLabel>
-                  <Label>Type</Label>
+                  <Label>{translate("report.type")}</Label>
                   <Picker
                     mode="dropdown"
                     iosIcon={<Icon name="ios-arrow-dropdown" />}
@@ -144,14 +148,14 @@ class EventForm extends Component {
                     {types.map(type => (
                       <Picker.Item
                         key={type.value}
-                        label={type.label}
+                        label={translate("event.type." + type.value)}
                         value={type.value}
                       />
                     ))}
                   </Picker>
                 </Item>
                 <Item>
-                  <Label>Present Agencies</Label>
+                  <Label>{translate("report.present")}</Label>
                   <Input
                     onChangeText={value => {
                       const agencies = value
@@ -165,12 +169,12 @@ class EventForm extends Component {
                   />
                 </Item>
                 <TranslationInput
-                  fieldName="Description"
+                  fieldName={translate("report.description")}
                   fieldValue="description"
                   formikProps={props}
                 />
                 <Item>
-                  <Label>Location</Label>
+                  <Label>{translate("report.location")}</Label>
                   <Input
                     multiline
                     editable={false}
@@ -190,14 +194,14 @@ class EventForm extends Component {
                       style={{ marginRight: 10 }}
                     >
                       <Text>
-                        {props.values.location.address_1 ? "Edit" : "Add"}
+                        {props.values.location.address_1 ? translate("geo.edit") : translate("geo.add")}
                       </Text>
                     </Button>
                   </View>
                 </Item>
                 <Item style={{ marginLeft: 15 }} fixedLabel>
                       <Label style={{ paddingTop: 15, paddingBottom: 15 }}>
-                        Expires
+                        {translate("report.expires")}
                       </Label>
                       <Picker
                         mode="dropdown"
@@ -211,20 +215,23 @@ class EventForm extends Component {
                           // Save # of hours to display
                           this.setState({ expireAt: change });
                         }}
-                        placeholder={this.props.newEvent ? "Select expiration time" : "Change expiration time"}
+                        placeholder={this.props.newEvent ? translate("report.selectExpire") :
+                        translate("report.changeExpire")}
                         selectedValue={expireAt}
                       >
                         {[1,2,4,8,12,24,48,72].map(time => (
                           <Picker.Item
                             key={time}
-                            label={time + " hour" + (time !== 1 ? "s" : "") + " from now"}
+                            label={time + " " +
+                            translate("report.hours", { s: (time !== 1 ? "s" : "") }) +
+                            " " + translate("report.fromNow")}
                             value={time}
                           />
                         ))}
                       </Picker>
                 </Item>
                 <Item fixedLabel style={{ marginTop: 15 }}>
-                  <Label style={{ marginBottom: 15 }}>Delete on Expire?</Label>
+                  <Label style={{ marginBottom: 15 }}>{translate("report.delete")}</Label>
                   <CheckBox
                     checked={props.values.expire.deleteOnExpire}
                     onPress={() =>
@@ -241,12 +248,17 @@ class EventForm extends Component {
                 style={{ backgroundColor: colors.primary, margin: 15 }}
                 onPress={props.handleSubmit}
               >
-                <Text>{(this.props.newEvent) ? "Submit" : "Submit Changes"}</Text>
+                <Text>{
+                (this.props.newEvent) ?
+                  translate("report.submit") : translate("report.change")
+                }</Text>
               </Button>
             </Content>
           </Container>
         )}
       </Formik>
+    )}
+    </Translate>
     );
   }
 }
@@ -258,4 +270,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   null
-)(EventForm);
+)(withLocalize(EventForm));

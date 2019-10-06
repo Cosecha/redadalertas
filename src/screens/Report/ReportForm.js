@@ -39,11 +39,11 @@ const styles = StyleSheet.create({
 export default class ReportForm extends Component {
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, screenProps } = this.props;
     const header = (
       <Header>
         <Body>
-          <Title>Report Event</Title>
+          <Title>{screenProps.translate("report.event")}</Title>
         </Body>
       </Header>
     );

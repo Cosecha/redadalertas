@@ -3,9 +3,68 @@
     "greeting": "Hello",
     "farewell": "Goodbye"
   },
+  "tabs": {
+    "events": "Events",
+    "report": "Report",
+    "settings": "Settings"
+  },
   "events": {
     "map": "Events Map",
-    "report": "Report"
+    "fetchSuccess": "Events fetched successfully.",
+    "fetchError": "Error rendering map.",
+    "newEvents": "New Events",
+    "newReports": "New events have been reported.",
+    "reported": "Reported",
+    "reportedAddress": "Reported at"
+  },
+  "event": {
+    "agencies": "Agencies",
+    "details": "Details",
+    "edit": "Edit Event",
+    "updated": "Event updated.",
+    "type": {
+      "sweep": "Raid",
+      "targeted": "Individual",
+      "traffic": "Traffic Stop",
+      "i9": "I-9 Audit",
+      "checkpoint": "Checkpoint",
+      "action": "Action/Protest",
+      "falsealarm": "False Alarm",
+      "other": "Other",
+    }
+  },
+  "report": {
+    "event": "Report Event",
+    "type": "Type",
+    "present": "Present Agencies",
+    "description": "Description",
+    "location": "Location",
+    "expires": "Expires",
+    "hours": "hour${s}",
+    "fromNow": "from now",
+    "selectExpire": "Select expiration time",
+    "changeExpire": "Change expiration time",
+    "delete": "Delete on Expire?",
+    "submit": "Submit",
+    "change": "Submit Changes",
+    "submitted": "Event Submitted.",
+    "error": "Error submitting report",
+  },
+  "geo": {
+    "add": "Add",
+    "addLoc": "Add Location",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "enter": "Enter Street Address",
+    "locError": "Error setting location",
+    "error": "Error geocoding location",
+    "coordError": "Error geocoding coordinates",
+    "noStreet": "No street address.",
+    "noCity": "No city.",
+    "noState": "No state.",
+    "noZip": "No zipcode.",
+    "noLat": "No latitude.",
+    "noLong": "No longitude."
   },
   "settings": {
     "user": "User Settings",
@@ -19,7 +78,10 @@
   "password": {
     "change": "Change Password",
     "success": "Password change successful.",
-    "error": "Error changing password"
+    "error": "Error changing password",
+    "current": "Current",
+    "new": "New",
+    "newAgain": "New Again",
   },
   "logout": {
     "logout": "Log Out",
@@ -32,7 +94,7 @@
     "username": "Username",
     "password": "Password",
     "signin": "Sign In",
-    "loginSuccess": "You will be logged in for 1 week.",
+    "success": "You will be logged in for 1 week.",
     "error": "Error logging in",
     "please": "Please log in.",
     "noRes": "No response.",

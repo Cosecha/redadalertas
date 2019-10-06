@@ -53,9 +53,12 @@ const styles = StyleSheet.create({
 });
 
 class SettingsPage extends Component {
-  static navigationOptions = () => ({ title: "Settings" });
+  static navigationOptions = ({ screenProps }) => ({
+    title: screenProps.translate("tabs.settings")
+  });
 
   handleLogout = async () => {
+    const { translate } = this.props;
     let response;
     try {
       response = await authServices.logout();
@@ -65,13 +68,13 @@ class SettingsPage extends Component {
       this.props.navigation.navigate("ReporterLoginForm");
       Toast.show({
         buttonText: "OK",
-        text: "User logout successful.",
+        text: translate("logout.success"),
         type: "success"
       });
     } catch (error) {
       Toast.show({
         buttonText: "OK",
-        text: "Error logging out: " + (error.message || error),
+        text: `${translate("logout.error")} :` + (error.message || error),
         type: "danger"
       });
     }

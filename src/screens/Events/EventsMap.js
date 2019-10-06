@@ -83,7 +83,7 @@ const initialRegion = {
 }
 
 class EventsMap extends Component {
-  static navigationOptions = ({navigation, screenProps}) => ({
+  static navigationOptions = ({ screenProps }) => ({
     title: screenProps.translate("events.map")
   });
 
@@ -134,13 +134,14 @@ class EventsMap extends Component {
     const newEvents = fetchedEvents.filter(
       event => !previousEventIds.includes(event._id)
     );
+    const { translate } = this.props;
 
     if (newEvents.length > 1) {
       new Notification({
         data: { route: "EventsMap" },
         id: "newEvents",
-        title: `${newEvents.length} New Events`,
-        body: "New events have been reported."
+        title: `${newEvents.length} ${translate("events.newEvents")}`,
+        body: `${translate("events.newReports")}`
       }).display();
     } else if (newEvents.length === 1) {
       const event = newEvents[0];
@@ -148,8 +149,8 @@ class EventsMap extends Component {
       new Notification({
         data: { route: "EventPage", params: { event }},
         id: "newEvent",
-        title: `${typeLabel} Reported`,
-        body: `${typeLabel} reported at ${event.location.address_1}`
+        title: `${typeLabel} ${translate("events.reported")}`,
+        body: `${typeLabel} ${translate("events.reportedAddress")} ${event.location.address_1}`
       }).display();
     }
   }
@@ -186,26 +187,27 @@ class EventsMap extends Component {
 
   async populateMap(newEvent) {
     try {
+      const screenProps = this.props.screenProps;
       await this.props.getEvents();
       if (this.props.errors.event) throw this.props.errors.event;
       if (newEvent) this.focusMarker(newEvent);
       Toast.show({
         buttonText: "OK",
-        text: "Events fetched successfully.",
+        text: screenProps.translate("events.fetchSuccess"),
         type: "success"
       });
     } catch (error) {
       console.log("Error rendering map: ", error);
       Toast.show({
         buttonText: "OK",
-        text: "Error rendering map.",
+        text: screenProps.translate("events.fetchError"),
         type: "danger"
       });
     }
   }
 
   getEventLabel(eventType) {
-    return types.find(type => type.value == eventType).label;
+    return this.props.screenProps.translate("event.type." + eventType);
   }
 
   getEventColor(eventType) {
@@ -261,7 +263,7 @@ class EventsMap extends Component {
                 <Callout style={styles.callout} tooltip={false}>
                   <View>
                     <Text style={styles.calloutText}>
-                      {this.getEventLabel(event.type)}
+                      <Translate id={"event.type." + event.type} />
                     </Text>
                     <Text>{location.address_1}</Text>
                     <Text>{cityStateZip}</Text>

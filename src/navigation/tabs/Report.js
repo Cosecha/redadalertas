@@ -23,7 +23,10 @@ const ReportTab = createStackNavigator(
   },
   {
     mode: "modal",
-    headerMode: "none"
+    headerMode: "none",
+    navigationOptions: ({ screenProps }) => ({
+      tabBarLabel: screenProps.translate("tabs.report")
+    })
   }
 );
 

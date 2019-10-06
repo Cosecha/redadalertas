@@ -20,7 +20,9 @@ const styles = StyleSheet.create({
 });
 
 export default class EventEdit extends Component {
-  static navigationOptions = () => ({ title: "Edit Event" });
+  static navigationOptions = ({screenProps}) => ({
+    title: screenProps.translate("event.edit")
+  });
 
   render() {
     const { navigation } = this.props;
