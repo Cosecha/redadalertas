@@ -78,7 +78,7 @@ DEPENDENCIES:
   - Firebase/Messaging (~> 5.20.1)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - AppCenter
     - AppCenterReactNativeShared
     - Firebase
@@ -108,4 +108,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: a8938e3926e64a39132a3b2c994a268805d28766
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.8.1
