@@ -9,6 +9,7 @@ import MapView, { Callout, Marker } from "react-native-maps";
 import { Toast, Fab, Icon, Button } from "native-base";
 
 // Redadalertas
+import EventsList from "./EventsList";
 import { colors } from "styles";
 import { getEvents } from "reducers/event";
 import { saveDevice } from "reducers/device";
@@ -274,6 +275,7 @@ class EventsMap extends Component {
             );
           })}
         </MapView>
+        <EventsList events={events} />
         <Fab
           style={styles.fabIcon}
           position="bottomRight"
