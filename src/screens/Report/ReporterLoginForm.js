@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
+import { withLocalize } from "react-localize-redux";
 
 // Vendor
 import {
@@ -64,6 +65,7 @@ class ReporterLoginForm extends Component {
   }
 
   handleSubmit = async () => {
+    const { translate } = this.props;
     try {
       const response = await authServices.login({
         username: this.state.username,
@@ -75,24 +77,24 @@ class ReporterLoginForm extends Component {
       this.props.navigation.navigate("ReportForm");
       Toast.show({
         buttonText: "OK",
-        text: "You will be logged in for 1 week.",
+        text: `${translate("login.success")}`,
         type: "success"
       });
     } catch (error) {
       Toast.show({
         buttonText: "OK",
-        text: `Error logging in: ${error.message || error}`,
+        text: `${translate("login.error")}: ${error.message || error}`,
         type: "danger"
       });
     }
   };
 
   handleWillFocus(payload) {
-    const user = this.props.user;
+    const { translate, user } = this.props;
     if (!user || Object.keys(user).length < 1 || user instanceof Error) {
       Toast.show({
         buttonText: "OK",
-        text: "Please log in.",
+        text: `${translate("login.please")}`,
         type: "danger"
       });
     } else {
@@ -105,15 +107,17 @@ class ReporterLoginForm extends Component {
   }
 
   render() {
+    const { translate } = this.props;
+
     return (
       <Container onSubmit={this.onSubmit} style={styles.container}>
         <Header>
-          <Title>Log In</Title>
+          <Title>{translate("login.login")}</Title>
         </Header>
         <Content>
           <Form>
             <Item fixedLabel>
-              <Label>Username</Label>
+              <Label>{translate("login.username")}</Label>
               <Input
                 placeholder="username@mail.com"
                 style={styles.input}
@@ -126,7 +130,7 @@ class ReporterLoginForm extends Component {
               />
             </Item>
             <Item fixedLabel>
-              <Label>Password</Label>
+              <Label>{translate("login.password")}</Label>
               <Input
                 placeholder="password"
                 secureTextEntry
@@ -136,7 +140,7 @@ class ReporterLoginForm extends Component {
               />
             </Item>
             <Button style={{ marginLeft: 15 }} onPress={this.handleSubmit}>
-              <Text>Sign In</Text>
+              <Text>{translate("login.signin")}</Text>
             </Button>
           </Form>
         </Content>
@@ -157,4 +161,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ReporterLoginForm);
+)(withLocalize(ReporterLoginForm));

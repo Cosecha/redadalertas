@@ -2,8 +2,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { StyleSheet, View } from "react-native";
-import { Translate, withLocalize, getLanguages, getActiveLanguage, setActiveLanguage
-} from "react-localize-redux";
+import { Translate, withLocalize } from "react-localize-redux";
 
 // Vendor
 import {
@@ -65,12 +64,6 @@ class EventPage extends Component {
     this.setState({ user: null });
   }
 
-  getEventLabel(eventType) {
-    return types.find((type)=> {
-      return type.value == eventType;
-    }).label;
-  }
-
   render() {
     const { event, user } = this.state;
     const { navigation } = this.props;
@@ -79,7 +72,9 @@ class EventPage extends Component {
 
     const agencies = event.present && event.present.length > 0 ? (
       <View>
-        <Text style={{paddingTop: 15, color: "gray"}}>Agencies:</Text>
+        <Text style={{paddingTop: 15, color: "gray"}}>
+          <Translate id="event.agencies" />:
+        </Text>
         <Text>{event.present.map((item)=> {return item.agency}).join(", ")}</Text>
       </View>
     ) : <></>
@@ -88,15 +83,19 @@ class EventPage extends Component {
         style={{ backgroundColor: colors.primary, margin: 15, marginTop: 25 }}
         onPress={()=> navigation.navigate("EventEdit", { event })}
       >
-        <Text>Edit Event</Text>
+        <Text><Translate id="event.edit" /></Text>
       </Button>
     ) : <></>;
 
     return (
+      <Translate>
+      {({ translate }) => (
       <View style={styles.view}>
         <Container>
           <Content style={styles.content}>
-            <H1 style={{paddingBottom: 15}}>{this.getEventLabel(event.type)}</H1>
+            <H1 style={{paddingBottom: 15}}>
+              {translate("event.type." + event.type)}
+            </H1>
             <Text>{new Date(event.created.at).toLocaleString('en-US', {
               year: 'numeric', month: 'long', day: 'numeric',
               hour: '2-digit', minute: '2-digit', timeZoneName: 'short'
@@ -104,20 +103,23 @@ class EventPage extends Component {
             <Text>{location.address_1}</Text>
             <Text>{location.city}, {location.state} {location.zipcode}</Text>
             {agencies}
-            <Text style={{paddingTop: 15, color: "gray"}}>Details:</Text>
+            <Text style={{paddingTop: 15, color: "gray"}}>
+              {translate("event.details")}:
+            </Text>
             <Text>{event.description[language] || event.description.en}</Text>
             {editButton}
           </Content>
         </Container>
       </View>
+      )}
+      </Translate>
     );
   }
 }
 
 const mapStateToProps = state => ({
   user: state.user,
-  errors: state.errors,
-  languages: getLanguages(state.localize)
+  errors: state.errors
 });
 
 

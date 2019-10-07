@@ -1,6 +1,7 @@
 // Setup
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
+import { withLocalize } from "react-localize-redux";
 
 // Vendor
 import {
@@ -28,9 +29,9 @@ const styles = StyleSheet.create({
   }
 });
 
-const AddLocationCallout = () => (
+const AddLocationCallout = (props) => (
   <Button iconRight full transparent>
-    <Text>Add Location</Text>
+    <Text>{props.translate("geo.addLoc")}</Text>
     <Icon name="add-circle" />
   </Button>
 );
@@ -39,13 +40,14 @@ class EditLocation extends Component {
   state = { inputValue: "", results: [] };
 
   displayAddress = async address => {
+    const { translate } = this.props;
     try {
       const results = await Geocoder.geocodeAddress(address);
       this.displayResults(results);
     } catch (error) {
       Toast.show({
         buttonText: "OK",
-        text: `Error geocoding location: ${error.message || error}`,
+        text: `${translate("geo.error")}: ${error.message || error}`,
         type: "danger"
       });
     }
@@ -58,7 +60,7 @@ class EditLocation extends Component {
     } catch (error) {
       Toast.show({
         buttonText: "OK",
-        text: `Error geocoding coordinates: ${error.message || error}`,
+        text: `${translate("geo.coordError")}: ${error.message || error}`,
         type: "danger"
       });
     }
@@ -96,23 +98,23 @@ class EditLocation extends Component {
 
   sendLocation(location) {
     try {
+      const { navigation, translate } = this.props;
       const { address_1, city, state, zipcode, latitude, longitude } = location;
       // Basic location validation
-      if (!address_1) throw new Error("No street address.");
-      if (!city) throw new Error("No city.");
-      if (!state) throw new Error("No state.");
-      if (!zipcode) throw new Error("No zipcode.");
-      if (!latitude) throw new Error("No latitude.");
-      if (!longitude) throw new Error("No longitude.");
+      if (!address_1) throw new Error(`${translate("geo.noStreet")}`);
+      if (!city) throw new Error(`${translate("geo.noCity")}`);
+      if (!state) throw new Error(`${translate("geo.noState")}`);
+      if (!zipcode) throw new Error(`${translate("geo.noZip")}`);
+      if (!latitude) throw new Error(`${translate("geo.noLat")}`);
+      if (!longitude) throw new Error(`${translate("geo.noLong")}`);
 
-      const { navigation } = this.props;
       const setLocation = navigation.getParam("setLocation");
       setLocation(location);
       navigation.goBack();
     } catch (error) {
       Toast.show({
         buttonText: "OK",
-        text: `Error setting location: ${error.message || error}`,
+        text: `${translate("geo.locError")}: ${error.message || error}`,
         type: "danger"
       });
     }
@@ -127,7 +129,7 @@ class EditLocation extends Component {
   };
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, translate } = this.props;
     const { inputValue, results } = this.state;
 
     return (
@@ -139,12 +141,14 @@ class EditLocation extends Component {
               returnKeyType="search"
               onChangeText={address => this.setState({ inputValue: address })}
               onSubmitEditing={() => this.displayAddress(inputValue)}
-              placeholder="Enter Street Address"
+              placeholder={translate("geo.enter")}
               value={inputValue}
             />
           </Item>
           <Button transparent onPress={() => navigation.goBack()}>
-            <Text style={{ color: colors.primary }}>Cancel</Text>
+            <Text style={{ color: colors.primary }}>{
+              translate("geo.cancel")
+            }</Text>
           </Button>
         </Header>
 
@@ -193,7 +197,7 @@ class EditLocation extends Component {
                     <Text>{result.address_1}</Text>
                     <Text>{this.calloutBody(result)}</Text>
                   </Content>
-                  <AddLocationCallout />
+                  <AddLocationCallout translate={translate} />
                 </Callout>
               </Marker>
             ))}
@@ -204,4 +208,4 @@ class EditLocation extends Component {
   }
 }
 
-export default EditLocation;
+export default withLocalize(EditLocation);

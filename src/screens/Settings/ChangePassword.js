@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
+import { Translate, withLocalize } from "react-localize-redux";
 
 // Vendor
 import {
@@ -41,9 +42,12 @@ const initialValues = {
 }
 
 class ChangePassword extends Component {
-  static navigationOptions = () => ({ title: "Change Password" });
+  static navigationOptions = ({ screenProps }) => ({
+    title: screenProps.translate("password.change")
+  });
 
   onSubmit = async (values, { resetForm }) => {
+    const { translate } = this.props;
     try {
       if (values.newPassword1 !== values.newPassword2) {
         throw new Error("New passwords don't match.");
@@ -81,13 +85,13 @@ class ChangePassword extends Component {
       });
       Toast.show({
         buttonText: "OK",
-        text: "Password change successful.",
+        text: `${translate("password.success")}`,
         type: "success"
       });
     } catch (error) {
       Toast.show({
         buttonText: "OK",
-        text: "Error changing password: " + (error.message || error),
+        text: `${translate("password.error")}:` + (error.message || error),
         type: "danger"
       });
     }
@@ -101,6 +105,8 @@ class ChangePassword extends Component {
     const { navigation } = this.props;
 
     return (
+    <Translate>
+    {({ translate }) => (
       <View style={styles.view}>
         <Container>
           <Content style={styles.content}>
@@ -109,7 +115,7 @@ class ChangePassword extends Component {
                 <Container>
                   <Content>
                     <Item fixedLabel>
-                      <Label>Current</Label>
+                      <Label>{translate("password.current")}</Label>
                       <Input
                         secureTextEntry={true}
                         style={styles.input}
@@ -118,7 +124,7 @@ class ChangePassword extends Component {
                       />
                     </Item>
                     <Item fixedLabel>
-                      <Label>New</Label>
+                      <Label>{translate("password.new")}</Label>
                       <Input
                         secureTextEntry={true}
                         style={styles.input}
@@ -127,7 +133,7 @@ class ChangePassword extends Component {
                       />
                     </Item>
                     <Item fixedLabel>
-                      <Label>New Again</Label>
+                      <Label>{translate("password.newAgain")}</Label>
                       <Input
                         secureTextEntry={true}
                         style={styles.input}
@@ -139,7 +145,7 @@ class ChangePassword extends Component {
                       style={{ backgroundColor: colors.primary, margin: 15, marginTop: 25 }}
                       onPress={props.handleSubmit}
                     >
-                      <Text>Change Password</Text>
+                      <Text>{translate("password.change")}</Text>
                     </Button>
                   </Content>
                 </Container>
@@ -148,6 +154,8 @@ class ChangePassword extends Component {
           </Content>
         </Container>
       </View>
+    )}
+    </Translate>
     );
   }
 }
@@ -164,4 +172,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ChangePassword);
+)(withLocalize(ChangePassword));
