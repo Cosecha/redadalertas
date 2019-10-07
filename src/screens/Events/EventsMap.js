@@ -275,7 +275,12 @@ class EventsMap extends Component {
             );
           })}
         </MapView>
-        <EventsList events={events} />
+        <EventsList
+          events={events}
+          getEventColor={this.getEventColor}
+          getEventIcon={this.getEventIcon}
+          navigation={navigation}
+        />
         <Fab
           style={styles.fabIcon}
           position="bottomRight"

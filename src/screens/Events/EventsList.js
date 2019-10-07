@@ -1,104 +1,106 @@
 import React, { Component } from 'react';
-import {View, Button, Text, Dimensions, Animated} from 'react-native';
+import { View, SafeAreaView, Button, Text, Dimensions, Animated, StatusBar
+} from 'react-native';
 import SlidingUpPanel from 'rn-sliding-up-panel';
+import { Card, CardItem, Icon, Right } from 'native-base';
+import { Translate } from "react-localize-redux";
 
 import { colors } from "styles";
 
 const { height } = Dimensions.get("window");
 
-const panelHeaderHeight = 75;
+const panelHeaderHeight = 60;
 const panelBorderRadius = 20;
 
 const styles = {
   container: {
     flex: 1,
-    backgroundColor: "#f8f9fa",
-    alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: colors.lightGray
   },
   panel: {
     borderTopLeftRadius: panelBorderRadius,
     borderTopRightRadius: panelBorderRadius,
+    borderColor: colors.darkGray,
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: colors.lightGray,
     position: "relative",
   },
   panelHeader: {
     borderTopLeftRadius: panelBorderRadius,
     borderTopRightRadius: panelBorderRadius,
     height: panelHeaderHeight,
-    backgroundColor: colors.darkGray,
+    backgroundColor: colors.lightGray,
     justifyContent: "flex-end",
-    padding: 24
+    padding: 15
   },
   textHeader: {
-    fontSize: 28,
-    color: "#FFF"
-  }
+    fontSize: 20,
+    color: colors.darkGray
+  },
+  marker: {
+    width: 30,
+    height: 30,
+    borderRadius: 30 / 2,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.darkGray,
+    backgroundColor: 'gray',
+  },
+  markerIcon: {
+    fontSize: 25,
+    textAlign: "center",
+    color: "white"
+  },
 };
 
 export default class EventsList extends Component {
   static defaultProps = {
     draggableRange: {
-      top: height + panelHeaderHeight - 64,
+      top: height - (panelHeaderHeight * 2),
       bottom: panelHeaderHeight
     }
   };
 
   _draggedValue = new Animated.Value(panelHeaderHeight);
 
+  async componentDidMount() {
+    const { navigation } = this.props;
+    this.willBlurSub = navigation.addListener(
+      "willBlur",
+      async payload => await this.handleWillBlur(payload)
+    );
+  }
+
+  componentWillUnmount() {
+    this.willBlurSub.remove();
+  }
+
+  handleWillBlur(payload) {
+    if (payload.action && payload.action.routeName !== "EventPage") {
+      this._panel.hide();
+    }
+  }
+
   render() {
-    const { events } = this.props;
+    const { events, navigation } = this.props;
     const { top, bottom } = this.props.draggableRange;
 
-    const backgoundOpacity = this._draggedValue.interpolate({
-      inputRange: [height - 48, height],
-      outputRange: [1, 0],
-      extrapolate: "clamp"
-    });
-
-    const textTranslateY = this._draggedValue.interpolate({
-      inputRange: [bottom, top],
-      outputRange: [0, 8],
-      extrapolate: "clamp"
-    });
-
-    const textTranslateX = this._draggedValue.interpolate({
-      inputRange: [bottom, top],
-      outputRange: [0, -112],
-      extrapolate: "clamp"
-    });
-
-    const textScale = this._draggedValue.interpolate({
-      inputRange: [bottom, top],
-      outputRange: [1, 0.7],
-      extrapolate: "clamp"
-    });
-
     return (
+      <Translate>
+      {({ translate }) => (
       <SlidingUpPanel
         ref={c => (this._panel = c)}
         draggableRange={this.props.draggableRange}
         animatedValue={this._draggedValue}
-        snappingPoints={[panelHeaderHeight * 2]}
+        snappingPoints={[panelHeaderHeight * 2, height / 2]}
         height={height + panelHeaderHeight}
         friction={0.5}
       >
-        <View style={styles.panel}>
+        <SafeAreaView style={styles.panel}>
           <View style={styles.panelHeader}>
-            <Animated.View
-              style={{
-                transform: [
-                  { translateY: textTranslateY },
-                  { translateX: textTranslateX },
-                  { scale: textScale }
-                ]
-              }}
-            >
-              <Text style={styles.textHeader}>Events List</Text>
-            </Animated.View>
+            <Text style={styles.textHeader}>{translate("events.list")}</Text>
           </View>
-          <View style={styles.container}>
+          <Card style={styles.container}>
             {events.map(event => {
               const { location } = event;
               const latitude = parseFloat(location.latitude);
@@ -109,18 +111,38 @@ export default class EventsList extends Component {
                 <></>
               );
               const cityStateZip = `${location.city}, ${location.state} ${location.zipcode}`;
+              const markerColor = this.props.getEventColor(event.type);
+              const markerIcon = this.props.getEventIcon(event.type);
 
               return (
-                <View key={event._id}>
-                  <Text>{location.address_1}</Text>
-                  <Text>{cityStateZip}</Text>
-                  {address2}
-                </View>
+                <CardItem
+                  key={event._id}
+                  bordered
+                  button
+                  onPress={() => navigation.navigate("EventPage", { event })}
+                >
+                  <View>
+                    <Icon name={markerIcon} style={{color: markerColor}} />
+                  </View>
+                  <View>
+                    <Text style={{fontWeight: "bold"}}>{location.address_1}</Text>
+                    <Text>{cityStateZip}</Text>
+                    {address2}
+                    <Text>{`${translate("event.type." + event.type)} ${translate("event.at")} ${new Date(event.created.at).toLocaleString('en-US', {
+                      hour: 'numeric', minute: '2-digit'
+                    })}`}</Text>
+                  </View>
+                  <Right>
+                    <Icon name="arrow-forward" />
+                  </Right>
+                </CardItem>
               );
             })}
-          </View>
-        </View>
+          </Card>
+        </SafeAreaView>
       </SlidingUpPanel>
+      )}
+      </Translate>
     );
   }
 }
