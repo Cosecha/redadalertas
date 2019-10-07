@@ -82,7 +82,7 @@ export default class EventsList extends Component {
   }
 
   render() {
-    const { events, navigation } = this.props;
+    const { events, navigation, parent } = this.props;
     const { top, bottom } = this.props.draggableRange;
 
     return (
@@ -111,15 +111,18 @@ export default class EventsList extends Component {
                 <></>
               );
               const cityStateZip = `${location.city}, ${location.state} ${location.zipcode}`;
-              const markerColor = this.props.getEventColor(event.type);
-              const markerIcon = this.props.getEventIcon(event.type);
+              const markerColor = parent.getEventColor(event.type);
+              const markerIcon = parent.getEventIcon(event.type);
 
               return (
                 <CardItem
                   key={event._id}
                   bordered
                   button
-                  onPress={() => navigation.navigate("EventPage", { event })}
+                  onPress={() => {
+                    parent.focusMarker(parent, event);
+                    navigation.navigate("EventPage", { event })
+                  }}
                 >
                   <View>
                     <Icon name={markerIcon} style={{color: markerColor}} />
