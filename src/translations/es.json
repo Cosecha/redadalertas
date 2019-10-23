@@ -10,6 +10,7 @@
   },
   "events": {
     "map": "Mapa de Eventos",
+    "list": "Lista de Eventos",
     "fetchSuccess": "Eventos recuperados con éxito.",
     "fetchError": "Error al representar el mapa.",
     "newEvents": "Nuevos Eventos",
@@ -18,6 +19,7 @@
     "reportedAddress": "Informado en"
   },
   "event": {
+    "at": "en",
     "agencies": "Agencias",
     "details": "Detalles",
     "edit": "Editar Evento",

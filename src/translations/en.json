@@ -10,6 +10,7 @@
   },
   "events": {
     "map": "Events Map",
+    "list": "Events List",
     "fetchSuccess": "Events fetched successfully.",
     "fetchError": "Error rendering map.",
     "newEvents": "New Events",
@@ -18,6 +19,7 @@
     "reportedAddress": "Reported at"
   },
   "event": {
+    "at": "at",
     "agencies": "Agencies",
     "details": "Details",
     "edit": "Edit Event",

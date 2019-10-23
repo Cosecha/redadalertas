@@ -9,6 +9,7 @@ import MapView, { Callout, Marker } from "react-native-maps";
 import { Toast, Fab, Icon, Button } from "native-base";
 
 // Redadalertas
+import EventsList from "./EventsList";
 import { colors } from "styles";
 import { getEvents } from "reducers/event";
 import { saveDevice } from "reducers/device";
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
     color: "white"
   },
   callout: {
+    zIndex: 5,
     width: 200,
     maxHeight: 200,
     maxWidth: 200,
@@ -101,10 +103,6 @@ class EventsMap extends Component {
       "willFocus",
       async payload => await this.handleWillFocus(payload)
     );
-    this.willBlurSub = navigation.addListener(
-      "willBlur",
-      async payload => await this.handleWillBlur(payload)
-    );
   }
 
   async initializeState() {
@@ -157,7 +155,6 @@ class EventsMap extends Component {
 
   componentWillUnmount() {
     this.willFocusSub.remove();
-    this.willBlurSub.remove();
   }
 
   async handleWillFocus(payload) {
@@ -166,12 +163,8 @@ class EventsMap extends Component {
     if (params && params.refresh === true) await this.populateMap(params.event);
   }
 
-  handleWillBlur() {
-    this.markers = {};
-  }
-
-  focusMarker(event) {
-    this.map.animateToRegion(
+  focusMarker(context, event) {
+    context.map.animateToRegion(
       {
         latitude: event.location.latitude,
         longitude: event.location.longitude,
@@ -181,7 +174,7 @@ class EventsMap extends Component {
       500
     );
     setTimeout(() => {
-      this.markers[event._id].showCallout();
+      context.markers[event._id].showCallout();
     }, 1500);
   }
 
@@ -190,7 +183,7 @@ class EventsMap extends Component {
       const screenProps = this.props.screenProps;
       await this.props.getEvents();
       if (this.props.errors.event) throw this.props.errors.event;
-      if (newEvent) this.focusMarker(newEvent);
+      if (newEvent) this.focusMarker(this, newEvent);
       Toast.show({
         buttonText: "OK",
         text: screenProps.translate("events.fetchSuccess"),
@@ -274,6 +267,11 @@ class EventsMap extends Component {
             );
           })}
         </MapView>
+        <EventsList
+          events={events}
+          navigation={navigation}
+          parent={this}
+        />
         <Fab
           style={styles.fabIcon}
           position="bottomRight"
