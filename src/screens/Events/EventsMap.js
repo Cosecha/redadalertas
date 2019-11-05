@@ -93,6 +93,9 @@ class EventsMap extends Component {
     super(props);
     this.map = null;
     this.markers = {};
+    this.state = {
+      currentCallout: null
+    }
   }
 
   async componentDidMount() {
@@ -174,6 +177,7 @@ class EventsMap extends Component {
       500
     );
     setTimeout(() => {
+      context.setState({ currentCallout: event._id });
       context.markers[event._id].showCallout();
     }, 1500);
   }
@@ -244,9 +248,8 @@ class EventsMap extends Component {
                 ref={ref => {
                   this.markers[event._id] = ref;
                 }}
-                onCalloutPress={() => {
-                  navigation.navigate("EventPage", { event });
-                }}
+                onPress={() => this.setState({ currentCallout: event._id })}
+                onCalloutPress={() => navigation.navigate("EventPage", { event })}
               >
                 <View
                   style={[styles.marker, { backgroundColor: markerColor }]}
@@ -271,6 +274,7 @@ class EventsMap extends Component {
           events={events}
           navigation={navigation}
           parent={this}
+          currentCallout={this.state.currentCallout}
         />
         <Fab
           style={styles.fabIcon}
@@ -290,7 +294,7 @@ class EventsMap extends Component {
 
 const mapStateToProps = state => ({
   user: state.user,
-  events: state.events,
+  events: state.events.reverse(),
   errors: state.errors
 });
 
