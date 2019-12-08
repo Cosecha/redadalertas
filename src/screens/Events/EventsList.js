@@ -48,7 +48,10 @@ const styles = {
   markerIcon: {
     fontSize: 25,
     textAlign: "center",
-    color: "white"
+    color: "white",
+    textShadowColor: "rgba(0, 0, 0, 0.5)",
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1
   },
 };
 
@@ -161,7 +164,7 @@ export default class EventsList extends Component {
                     style={{ backgroundColor: calloutItemColor }}
                   >
                     <View>
-                      <Icon name={markerIcon} style={{color: markerColor}} />
+                      <Icon name={markerIcon} style={{...styles.markerIcon, color: markerColor}} />
                     </View>
                     <View>
                       <Text style={{fontWeight: "bold"}}>{location.address_1}</Text>
