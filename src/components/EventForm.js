@@ -94,7 +94,7 @@ class EventForm extends Component {
 
         response = await eventServices.put(data);
       }
-      if (response instanceof Error) throw response;
+      if (response instanceof Error) throw response.response || response;
       this.clearForm(resetForm);
       this.props.nav.navigate("EventsMap", {
         refresh: true,
@@ -106,9 +106,10 @@ class EventForm extends Component {
         type: "success"
       });
     } catch (error) {
+      const message = error.data.message || error.message || false;
       Toast.show({
         buttonText: "OK",
-        text: `${translate("report.error")}: ` + (error.message || error),
+        text: `${translate("report.error")}: ` + (message || error),
         type: "danger"
       });
     }
