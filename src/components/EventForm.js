@@ -231,19 +231,6 @@ class EventForm extends Component {
                         ))}
                       </Picker>
                 </Item>
-                <Item fixedLabel style={{ marginTop: 15 }}>
-                  <Label style={{ marginBottom: 15 }}>{translate("report.delete")}</Label>
-                  <CheckBox
-                    checked={props.values.expire.deleteOnExpire}
-                    onPress={() =>
-                      props.setFieldValue(
-                        "expire.deleteOnExpire",
-                        !props.values.expire.deleteOnExpire
-                      )
-                    }
-                    style={{ marginRight: 25, marginBottom: 15 }}
-                  />
-                </Item>
               </Form>
               <Button block
                 style={{ backgroundColor: colors.primary, margin: 15 }}
