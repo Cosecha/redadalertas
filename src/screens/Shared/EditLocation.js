@@ -25,19 +25,35 @@ import { colors } from "styles";
 const styles = StyleSheet.create({
   container: { flex: 1 },
   map: {
+    ...StyleSheet.absoluteFillObject,
+    flex: 1
+  },
+  addLocView: {
     ...StyleSheet.absoluteFillObject
+  },
+  addButtonView: {
+    ...StyleSheet.absoluteFillObject,
+    padding: 15,
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-end"
+  },
+  addButton: {
+    position: "relative",
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  addButtonText: {
+    position: "relative",
+    alignItems: "center",
+    textAlign: "center"
   }
 });
 
-const AddLocationCallout = (props) => (
-  <Button iconRight full transparent>
-    <Text>{props.translate("geo.addLoc")}</Text>
-    <Icon name="add-circle" />
-  </Button>
-);
-
 class EditLocation extends Component {
   state = { inputValue: "", results: [] };
+  markers = {};
 
   displayAddress = async address => {
     const { translate } = this.props;
@@ -87,6 +103,9 @@ class EditLocation extends Component {
         const markerIds = this.state.results.map(result => result.identifier);
         setTimeout(() => {
           this.map.fitToSuppliedMarkers(markerIds);
+          setTimeout(() => {
+            this.markers[markerIds[0]].showCallout();
+          }, 1000);
         }, 1000);
       }
     );
@@ -166,12 +185,14 @@ class EditLocation extends Component {
             }}
           >
             {results.map(result => (
+            <View style={styles.addLocView} key={"view." + result.identifier}>
               <Marker
                 draggable
                 onDragEnd={this.updateMarker}
                 coordinate={result.coordinate}
                 identifier={result.identifier}
                 key={result.identifier}
+                ref={ref=> this.markers[result.identifier] = ref}
               >
                 <Callout
                   onPress={() => {
@@ -197,9 +218,34 @@ class EditLocation extends Component {
                     <Text>{result.address_1}</Text>
                     <Text>{this.calloutBody(result)}</Text>
                   </Content>
-                  <AddLocationCallout translate={translate} />
                 </Callout>
               </Marker>
+              <View style={styles.addButtonView}>
+                <Button style={styles.addButton}
+                  block
+                  onPress={() => {
+                    const {
+                      address_1,
+                      city,
+                      coordinate,
+                      state,
+                      zipcode
+                    } = result;
+                    const { latitude, longitude } = coordinate;
+                    this.sendLocation({
+                      address_1,
+                      city,
+                      latitude,
+                      longitude,
+                      state,
+                      zipcode
+                    });
+                  }}
+                >
+                  <Text style={styles.addButtonText}>{translate("geo.addLoc")}</Text>
+                </Button>
+              </View>
+            </View>
             ))}
           </MapView>
         </View>
