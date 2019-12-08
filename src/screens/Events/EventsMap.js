@@ -96,6 +96,7 @@ class EventsMap extends Component {
     super(props);
     this.map = null;
     this.markers = {};
+    this.list = React.createRef();
     this.state = {
       currentCallout: null
     }
@@ -278,11 +279,13 @@ class EventsMap extends Component {
           navigation={navigation}
           parent={this}
           currentCallout={this.state.currentCallout}
+          ref={this.list}
         />
         <Fab
           style={styles.fabIcon}
           position="bottomRight"
           onPress={async () => {
+            this.list.current.hidePanel();
             await this.populateMap();
             this.map.animateToRegion(initialRegion);
           }}
