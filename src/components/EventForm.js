@@ -132,11 +132,11 @@ class EventForm extends Component {
   };
 
   render() {
-    const { nav } = this.props;
+    const { nav, translate } = this.props;
     const { eventToEdit } = this.props || null;
     const { header } = this.props || <></>;
     const { agencyInputValue, expireAt } = this.state;
-    const removeEventButton = (formikProps, translate)=> {
+    const removeEventButton = (formikProps)=> {
       if (this.props.newEvent) return <></>;
       return (
         <Button block danger
@@ -272,7 +272,7 @@ class EventForm extends Component {
                   translate("report.submit") : translate("report.change")
                 }</Text>
               </Button>
-              {removeEventButton(props, translate)}
+              {removeEventButton(props)}
             </Content>
           </Container>
         )}
