@@ -167,7 +167,7 @@ class EventsMap extends Component {
   async handleWillFocus(payload) {
     const params =
       payload.action && payload.action.params ? payload.action.params : null;
-    if (params && params.refresh === true) await this.populateMap(params.event);
+    if (params && params.refresh === true) await this.populateMap(params.event, true);
   }
 
   focusMarker(context, event) {
@@ -186,13 +186,13 @@ class EventsMap extends Component {
     }, 1500);
   }
 
-  async populateMap(newEvent) {
+  async populateMap(newEvent, refresh) {
     try {
       const screenProps = this.props.screenProps;
       await this.props.getEvents();
       if (this.props.errors.event) throw this.props.errors.event;
       if (newEvent) this.focusMarker(this, newEvent);
-      Toast.show({
+      if (!refresh) Toast.show({
         buttonText: "OK",
         text: screenProps.translate("events.fetchSuccess"),
         type: "success"
