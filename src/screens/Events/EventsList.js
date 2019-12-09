@@ -48,8 +48,18 @@ const styles = {
   markerIcon: {
     fontSize: 25,
     textAlign: "center",
-    color: "white"
+    color: "white",
+    textShadowColor: "rgba(0, 0, 0, 0.5)",
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1
   },
+  handlebar: {
+    color: colors.darkGray,
+    textAlign: "center",
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10
+  }
 };
 
 export default class EventsList extends Component {
@@ -127,6 +137,7 @@ export default class EventsList extends Component {
           onTouchMove={(e)=> this.setState({ touchStart: null })}
           onTouchCancel={(e)=> this.setState({ touchStart: null })}
           onTouchEnd={(e)=> this.handleTouch(e.nativeEvent.timestamp, height)}>
+            <Text style={styles.handlebar}>—</Text>
             <Text style={styles.textHeader}>{translate("events.list")}</Text>
           </View>
           <Card style={styles.container} transparent>
@@ -161,7 +172,7 @@ export default class EventsList extends Component {
                     style={{ backgroundColor: calloutItemColor }}
                   >
                     <View>
-                      <Icon name={markerIcon} style={{color: markerColor}} />
+                      <Icon name={markerIcon} style={{...styles.markerIcon, color: markerColor}} />
                     </View>
                     <View>
                       <Text style={{fontWeight: "bold"}}>{location.address_1}</Text>

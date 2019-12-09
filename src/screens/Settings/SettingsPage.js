@@ -1,6 +1,6 @@
 // Setup
 import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import { Translate, withLocalize, setActiveLanguage
 } from "react-localize-redux";
@@ -66,6 +66,7 @@ class SettingsPage extends Component {
 
       await this.props.deleteUserToken();
       this.props.navigation.navigate("ReporterLoginForm");
+      this.props.navigation.navigate("EventsMap");
       Toast.show({
         buttonText: "OK",
         text: translate("logout.success"),
@@ -81,6 +82,7 @@ class SettingsPage extends Component {
   };
 
   handleDeviceReset = async () => {
+    const { translate } = this.props;
     try {
       // set default language with react-localize-redux (redux i18n library)
       await this.props.setActiveLanguage('en');
@@ -90,13 +92,13 @@ class SettingsPage extends Component {
       await deviceServices.reset();
       Toast.show({
         buttonText: "OK",
-        text: "Device reset successful.",
+        text: translate("settings.resetSuccess"),
         type: "success"
       });
     } catch (error) {
       Toast.show({
         buttonText: "OK",
-        text: "Error resetting device: " + (error.message || error),
+        text: `${translate("settings.resetError")}: ` + (error.message || error),
         type: "danger"
       });
     }
@@ -170,7 +172,18 @@ class SettingsPage extends Component {
             </Form>
             <Button
               style={styles.button}
-              onPress={this.handleDeviceReset}
+              onPress={()=> {
+                Alert.alert(
+                  translate("settings.reset"), // title
+                  translate("settings.resetConfirm"), // body
+                  // options
+                  [
+                    { text: translate("common.yes"), onPress: ()=> this.handleDeviceReset() },
+                    { text: translate("common.cancel"), style: "cancel" }
+                  ],
+                  { cancelable: true } // clicking outside of alert will cancel it
+                );
+              }}
             >
               <Text>{translate("settings.reset")}</Text>
             </Button>
