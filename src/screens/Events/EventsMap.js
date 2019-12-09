@@ -72,19 +72,19 @@ const types = [
     markerColor: "yellow", markerIcon: "car"
   },
   { label: "I-9 Audit", value: "i9",
-    markerColor: "green", markerIcon: "business"
+    markerColor: "green", markerIcon: "filing"
   },
   { label: "Checkpoint", value: "checkpoint",
-    markerColor: "blue", markerIcon: "pin"
+    markerColor: "blue", markerIcon: "hand"
   },
   { label: "Action", value: "action",
     markerColor: "indigo", markerIcon: "megaphone"
   },
   { label: "False Alarm", value: "falsealarm",
-    markerColor: "violet", markerIcon: "close-circle"
+    markerColor: "violet", markerIcon: "flag"
   },
   { label: "Other", value: "other",
-    markerColor: "gray", markerIcon: "today" }
+    markerColor: "gray", markerIcon: "medical" }
 ];
 const initialRegion = {
   latitude: 37.7620375,

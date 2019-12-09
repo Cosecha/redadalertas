@@ -58,7 +58,7 @@
     "deleteOnExpire": "¿Eliminar al caducar?",
     "submit": "Enviar",
     "change": "Presentar cambios",
-    "submitted": "Evento enviado",
+    "submitted": "Evento enviado.",
     "error": "Error al enviar el informe"
   },
   "geo": {
