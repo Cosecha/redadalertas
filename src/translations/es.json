@@ -3,6 +3,11 @@
     "greeting": "Hola",
     "farewell": "Adios"
   },
+  "common": {
+    "yes": "Sí",
+    "no": "No",
+    "cancel": "Cancelar"
+  },
   "tabs": {
     "events": "Eventos",
     "report": "Informar",
@@ -24,6 +29,9 @@
     "details": "Detalles",
     "edit": "Editar Evento",
     "updated": "Evento actualizado.",
+    "remove": "Anular Evento",
+    "removeConfirm": "¿Está seguro de que desea anular este evento? Caducará de inmediato y se eliminará de la vista.",
+    "removed": "Evento anulado.",
     "type": {
       "sweep": "Redada",
       "targeted": "Individual",
@@ -46,7 +54,7 @@
     "fromNow": "a partir de ahora",
     "selectExpire": "Seleccione el tiempo de caducidad",
     "changeExpire": "Cambiar el tiempo de caducidad",
-    "delete": "¿Eliminar al caducar?",
+    "deleteOnExpire": "¿Eliminar al caducar?",
     "submit": "Enviar",
     "change": "Presentar cambios",
     "submitted": "Evento enviado",

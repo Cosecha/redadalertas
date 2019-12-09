@@ -1,6 +1,6 @@
 // Setup
 import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import { Translate, withLocalize } from "react-localize-redux";
 
@@ -76,6 +76,12 @@ class EventForm extends Component {
     return this.state != nextState;
   }
 
+  handleRemove = (formikProps) => {
+    this.setState({ expireAt: 0 });
+    formikProps.setFieldValue("expire.at", Date.now());
+    formikProps.submitForm(formikProps.values);
+  }
+
   onSubmit = async (values, { resetForm }) => {
     const { translate } = this.props;
     let response;
@@ -100,13 +106,16 @@ class EventForm extends Component {
         refresh: true,
         event: response.data[0]
       });
+      let successText = "event.updated";
+      if (this.props.newEvent === true) successText = "report.submitted";
+      if (this.state.expireAt === 0) successText = "event.removed";
       Toast.show({
         buttonText: "OK",
-        text: (this.props.newEvent === true) ? translate("report.submitted") : translate("event.updated"),
+        text: translate(successText),
         type: "success"
       });
     } catch (error) {
-      const message = error.data.message || error.message || false;
+      const message = (error.data) ? error.data.message : error.message || false;
       Toast.show({
         buttonText: "OK",
         text: `${translate("report.error")}: ` + (message || error),
@@ -127,6 +136,28 @@ class EventForm extends Component {
     const { eventToEdit } = this.props || null;
     const { header } = this.props || <></>;
     const { agencyInputValue, expireAt } = this.state;
+    const removeEventButton = (formikProps, translate)=> {
+      if (this.props.newEvent) return <></>;
+      return (
+        <Button block danger
+          style={{ margin: 15, marginTop: 0 }}
+          onPress={()=> {
+            Alert.alert(
+              translate("event.remove"), // title
+              translate("event.removeConfirm"), // body
+              // options
+              [
+                { text: translate("common.yes"), onPress: ()=> this.handleRemove(formikProps) },
+                { text: translate("common.cancel"), style: "cancel" }
+              ],
+              { cancelable: true } // clicking outside of alert will cancel it
+            );
+          }}
+        >
+          <Text><Translate id="event.remove" /></Text>
+        </Button>
+      );
+    }
 
     return (
       <Translate>
@@ -241,6 +272,7 @@ class EventForm extends Component {
                   translate("report.submit") : translate("report.change")
                 }</Text>
               </Button>
+              {removeEventButton(props, translate)}
             </Content>
           </Container>
         )}
