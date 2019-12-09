@@ -85,7 +85,10 @@
     "changeLang": "Change Language",
     "location": "Location",
     "selectLoc": "Select Location",
-    "reset": "Reset Device"
+    "reset": "Reset Device Settings",
+    "resetConfirm": "This will restore the language and location settings to the defaults for your device. Continue?",
+    "resetSuccess": "Restored default settings.",
+    "resetError": "Error resetting device"
   },
   "password": {
     "change": "Change Password",

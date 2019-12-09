@@ -84,7 +84,10 @@
     "changeLang": "Cambiar el Idioma",
     "location": "Ubicación",
     "selectLoc": "Seleccionar Ubicación",
-    "reset": "Reiniciar el Dispositivo"
+    "reset": "Restablecer configuración del dispositivo",
+    "resetConfirm": "Esto restaurará la configuración de idioma y ubicación a los valores predeterminados para su dispositivo. ¿Continuar?",
+    "resetSuccess": "Configuración predeterminada restaurada.",
+    "resetError": "Error al restaurar el dispositivo"
   },
   "password": {
     "change": "Cambiar Contraseña",
