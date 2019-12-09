@@ -65,6 +65,7 @@ class SettingsPage extends Component {
       if (response instanceof Error) throw response;
 
       await this.props.deleteUserToken();
+      this.props.navigation.navigate("ReporterLoginForm");
       this.props.navigation.navigate("EventsMap");
       Toast.show({
         buttonText: "OK",
