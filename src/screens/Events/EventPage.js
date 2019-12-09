@@ -24,6 +24,10 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 20
+  },
+  title: {
+    paddingTop: 15,
+    color: "gray"
   }
 });
 
@@ -39,14 +43,10 @@ const types = [
 ];
 
 class EventPage extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      event: this.props.navigation.state.params.event,
-      user: null
-    };
-  }
+  state = {
+    event: this.props.navigation.state.params.event,
+    user: null
+  };
 
   async componentDidMount() {
     const { navigation } = this.props;
@@ -72,7 +72,7 @@ class EventPage extends Component {
 
     const agencies = event.present && event.present.length > 0 ? (
       <View>
-        <Text style={{paddingTop: 15, color: "gray"}}>
+        <Text style={styles.title}>
           <Translate id="event.agencies" />:
         </Text>
         <Text>{event.present.map((item)=> {return item.agency}).join(", ")}</Text>
@@ -96,17 +96,24 @@ class EventPage extends Component {
             <H1 style={{paddingBottom: 15}}>
               {translate("event.type." + event.type)}
             </H1>
-            <Text>{new Date(event.created.at).toLocaleString('en-US', {
+            <Text>{new Date(event.created.at).toLocaleString(translate("common.locale"), {
               year: 'numeric', month: 'long', day: 'numeric',
               hour: '2-digit', minute: '2-digit', timeZoneName: 'short'
             })}</Text>
             <Text>{location.address_1}</Text>
             <Text>{location.city}, {location.state} {location.zipcode}</Text>
             {agencies}
-            <Text style={{paddingTop: 15, color: "gray"}}>
+            <Text style={styles.title}>
               {translate("event.details")}:
             </Text>
             <Text>{event.description[language] || event.description.en}</Text>
+            <Text style={styles.title}>
+              {translate("event.expires")}:
+            </Text>
+            <Text>{new Date(event.expire.at).toLocaleString(translate("common.locale"), {
+              year: 'numeric', month: 'short', day: 'numeric',
+              hour: '2-digit', minute: '2-digit', timeZoneName: 'short'
+            })}</Text>
             {editButton}
           </Content>
         </Container>

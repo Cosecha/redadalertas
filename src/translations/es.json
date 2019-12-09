@@ -4,6 +4,7 @@
     "farewell": "Adios"
   },
   "common": {
+    "locale": "es-419",
     "yes": "Sí",
     "no": "No",
     "cancel": "Cancelar"
@@ -27,6 +28,7 @@
     "at": "en",
     "agencies": "Agencias",
     "details": "Detalles",
+    "expires": "Expira el",
     "more": "Toca para más información",
     "edit": "Editar Evento",
     "updated": "Evento actualizado.",

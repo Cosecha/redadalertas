@@ -4,6 +4,7 @@
     "farewell": "Goodbye"
   },
   "common": {
+    "locale": "en-US",
     "yes": "Yes",
     "no": "No",
     "cancel": "Cancel"
@@ -27,6 +28,7 @@
     "at": "at",
     "agencies": "Agencies",
     "details": "Details",
+    "expires": "Expires on",
     "more": "Tap for more info",
     "edit": "Edit Event",
     "updated": "Event updated.",
