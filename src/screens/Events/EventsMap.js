@@ -52,6 +52,12 @@ const styles = StyleSheet.create({
   },
   calloutText: {
     fontWeight: "bold"
+  },
+  calloutMore: {
+    marginTop: 5,
+    marginBottom: 5,
+    fontSize: 10,
+    fontStyle: "italic"
   }
 });
 
@@ -279,6 +285,9 @@ class EventsMap extends Component {
                     <Text>{location.address_1}</Text>
                     <Text>{cityStateZip}</Text>
                     {address2}
+                    <Text style={styles.calloutMore}>
+                      <Translate id={"event.more"} />
+                    </Text>
                   </View>
                 </Callout>
               </Marker>
