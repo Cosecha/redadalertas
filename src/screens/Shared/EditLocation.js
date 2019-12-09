@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     position: "relative",
-    alignItems: "center",
     textAlign: "center"
   }
 });
