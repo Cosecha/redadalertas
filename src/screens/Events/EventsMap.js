@@ -1,6 +1,6 @@
 // Setup
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { AppState, StyleSheet, Text, View } from "react-native";
 import { connect } from "react-redux";
 import { Translate, withLocalize, setActiveLanguage } from "react-localize-redux";
 
@@ -92,17 +92,16 @@ class EventsMap extends Component {
     title: screenProps.translate("events.map")
   });
 
-  constructor(props) {
-    super(props);
-    this.map = null;
-    this.markers = {};
-    this.list = React.createRef();
-    this.state = {
-      currentCallout: null
-    }
+  state = {
+    appState: AppState.currentState,
+    currentCallout: null
   }
+  map = null;
+  markers = {};
+  list = React.createRef();
 
   async componentDidMount() {
+    AppState.addEventListener('change', this.handleAppStateChange.bind(this));
     const { navigation } = this.props;
     await this.initializeState();
     await this.populateMap();
@@ -161,6 +160,7 @@ class EventsMap extends Component {
   }
 
   componentWillUnmount() {
+    AppState.removeEventListener('change', this.handleAppStateChange.bind(this));
     this.willFocusSub.remove();
   }
 
@@ -168,6 +168,17 @@ class EventsMap extends Component {
     const params =
       payload.action && payload.action.params ? payload.action.params : null;
     if (params && params.refresh === true) await this.populateMap(params.event, true);
+  }
+
+  async handleAppStateChange(nextAppState) {
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      // app has come back to the foreground, so refresh map
+      await this.populateMap();
+    }
+    this.setState({ appState: nextAppState });
   }
 
   focusMarker(context, event) {
