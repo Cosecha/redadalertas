@@ -96,7 +96,11 @@ export default class App extends Component {
       {({ translate }) => (
         <PersistGate
           loading={
-            <ActivityIndicator color={colors.primary} size="large" />
+            <ActivityIndicator
+              color={colors.primary}
+              size="large"
+              style={{ flex: 1, justifyContent: "center" }}
+            />
           }
           persistor={persistor}
         >

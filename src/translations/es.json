@@ -3,6 +3,12 @@
     "greeting": "Hola",
     "farewell": "Adios"
   },
+  "common": {
+    "locale": "es-419",
+    "yes": "Sí",
+    "no": "No",
+    "cancel": "Cancelar"
+  },
   "tabs": {
     "events": "Eventos",
     "report": "Informar",
@@ -22,8 +28,13 @@
     "at": "en",
     "agencies": "Agencias",
     "details": "Detalles",
+    "expires": "Expira el",
+    "more": "Toca para más información",
     "edit": "Editar Evento",
     "updated": "Evento actualizado.",
+    "remove": "Anular Evento",
+    "removeConfirm": "¿Está seguro de que desea anular este evento? Caducará de inmediato y se eliminará de la vista.",
+    "removed": "Evento anulado.",
     "type": {
       "sweep": "Redada",
       "targeted": "Individual",
@@ -46,10 +57,10 @@
     "fromNow": "a partir de ahora",
     "selectExpire": "Seleccione el tiempo de caducidad",
     "changeExpire": "Cambiar el tiempo de caducidad",
-    "delete": "¿Eliminar al caducar?",
+    "deleteOnExpire": "¿Eliminar al caducar?",
     "submit": "Enviar",
     "change": "Presentar cambios",
-    "submitted": "Evento enviado",
+    "submitted": "Evento enviado.",
     "error": "Error al enviar el informe"
   },
   "geo": {
@@ -75,7 +86,10 @@
     "changeLang": "Cambiar el Idioma",
     "location": "Ubicación",
     "selectLoc": "Seleccionar Ubicación",
-    "reset": "Reiniciar el Dispositivo"
+    "reset": "Restablecer configuración del dispositivo",
+    "resetConfirm": "Esto restaurará la configuración de idioma y ubicación a los valores predeterminados para su dispositivo. ¿Continuar?",
+    "resetSuccess": "Configuración predeterminada restaurada.",
+    "resetError": "Error al restaurar el dispositivo"
   },
   "password": {
     "change": "Cambiar Contraseña",

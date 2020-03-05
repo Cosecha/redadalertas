@@ -3,6 +3,12 @@
     "greeting": "Hello",
     "farewell": "Goodbye"
   },
+  "common": {
+    "locale": "en-US",
+    "yes": "Yes",
+    "no": "No",
+    "cancel": "Cancel"
+  },
   "tabs": {
     "events": "Events",
     "report": "Report",
@@ -22,8 +28,14 @@
     "at": "at",
     "agencies": "Agencies",
     "details": "Details",
+    "expires": "Expires on",
+    "more": "Tap for more info",
     "edit": "Edit Event",
     "updated": "Event updated.",
+    "remove": "Remove Event",
+    "removeConfirm": "Are you sure you want to remove this event? It will expire immediately and be removed from view.",
+    "removeYes": "Yes",
+    "removed": "Event removed.",
     "type": {
       "sweep": "Raid",
       "targeted": "Individual",
@@ -46,7 +58,7 @@
     "fromNow": "from now",
     "selectExpire": "Select expiration time",
     "changeExpire": "Change expiration time",
-    "delete": "Delete on Expire?",
+    "deleteOnExpire": "Delete on Expire?",
     "submit": "Submit",
     "change": "Submit Changes",
     "submitted": "Event Submitted.",
@@ -75,7 +87,10 @@
     "changeLang": "Change Language",
     "location": "Location",
     "selectLoc": "Select Location",
-    "reset": "Reset Device"
+    "reset": "Reset Device Settings",
+    "resetConfirm": "This will restore the language and location settings to the defaults for your device. Continue?",
+    "resetSuccess": "Restored default settings.",
+    "resetError": "Error resetting device"
   },
   "password": {
     "change": "Change Password",

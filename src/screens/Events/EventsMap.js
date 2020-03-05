@@ -1,6 +1,6 @@
 // Setup
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { AppState, StyleSheet, Text, View } from "react-native";
 import { connect } from "react-redux";
 import { Translate, withLocalize, setActiveLanguage } from "react-localize-redux";
 
@@ -39,7 +39,10 @@ const styles = StyleSheet.create({
   markerIcon: {
     fontSize: 25,
     textAlign: "center",
-    color: "white"
+    color: "white",
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10
   },
   callout: {
     zIndex: 5,
@@ -49,6 +52,12 @@ const styles = StyleSheet.create({
   },
   calloutText: {
     fontWeight: "bold"
+  },
+  calloutMore: {
+    marginTop: 5,
+    marginBottom: 5,
+    fontSize: 10,
+    fontStyle: "italic"
   }
 });
 
@@ -63,19 +72,19 @@ const types = [
     markerColor: "yellow", markerIcon: "car"
   },
   { label: "I-9 Audit", value: "i9",
-    markerColor: "green", markerIcon: "business"
+    markerColor: "green", markerIcon: "filing"
   },
   { label: "Checkpoint", value: "checkpoint",
-    markerColor: "blue", markerIcon: "pin"
+    markerColor: "blue", markerIcon: "hand"
   },
   { label: "Action", value: "action",
     markerColor: "indigo", markerIcon: "megaphone"
   },
   { label: "False Alarm", value: "falsealarm",
-    markerColor: "violet", markerIcon: "close-circle"
+    markerColor: "violet", markerIcon: "flag"
   },
   { label: "Other", value: "other",
-    markerColor: "gray", markerIcon: "today" }
+    markerColor: "gray", markerIcon: "medical" }
 ];
 const initialRegion = {
   latitude: 37.7620375,
@@ -89,16 +98,16 @@ class EventsMap extends Component {
     title: screenProps.translate("events.map")
   });
 
-  constructor(props) {
-    super(props);
-    this.map = null;
-    this.markers = {};
-    this.state = {
-      currentCallout: null
-    }
+  state = {
+    appState: AppState.currentState,
+    currentCallout: null
   }
+  map = null;
+  markers = {};
+  list = React.createRef();
 
   async componentDidMount() {
+    AppState.addEventListener('change', this.handleAppStateChange.bind(this));
     const { navigation } = this.props;
     await this.initializeState();
     await this.populateMap();
@@ -157,13 +166,25 @@ class EventsMap extends Component {
   }
 
   componentWillUnmount() {
+    AppState.removeEventListener('change', this.handleAppStateChange.bind(this));
     this.willFocusSub.remove();
   }
 
   async handleWillFocus(payload) {
     const params =
       payload.action && payload.action.params ? payload.action.params : null;
-    if (params && params.refresh === true) await this.populateMap(params.event);
+    if (params && params.refresh === true) await this.populateMap(params.event, true);
+  }
+
+  async handleAppStateChange(nextAppState) {
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      // app has come back to the foreground, so refresh map
+      await this.populateMap();
+    }
+    this.setState({ appState: nextAppState });
   }
 
   focusMarker(context, event) {
@@ -182,13 +203,13 @@ class EventsMap extends Component {
     }, 1500);
   }
 
-  async populateMap(newEvent) {
+  async populateMap(newEvent, refresh) {
     try {
       const screenProps = this.props.screenProps;
       await this.props.getEvents();
       if (this.props.errors.event) throw this.props.errors.event;
       if (newEvent) this.focusMarker(this, newEvent);
-      Toast.show({
+      if (!refresh) Toast.show({
         buttonText: "OK",
         text: screenProps.translate("events.fetchSuccess"),
         type: "success"
@@ -264,6 +285,9 @@ class EventsMap extends Component {
                     <Text>{location.address_1}</Text>
                     <Text>{cityStateZip}</Text>
                     {address2}
+                    <Text style={styles.calloutMore}>
+                      <Translate id={"event.more"} />
+                    </Text>
                   </View>
                 </Callout>
               </Marker>
@@ -275,11 +299,13 @@ class EventsMap extends Component {
           navigation={navigation}
           parent={this}
           currentCallout={this.state.currentCallout}
+          ref={this.list}
         />
         <Fab
           style={styles.fabIcon}
           position="bottomRight"
           onPress={async () => {
+            this.list.current.hidePanel();
             await this.populateMap();
             this.map.animateToRegion(initialRegion);
           }}
